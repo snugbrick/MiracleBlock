@@ -1,5 +1,6 @@
 package github.snugbrick.miracleblock.Listener;
 
+import github.snugbrick.miracleblock.Tools.StructureGen;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -15,25 +17,24 @@ import java.util.UUID;
  * @author MiracleUR -> github.com/snugbrick
  * @version 1.0.0 2024.08.25 17:07
  */
-public class NewPlayerJoinLis implements Listener {
+public class NewPlayerRoomGenLis implements Listener {
     private UUID PlayerUUID;
     private Player player;
     private World world;
 
     @EventHandler
-    public void newPlayerJoinLis(PlayerJoinEvent event) {
+    public void newPlayerJoinLis(PlayerJoinEvent event) throws IOException {
         player = event.getPlayer();
         PlayerUUID = player.getUniqueId();
-        world = event.getPlayer().getWorld();
+        world = Bukkit.getWorld("the_world_of_" + PlayerUUID);
 
         if (!event.getPlayer().hasPlayedBefore() && world != Bukkit.getWorld("the_world_of_" + PlayerUUID.toString())) {
             createNewRoom();
         }
-        //TODO: 删除下面这行
-        createNewRoom();
+        player.teleport(world.getSpawnLocation());
     }
 
-    private void createNewRoom() {
+    private void createNewRoom() throws IOException {
 
         WorldCreator worldCreator = new WorldCreator("the_world_of_" + PlayerUUID.toString());
         worldCreator.environment(World.Environment.NORMAL)
@@ -45,11 +46,10 @@ public class NewPlayerJoinLis implements Listener {
             player.teleport(world.getSpawnLocation());
         }
 
-        Bukkit.getLogger().info("the_world_of_" + PlayerUUID.toString() + " 已创建");
+        Bukkit.getLogger().info(world.getName() + " 已创建");
     }
 
-    private void setupPlayerWorld(World world) {
-        //TODO: 写一个nbt解析器
+    private void setupPlayerWorld(World world) throws IOException {
         for (int x = -5; x <= 5; x++) {
             for (int z = -5; z <= 5; z++) {
                 world.getBlockAt(x, 60, z).setType(Material.GRASS_BLOCK);
@@ -58,6 +58,10 @@ public class NewPlayerJoinLis implements Listener {
         }
         Location location = new Location(world, 0, 65, 1);
         world.generateTree(location, TreeType.TREE);
+
+        //warning: 试作型
+        new StructureGen().loadStructure(new Location(world, 0, 60, 0));
+
         genBox();
 
         world.setSpawnLocation(0, 60, 0);

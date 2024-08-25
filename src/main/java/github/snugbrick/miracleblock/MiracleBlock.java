@@ -1,26 +1,37 @@
 package github.snugbrick.miracleblock;
 
-import github.snugbrick.miracleblock.Listener.NewPlayerJoinLis;
+import github.snugbrick.miracleblock.Listener.MissionGetter;
+import github.snugbrick.miracleblock.Listener.NewPlayerRoomGenLis;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class MiracleBlock extends JavaPlugin {
-    private static Plugin MiracleBlock;
+public class MiracleBlock extends JavaPlugin {
+    //测试
+    public static MiracleBlock instance;
+    private final FileConfiguration config = getConfig();
 
     @Override
     public void onEnable() {
-        MiracleBlock = this;
+        instance = this;
+        reloadConfig();
 
         getLogger().info("MiracleBlock已经加载");
 
-        getServer().getPluginManager().registerEvents(new NewPlayerJoinLis(), this);
+        getServer().getPluginManager().registerEvents(new NewPlayerRoomGenLis(), this);
+        getServer().getPluginManager().registerEvents(new MissionGetter(), this);
     }
 
     @Override
     public void onDisable() {
+        getLogger().info("MiracleBlock已经卸载");
     }
 
-    public Plugin getMiracleBlock() {
-        return MiracleBlock;
+    public Plugin getInstance() {
+        return instance;
+    }
+
+    public FileConfiguration getMyConfig() {
+        return config;
     }
 }
