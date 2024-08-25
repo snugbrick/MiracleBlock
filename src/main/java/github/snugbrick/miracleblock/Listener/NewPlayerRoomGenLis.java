@@ -28,7 +28,7 @@ public class NewPlayerRoomGenLis implements Listener {
         PlayerUUID = player.getUniqueId();
         world = Bukkit.getWorld("the_world_of_" + PlayerUUID);
 
-        if (!event.getPlayer().hasPlayedBefore() && world != Bukkit.getWorld("the_world_of_" + PlayerUUID.toString())) {
+        if (!event.getPlayer().hasPlayedBefore() && world == null){
             createNewRoom();
         }
         player.teleport(world.getSpawnLocation());
