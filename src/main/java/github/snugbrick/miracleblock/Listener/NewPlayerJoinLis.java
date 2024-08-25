@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class NewPlayerJoinLis implements Listener {
     private World world;
 
     @EventHandler
-    public void _NewPlayerJoinLis(PlayerJoinEvent event) {
+    public void newPlayerJoinLis(PlayerJoinEvent event) {
         player = event.getPlayer();
         PlayerUUID = player.getUniqueId();
         world = event.getPlayer().getWorld();
@@ -28,40 +29,45 @@ public class NewPlayerJoinLis implements Listener {
         if (!event.getPlayer().hasPlayedBefore() && world != Bukkit.getWorld("the_world_of_" + PlayerUUID.toString())) {
             createNewRoom();
         }
-        //TODO
+        //TODO: 删除下面这行
         createNewRoom();
     }
 
     private void createNewRoom() {
+
         WorldCreator worldCreator = new WorldCreator("the_world_of_" + PlayerUUID.toString());
         worldCreator.environment(World.Environment.NORMAL)
                 .type(WorldType.FLAT)
                 .generator(new VoidWorldGenerator());
         world = worldCreator.createWorld();
         if (world != null) {
-            setupPlayerWorld(world, player);
+            setupPlayerWorld(world);
             player.teleport(world.getSpawnLocation());
         }
+
         Bukkit.getLogger().info("the_world_of_" + PlayerUUID.toString() + " 已创建");
     }
 
-    private void setupPlayerWorld(World world, Player player) {
-        world.getBlockAt(0, 60, 0).setType(Material.GRASS_BLOCK);
+    private void setupPlayerWorld(World world) {
+        //TODO: 写一个nbt解析器
+        for (int x = -5; x <= 5; x++) {
+            for (int z = -5; z <= 5; z++) {
+                world.getBlockAt(x, 60, z).setType(Material.GRASS_BLOCK);
+                world.getBlockAt(x, 59, z).setType(Material.STONE);
+            }
+        }
+        Location location = new Location(world, 0, 65, 1);
+        world.generateTree(location, TreeType.TREE);
         genBox();
 
         world.setSpawnLocation(0, 60, 0);
     }
 
     private static class VoidWorldGenerator extends ChunkGenerator {
-
         @Override
-        public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) {
+        @Nonnull
+        public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int x, int z, @Nonnull BiomeGrid biomes) {
             return createChunkData(world);
-        }
-
-        @Override
-        public boolean shouldGenerateStructures() {
-            return false;
         }
     }
 

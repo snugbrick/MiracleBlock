@@ -69,5 +69,14 @@
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>github.snugbrick</groupId>
+            <artifactId>nms-1.16.5</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 </project>
