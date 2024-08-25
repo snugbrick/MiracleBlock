@@ -1,0 +1,7 @@
+name: MiracleBlock
+version: '${project.version}'
+main: github.snugbrick.miracleblock.MiracleBlock
+api-version: '1.16'
+authors: [MiracleUR]
+description: a rpg trying
+website: https://github.com/snugbrick
