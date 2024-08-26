@@ -2,6 +2,20 @@ name: MiracleBlock
 version: '${project.version}'
 main: github.snugbrick.miracleblock.MiracleBlock
 api-version: '1.16'
-authors: [MiracleUR]
+authors: [ MiracleUR ]
 description: a rpg trying
 website: https://github.com/snugbrick
+
+commands:
+  totemplateworld:
+    description: "goto Temp World"
+
+    usage: "/totemplateworld"
+
+    permission: op
+
+    permission-message: "你执行不了啊awa"
+
+permissions:
+  op:
+    default: op

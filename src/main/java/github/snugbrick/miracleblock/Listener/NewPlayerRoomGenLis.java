@@ -1,16 +1,17 @@
 package github.snugbrick.miracleblock.Listener;
 
-import github.snugbrick.miracleblock.Tools.StructureGen;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -23,87 +24,62 @@ public class NewPlayerRoomGenLis implements Listener {
     private World world;
 
     @EventHandler
-    public void newPlayerJoinLis(PlayerJoinEvent event) throws IOException {
+    public void newPlayerJoinLis(PlayerJoinEvent event) {
         player = event.getPlayer();
         PlayerUUID = player.getUniqueId();
-        world = Bukkit.getWorld("the_world_of_" + PlayerUUID);
 
-        if (!event.getPlayer().hasPlayedBefore() && world == null){
-            createNewRoom();
-        }
-        player.teleport(world.getSpawnLocation());
+        WorldCreator playerRooms = new WorldCreator("_the_world_of_" + PlayerUUID);
+        World world = Bukkit.getWorld("template_world");
+        if (world != null) playerRooms.copy(world);
+        this.world = playerRooms.createWorld();
+
+        if (!player.hasPlayedBefore()) copyStructures(world, this.world, new Location(this.world, 0, 0, 0));
+
+        this.world.setSpawnLocation(0, 62, 0);
+        if (this.world != null) player.teleport(this.world.getSpawnLocation());
+        player.addPotionEffect(new PotionEffect((PotionEffectType.NIGHT_VISION), 36000 * 500, 1));
     }
 
-    private void createNewRoom() throws IOException {
-
-        WorldCreator worldCreator = new WorldCreator("the_world_of_" + PlayerUUID.toString());
-        worldCreator.environment(World.Environment.NORMAL)
-                .type(WorldType.FLAT)
-                .generator(new VoidWorldGenerator());
-        world = worldCreator.createWorld();
-        if (world != null) {
-            setupPlayerWorld(world);
-            player.teleport(world.getSpawnLocation());
-        }
-
-        Bukkit.getLogger().info(world.getName() + " 已创建");
-    }
-
-    private void setupPlayerWorld(World world) throws IOException {
-        for (int x = -5; x <= 5; x++) {
-            for (int z = -5; z <= 5; z++) {
-                world.getBlockAt(x, 60, z).setType(Material.GRASS_BLOCK);
-                world.getBlockAt(x, 59, z).setType(Material.STONE);
-            }
-        }
-        Location location = new Location(world, 0, 65, 1);
-        world.generateTree(location, TreeType.TREE);
-
-        //warning: 试作型
-        new StructureGen().loadStructure(new Location(world, 0, 60, 0));
-
-        genBox();
-
-        world.setSpawnLocation(0, 60, 0);
-    }
-
-    private static class VoidWorldGenerator extends ChunkGenerator {
-        @Override
-        @Nonnull
-        public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int x, int z, @Nonnull BiomeGrid biomes) {
-            return createChunkData(world);
+    @EventHandler
+    public void PlayerDeadSendBack(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player && e.getDamage() >= ((Player) e.getEntity()).getHealth()) {
+            e.setCancelled(true);
+            e.getEntity().teleport(world.getSpawnLocation());
+            ((Player) e.getEntity()).setHealth(((Player) e.getEntity()).getMaxHealth());
         }
     }
 
-    private void genBox() {
-        for (int x = 15; x >= -15; x--) {
-            for (int z = 15; z >= -15; z--) {
-                world.getBlockAt(x, 55, z).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(x, 78, z).setType(Material.BLACK_STAINED_GLASS);
+    public void copyStructures(World sourceWorld, World targetWorld, Location center) {
+        int chunkX = center.getBlockX() >> 4;
+        int chunkZ = center.getBlockZ() >> 4;
 
-                world.getBlockAt(x, 54, z).setType(Material.BLACK_WOOL);
-                world.getBlockAt(x, 79, z).setType(Material.BLACK_WOOL);
-            }
-        }
+        for (int x = chunkX - 1; x <= chunkX + 1; x++) {
+            for (int z = chunkZ - 1; z <= chunkZ + 1; z++) {
+                Chunk sourceChunk = sourceWorld.getChunkAt(x, z);
+                Chunk targetChunk = targetWorld.getChunkAt(x, z);
 
-        for (int x = 15; x >= -15; x--) {
-            for (int y = 55; y <= 78; y++) {
-                world.getBlockAt(x, y, 14).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(x, y, -14).setType(Material.BLACK_STAINED_GLASS);
+                sourceChunk.load();
+                targetChunk.load();
 
-                world.getBlockAt(x, y, 15).setType(Material.BLACK_WOOL);
-                world.getBlockAt(x, y, -15).setType(Material.BLACK_WOOL);
-            }
-        }
+                for (int cx = 0; cx < 16; cx++) {
+                    for (int cz = 0; cz < 16; cz++) {
+                        for (int y = 50; y <= 80; y++) {
+                            Block sourceBlock = sourceChunk.getBlock(cx, y, cz);
+                            Block targetBlock = targetChunk.getBlock(cx, y, cz);
 
-        for (int z = 14; z >= -14; z--) {
-            for (int y = 55; y <= 78; y++) {
-                world.getBlockAt(14, y, z).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(-14, y, z).setType(Material.BLACK_STAINED_GLASS);
+                            if (sourceBlock.getType() != Material.AIR) {
+                                targetBlock.setType(sourceBlock.getType());
 
-                world.getBlockAt(15, y, z).setType(Material.BLACK_WOOL);
-                world.getBlockAt(-15, y, z).setType(Material.BLACK_WOOL);
+                                BlockState sourceState = sourceBlock.getState();
+                                if (sourceState instanceof TileState) {
+                                    targetBlock.getState().update(true, false);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+
 }
