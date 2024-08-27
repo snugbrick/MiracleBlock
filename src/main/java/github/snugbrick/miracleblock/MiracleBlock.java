@@ -3,8 +3,13 @@ package github.snugbrick.miracleblock;
 import github.snugbrick.miracleblock.Listener.MissionGetter;
 import github.snugbrick.miracleblock.Listener.NewPlayerRoomGenLis;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 
 public class MiracleBlock extends JavaPlugin {
@@ -24,6 +29,15 @@ public class MiracleBlock extends JavaPlugin {
 
         getLogger().info("正在创建template_world");
         new TemplateWorldGen().createTempRoom();
+        getLogger().info("正在加载已有玩家世界");
+        OfflinePlayer[] allPlayers = Bukkit.getOfflinePlayers();
+        for (OfflinePlayer allPlayer : allPlayers) {
+            UUID uuid = allPlayer.getUniqueId();
+            WorldCreator playerRooms = new WorldCreator("_the_world_of_" + uuid);
+            getLogger().info("正在加载" + allPlayer.getName() + "的世界");
+            playerRooms.createWorld();
+        }
+
     }
 
     public FileConfiguration getMyConfig() {

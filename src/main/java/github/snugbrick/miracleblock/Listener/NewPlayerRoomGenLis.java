@@ -28,14 +28,17 @@ public class NewPlayerRoomGenLis implements Listener {
         player = event.getPlayer();
         PlayerUUID = player.getUniqueId();
 
-        WorldCreator playerRooms = new WorldCreator("_the_world_of_" + PlayerUUID);
-        World world = Bukkit.getWorld("template_world");
-        if (world != null) playerRooms.copy(world);
-        this.world = playerRooms.createWorld();
+        if (!player.hasPlayedBefore()) {
+            WorldCreator playerRooms = new WorldCreator("_the_world_of_" + PlayerUUID);
+            World world = Bukkit.getWorld("template_world");
+            if (world != null) playerRooms.copy(world);
+            this.world = playerRooms.createWorld();
 
-        if (!player.hasPlayedBefore()) copyStructures(world, this.world, new Location(this.world, 0, 0, 0));
+            if (this.world != null) this.world.setSpawnLocation(0, 62, 0);
+            copyStructures(world, this.world, new Location(this.world, 0, 0, 0));
+        }
 
-        this.world.setSpawnLocation(0, 62, 0);
+        if (this.world == null) this.world = Bukkit.getWorld("_the_world_of_" + PlayerUUID);
         if (this.world != null) player.teleport(this.world.getSpawnLocation());
         player.addPotionEffect(new PotionEffect((PotionEffectType.NIGHT_VISION), 36000 * 500, 1));
     }
