@@ -1,19 +1,16 @@
 package github.snugbrick.miracleblock;
 
-import github.snugbrick.miracleblock.Listener.MissionGetter;
-import github.snugbrick.miracleblock.Listener.NewPlayerRoomGenLis;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.WorldCreator;
+import github.snugbrick.miracleblock.listener.MissionHandler;
+import github.snugbrick.miracleblock.listener.NewPlayerRoomGenLis;
+import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
+import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.UUID;
-
 
 public class MiracleBlock extends JavaPlugin {
-    public static MiracleBlock instance;
+    private static JavaPlugin instance;
     private final FileConfiguration config = getConfig();
 
 
@@ -27,8 +24,13 @@ public class MiracleBlock extends JavaPlugin {
         registerLis();
         registerCommand();
 
-        getLogger().info("正在创建template_world");
-        new TemplateWorldGen().createTempRoom();
+        getLogger().info("正在加载template_world");
+        new WorldGen().createTempRoom();
+
+        getLogger().info("正在加载player_world");
+        new WorldGen().createPlayersRoom();
+
+        /*
         getLogger().info("正在加载已有玩家世界");
         OfflinePlayer[] allPlayers = Bukkit.getOfflinePlayers();
         for (OfflinePlayer allPlayer : allPlayers) {
@@ -37,7 +39,14 @@ public class MiracleBlock extends JavaPlugin {
             getLogger().info("正在加载" + allPlayer.getName() + "的世界");
             playerRooms.createWorld();
         }
+        */
 
+        getLogger().info("正在注册任务栏图标");
+        new MissionIconRegister().registerIcon();
+
+        getLogger().info("正在加载语言文件");
+        new LoadLangFiles().loadMessagesFile();
+        getLogger().info(new LoadLangFiles().getMessage("welcome"));
     }
 
     public FileConfiguration getMyConfig() {
@@ -46,16 +55,20 @@ public class MiracleBlock extends JavaPlugin {
 
     private void registerLis() {
         getServer().getPluginManager().registerEvents(new NewPlayerRoomGenLis(), this);
-        getServer().getPluginManager().registerEvents(new MissionGetter(), this);
+        getServer().getPluginManager().registerEvents(new MissionHandler(), this);
     }
 
     private void registerCommand() {
         getCommand("totemplateworld").setExecutor(new ToTemplateWorld());
     }
 
-
     @Override
     public void onDisable() {
         getLogger().info("MiracleBlock已经卸载");
+        //ProtocolLibrary.getProtocolManager().removePacketListeners(this);
+    }
+
+    public static JavaPlugin getInstance() {
+        return instance;
     }
 }

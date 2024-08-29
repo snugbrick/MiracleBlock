@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.Listener;
+package github.snugbrick.miracleblock.listener;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -9,8 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.UUID;
 
@@ -27,7 +26,7 @@ public class NewPlayerRoomGenLis implements Listener {
     public void newPlayerJoinLis(PlayerJoinEvent event) {
         player = event.getPlayer();
         PlayerUUID = player.getUniqueId();
-
+/*
         if (!player.hasPlayedBefore()) {
             WorldCreator playerRooms = new WorldCreator("_the_world_of_" + PlayerUUID);
             World world = Bukkit.getWorld("template_world");
@@ -41,13 +40,15 @@ public class NewPlayerRoomGenLis implements Listener {
         if (this.world == null) this.world = Bukkit.getWorld("_the_world_of_" + PlayerUUID);
         if (this.world != null) player.teleport(this.world.getSpawnLocation());
         player.addPotionEffect(new PotionEffect((PotionEffectType.NIGHT_VISION), 36000 * 500, 1));
+ */
+        player.teleport(Bukkit.getWorld("player_world").getSpawnLocation());
     }
 
     @EventHandler
-    public void PlayerDeadSendBack(EntityDamageEvent e) {
+    public void playerDeadSendBack(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player && e.getDamage() >= ((Player) e.getEntity()).getHealth()) {
             e.setCancelled(true);
-            e.getEntity().teleport(world.getSpawnLocation());
+            e.getEntity().teleport(Bukkit.getWorld("player_world").getSpawnLocation());
             ((Player) e.getEntity()).setHealth(((Player) e.getEntity()).getMaxHealth());
         }
     }

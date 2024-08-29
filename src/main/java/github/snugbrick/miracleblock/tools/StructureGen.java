@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.Tools;
+package github.snugbrick.miracleblock.tools;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import net.minecraft.server.v1_16_R3.NBTCompressedStreamTools;
@@ -22,7 +22,7 @@ public class StructureGen {
         try {
             Bukkit.getLogger().info("正在准备生成结构");
 
-            String path = MiracleBlock.instance.getConfig().getString("path");
+            String path = MiracleBlock.getInstance().getConfig().getString("path");
             FileInputStream fis;
             if (path != null) {
                 Bukkit.getLogger().info("成功获取到path,path是: " + path);

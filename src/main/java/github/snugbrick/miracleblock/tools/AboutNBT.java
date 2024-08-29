@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.Tools;
+package github.snugbrick.miracleblock.tools;
 
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
