@@ -14,7 +14,6 @@ import java.util.Map;
 public class MissionItemStack extends ItemStack {
     private static final Map<String, MissionItemStack> nbtGetMissionItemStack = new HashMap<>();
     private static final Map<ItemStack, String> missionItemStackGetNbt = new HashMap<>();
-
     private static final Map<MissionItemStack, MissionStatus> missionItemStackStatus = new HashMap<>();
 
     public MissionItemStack(ItemStack icon) {

@@ -1,5 +1,6 @@
-package github.snugbrick.miracleblock;
+package github.snugbrick.miracleblock.island;
 
+import github.snugbrick.miracleblock.MiracleBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
@@ -88,6 +89,10 @@ public class WorldGen {
             Block targetBlock = targetChunk.getBlock(blockData.x, blockData.y, blockData.z);
             targetBlock.setType(blockData.type);
         }
+        //注册岛屿
+        int serialNum = 0;
+        new IslandRegister().registerIslandInformation(targetChunk.getX(), targetChunk.getZ(), serialNum);
+        serialNum++;
         targetChunk.unload(true);
 
         World world = Bukkit.getWorld("player_world");
@@ -95,7 +100,9 @@ public class WorldGen {
 
         int length = ((int) Math.sqrt(numberOfStructures)) / 2;
 
+
         int zCounter = 0;
+
         for (int l = length; l >= 0; l--) {//2
             int offset = l * 800;
 
@@ -103,7 +110,9 @@ public class WorldGen {
                 Block targetBlock = world.getBlockAt(blockData.x + offset, blockData.y, z);
                 targetBlock.setType(blockData.type);
             }
-            MiracleBlock.getInstance().getLogger().info(offset + " " + z + "区块已完成结构加载");
+            new IslandRegister().registerIslandInformation(offset, z, serialNum);
+            serialNum++;
+            MiracleBlock.getInstance().getLogger().info(offset + " " + z + " 区块已完成结构加载与岛屿注册");
 
             if (l == 1) {
                 z += offset;
@@ -127,7 +136,9 @@ public class WorldGen {
                 Block targetBlock = world.getBlockAt(x, blockData.y, blockData.z + offset);
                 targetBlock.setType(blockData.type);
             }
-            MiracleBlock.getInstance().getLogger().info(x + " " + offset + "区块已完成结构加载");
+            new IslandRegister().registerIslandInformation(x, offset, serialNum);
+            serialNum++;
+            MiracleBlock.getInstance().getLogger().info(x + " " + offset + "区块已完成结构加载与岛屿注册");
 
             if (l == 1) {
                 x -= offset;
@@ -152,7 +163,9 @@ public class WorldGen {
                 Block targetBlock = world.getBlockAt(blockData.x + offset, blockData.y, z);
                 targetBlock.setType(blockData.type);
             }
-            MiracleBlock.getInstance().getLogger().info(offset + " " + z + "区块已完成结构加载");
+            new IslandRegister().registerIslandInformation(offset, z, serialNum);
+            serialNum++;
+            MiracleBlock.getInstance().getLogger().info(offset + " " + z + "区块已完成结构加载与岛屿注册");
 
             if (l == -1) {
                 z += offset;
@@ -171,13 +184,14 @@ public class WorldGen {
         zCounter = 0;
         for (int l = length; l <= 0; l++) {
             int offset = l * 800;
-            //
 
             for (BlockData blockData : blocksToCopy) {
                 Block targetBlock = world.getBlockAt(x, blockData.y, blockData.z + offset);
                 targetBlock.setType(blockData.type);
             }
-            MiracleBlock.getInstance().getLogger().info(x + " " + offset + "区块已完成结构加载");
+            new IslandRegister().registerIslandInformation(x, offset, serialNum);
+            serialNum++;
+            MiracleBlock.getInstance().getLogger().info(x + " " + offset + "区块已完成结构加载与岛屿注册");
 
             if (l == -1) {
                 x += offset;
@@ -204,65 +218,4 @@ public class WorldGen {
         }
     }
 }
-/*
-    //下面的都是小黑屋世界的，已弃用=================================================================================
-    private void setupPlayerWorld(World world) {
-        for (int x = 5; x >= -5; x--) {
-            for (int z = 5; z >= -5; z--) {
-                world.getBlockAt(x, 60, z).setType(Material.GRASS_BLOCK);
-                world.getBlockAt(x, 59, z).setType(Material.STONE);
-                world.getBlockAt(--x, 58, --z).setType(Material.IRON_ORE);
-                world.getBlockAt(x - 2, 58, z - 2).setType(Material.DIAMOND_ORE);
-            }
-        }
-        Location location = new Location(world, 0, 65, 3);
-        world.generateTree(location, TreeType.TREE);
-        genBox();
 
-        world.setSpawnLocation(0, 62, 0);
-    }
-
-@Deprecated
-
-private static class VoidWorldGenerator extends ChunkGenerator {
-    @Override
-    @Nonnull
-    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int x, int z, @Nonnull BiomeGrid biomes) {
-        return createChunkData(world);
-    }
-
-}
-
-    private void genBox() {
-        for (int x = 15; x >= -15; x--) {
-            for (int z = 15; z >= -15; z--) {
-                world.getBlockAt(x, 55, z).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(x, 78, z).setType(Material.BLACK_STAINED_GLASS);
-
-                world.getBlockAt(x, 54, z).setType(Material.BLACK_WOOL);
-                world.getBlockAt(x, 79, z).setType(Material.BLACK_WOOL);
-            }
-        }
-
-        for (int x = 15; x >= -15; x--) {
-            for (int y = 55; y <= 78; y++) {
-                world.getBlockAt(x, y, 14).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(x, y, -14).setType(Material.BLACK_STAINED_GLASS);
-
-                world.getBlockAt(x, y, 15).setType(Material.BLACK_WOOL);
-                world.getBlockAt(x, y, -15).setType(Material.BLACK_WOOL);
-            }
-        }
-
-        for (int z = 14; z >= -14; z--) {
-            for (int y = 55; y <= 78; y++) {
-                world.getBlockAt(14, y, z).setType(Material.BLACK_STAINED_GLASS);
-                world.getBlockAt(-14, y, z).setType(Material.BLACK_STAINED_GLASS);
-
-                world.getBlockAt(15, y, z).setType(Material.BLACK_WOOL);
-                world.getBlockAt(-15, y, z).setType(Material.BLACK_WOOL);
-            }
-        }
-    }
-}
-}*/

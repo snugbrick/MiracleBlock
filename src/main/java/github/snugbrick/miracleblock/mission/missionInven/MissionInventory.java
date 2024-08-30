@@ -1,14 +1,12 @@
 package github.snugbrick.miracleblock.mission.missionInven;
 
+import github.snugbrick.miracleblock.ConfigGetter;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
-import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -16,12 +14,10 @@ import java.util.List;
  */
 public class MissionInventory {
 
-    private List<String> missionName = new LoadLangFiles().getMessageList("MissionName");
-
     private static final Inventory customInventory = Bukkit.createInventory(null, 54, "Mission Menu");
 
     public void openMissionInventory(Player player) {
-        MissionItemStack wakeUpMissionItem = iconDisplayName(MissionItemStack.getMissionItemStack("UNDONE"), missionName.get(0));
+        MissionItemStack wakeUpMissionItem = iconDisplayName(MissionItemStack.getMissionItemStack("UNDONE"),ConfigGetter.missionName.get(0));
         addInventoryItem(wakeUpMissionItem, 0);
 
         player.openInventory(customInventory);

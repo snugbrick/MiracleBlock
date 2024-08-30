@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.listener;
+package github.snugbrick.miracleblock.mission.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;

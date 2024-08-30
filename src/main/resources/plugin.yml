@@ -6,6 +6,8 @@ authors: [ MiracleUR ]
 description: a rpg trying
 website: https://github.com/snugbrick
 
+depend: [ ]
+
 commands:
   totemplateworld:
     description: "goto Temp World"
@@ -14,7 +16,17 @@ commands:
 
     permission: op
 
-    permission-message: "你执行不了啊awa"
+    permission-message: "你妹有op啊，执行不了啊awa"
+
+  db-easy-sql:
+    description: db-easy-sql
+
+    usage: "/db-easy-sql"
+
+    permission: op
+
+    permission-message: "你妹有op啊，执行不了啊awa"
+
 
 permissions:
   op:

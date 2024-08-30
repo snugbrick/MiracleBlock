@@ -30,6 +30,4 @@ public class MissionIconRegister {
         MiracleBlock.getInstance().getLogger().info("MissionIcon & MissionItemStackStatus已注册完毕");
     }
 
-    //对使用的ItemStack进行标准化改造 :3 --真是愚蠢
-
 }
