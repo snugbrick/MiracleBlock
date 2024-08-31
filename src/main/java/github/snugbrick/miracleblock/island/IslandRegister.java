@@ -16,12 +16,13 @@ public class IslandRegister {
     private static final Map<Integer, IslandInformation> islandInfors = new HashMap<>();
 
     public void registerIslandInformation(int x, int z, int serial) {
-        islandInfors.put(serial, new IslandInformation(x, z));
+        islandInfors.put(serial, new IslandInformation(x, z, serial));
     }
 
-    public IslandInformation getIsland(int serial) {
+    public static IslandInformation getIsland(int serial) {
         return islandInfors.get(serial);
     }
+
 
     public static class IslandInformation {
         private Chunk playerHome;
@@ -29,10 +30,13 @@ public class IslandRegister {
         private int homeZ;
         private final Location spawnPoint;
 
-        public IslandInformation(int x, int z) {
+        private int serial;
+
+        public IslandInformation(int x, int z, int serial) {
             World world = Bukkit.getWorld("player_world");
             if (world != null) playerHome = world.getChunkAt(x, z);
             spawnPoint = new Location(world, x >> 4, 15, z >> 4);
+            this.serial = serial;
         }
 
         public Chunk getPlayerHomeChunk() {
@@ -45,6 +49,10 @@ public class IslandRegister {
 
         public int getHomeZ() {
             return homeZ;
+        }
+
+        public int getSerial() {
+            return serial;
         }
 
         public Location getSpawnPoint() {
