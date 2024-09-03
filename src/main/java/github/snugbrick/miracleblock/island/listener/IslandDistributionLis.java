@@ -1,6 +1,5 @@
 package github.snugbrick.miracleblock.island.listener;
 
-import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.SQLMethods;
 import github.snugbrick.miracleblock.island.IslandRegister;
 import org.bukkit.Bukkit;
@@ -21,32 +20,44 @@ import java.util.UUID;
  * @version 1.0.0 2024.08.25 17:07
  */
 public class IslandDistributionLis implements Listener {
-    private UUID playerUUID;
-    private Player player;
-    private World world;
-
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void newPlayerJoinLis(PlayerJoinEvent event) throws SQLException {
-        player = event.getPlayer();
-        playerUUID = player.getUniqueId();
-        world = Bukkit.getWorld("player_world");
+        Player player = event.getPlayer();
+        UUID playerUUID = player.getUniqueId();
+        World world = Bukkit.getWorld("player_world");
         if (world == null) return;
 
-        //if (!player.hasPlayedBefore()) {
-        int serial = 0;
-        IslandRegister.IslandInformation iim = IslandRegister.getIsland(serial);
-
-        //将玩家的岛屿写入数据库
-        List<String> back =  SQLMethods.INSERT.runTasks("player_name",
-                "player", player.getName(),
-                "uuid", playerUUID.toString(),
-                "island_serial", String.valueOf(iim.getSerial()));
-
-        List<String> aCheck =  SQLMethods.QUERY.runTasks("player_name",
+        if (!player.hasPlayedBefore()) {
+            //查询已分配岛屿
+            List<String> distributedIsland =
+                    SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
+            //将玩家的岛屿写入数据库
+            int serial = 0;
+            if (!distributedIsland.isEmpty()) {
+                serial = Integer.parseInt(distributedIsland.get(0));
+                while (true) {
+                    if (distributedIsland.iterator().hasNext()) {
+                        int num = Integer.parseInt(distributedIsland.iterator().next());
+                        if (num > serial) serial = num;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                SQLMethods.INSERT.runTasks("island_distribution",
+                        "player", player.getName(),
+                        "uuid", playerUUID.toString(),
+                        "island_serial", String.valueOf(serial));
+            }
+            SQLMethods.INSERT.runTasks("island_distribution",
+                    "player", player.getName(),
+                    "uuid", playerUUID.toString(),
+                    "island_serial", String.valueOf(serial));
+        }
+        //传送玩家去岛屿
+        List<String> playerIsland = SQLMethods.QUERY.runTasks("island_distribution",
                 "island_serial", "player", player.getName());
-
-        player.teleport(world.getSpawnLocation());
+        player.teleport(IslandRegister.getIsland(Integer.parseInt(playerIsland.get(0))).getSpawnPoint());
 
 
     }

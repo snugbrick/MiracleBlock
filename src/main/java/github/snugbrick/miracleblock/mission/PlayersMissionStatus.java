@@ -26,15 +26,18 @@ public class PlayersMissionStatus {
         List<String> checkCollect =
                 SQLMethods.QUERY.runTasks("mission_status", "collected_mission", "player", player.getName());
 
-        if (checkFinished.iterator().hasNext() && checkCollect.iterator().hasNext()) {
-            String aimFinishedMission = checkFinished.iterator().next();
-            String aimCollectedMission = checkCollect.iterator().next();
+        while (true) {
+            if (checkFinished.iterator().hasNext() && checkCollect.iterator().hasNext()) {
+                String isFinishedMission = checkFinished.iterator().next();
+                String isCollectedMission = checkCollect.iterator().next();
 
-            if (aimCollectedMission.equals(missionName)) return MissionStatus.COLLECTED;
-            else if (aimFinishedMission.equals(missionName)) return MissionStatus.COMPLETED;
-            else return MissionStatus.UNDONE;
+                if (isCollectedMission.equals(missionName)) return MissionStatus.COLLECTED;
+                else if (isFinishedMission.equals(missionName)) return MissionStatus.COMPLETED;
+            } else {
+                break;
+            }
         }
 
-        return null;
+        return MissionStatus.UNDONE;
     }
 }

@@ -2,6 +2,7 @@ package github.snugbrick.miracleblock;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.builder.TableCreateBuilder;
+import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,29 +83,30 @@ public enum SQLMethods {
      *
      * @param tableName 指定表
      * @param args      三个参数 第一个是被查找的列 第二个是你根据哪个列来进行查找
-     *                  第三个是你根据第二参数指定列中的值来获取行以定位
+     *                  第三个是你根据第二参数指定列中的值来获取行以定位 二三参数为空则查询整列
      * @return 被定位的值
      */
     private List<String> executeQuery(String tableName, String... args) {
-        if (args.length == 3) {
-            List<String> callBack = sqlManager.createQuery()
+        if (args.length <= 3) {
+            TableQueryBuilder tqb = sqlManager.createQuery()
                     .inTable(tableName)
-                    .selectColumns(args[0])
-                    .addCondition(args[1], args[2])
-                    //.orderBy("id", false)
-                    //这里设定了最多500个任务，如果出问题找这里
-                    //.setPageLimit(0, 500) //分页
-                    .build().execute(query -> {
-                        ResultSet result = query.getResultSet();
-                        List<String> results = new ArrayList<>();
-                        while (result.next()) {
-                            MiracleBlock.getInstance().getLogger().info(result.getString(args[0]));
-                            results.add(result.getString(args[0]));
-                        }
-                        return results;
-                    }, (exception, action) -> {
-                        MiracleBlock.getInstance().getLogger().info("Query执行错误");
-                    });
+                    .selectColumns(args[0]);
+            //都为空则查询整列
+            if (args[1] != null && args[2] != null)
+                tqb.addCondition(args[1], args[2]);
+            //.orderBy("id", false)
+            //.setPageLimit(0, 500) //分页
+            List<String> callBack = tqb.build().execute(query -> {
+                ResultSet result = query.getResultSet();
+                List<String> results = new ArrayList<>();
+                while (result.next()) {
+                    MiracleBlock.getInstance().getLogger().info(result.getString(args[0]));
+                    results.add(result.getString(args[0]));
+                }
+                return results;
+            }, (exception, action) -> {
+                MiracleBlock.getInstance().getLogger().info("Query执行错误");
+            });
 
             MiracleBlock.getInstance().getLogger().info("Query执行完毕 " + callBack.get(0));
             return callBack;
@@ -114,7 +116,7 @@ public enum SQLMethods {
 
     /**
      * @param tableName 指定表
-     * @param args      两个参数 第一个是被插值列，第二个是插值本身
+     * @param args      偶数倍个参数 第一个是被插值列，第二个是插值本身
      */
     private String executeInsert(String tableName, String[] args) throws SQLException {
         ResultSet columns = sqlManager.getConnection().getMetaData().getColumns(null, null, tableName, null);

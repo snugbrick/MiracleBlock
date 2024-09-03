@@ -51,7 +51,7 @@ public class MiracleBlock extends JavaPlugin {
         initSql();
         getLogger().info("Sql已经加载");
         try {
-            SQLMethods.TABLE.runTasks("player_name", "player", "uuid", "island_serial");
+            SQLMethods.TABLE.runTasks("island_distribution", "player", "uuid", "island_serial");
             SQLMethods.TABLE.runTasks("mission_status", "player", "uuid", "finished_mission","collected_mission");
             getLogger().info("数据库表已加载");
         } catch (SQLException e) {
