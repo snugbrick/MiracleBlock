@@ -24,11 +24,11 @@ public class LoadLangFiles {
         messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
-    public String getMessage(String key) {
+    public static String getMessage(String key) {
         return messagesConfig.getString(key);
     }
 
-    public List<String> getMessageList(String key) {
+    public static List<String> getMessageList(String key) {
         return messagesConfig.getStringList(key);
     }
 

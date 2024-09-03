@@ -30,7 +30,7 @@ public enum SQLMethods {
      * {@code TABLE}: tableName-指定表 args-生成的所有列<br>
      * {@code QUERY}: tableName-指定表 args-三个参数 第一个是被查找的列 第二个是你根据哪个列来进行查找 第三个是你根据第二参数指定列中的值来获取行以定位<br>
      * {@code INSERT}: tableName-指定表 args-两个参数 第一个是被插值列，第二个是插值本身<br>
-     * {@code UPDATE}: tableName-指定表 args-四个参数 第一个参数指定更改列 第二参数指定更改值 第三参数结果更改列 第四参数结果更改值<br>
+     * {@code UPDATE}: tableName-指定表 args-四个参数 第一个参数被更改列 第二参数指定被更改值 第三参数结果更改列 第四参数结果更改值<br>
      * {@code DELETE}: tableName-指定表 args-两个参数 第一个指定删除列 第二个指定删除列中的删除值<br>
      *
      * @param tableName 指定表
@@ -73,7 +73,7 @@ public enum SQLMethods {
         tcb.addAutoIncrementColumn("id")
                 .build().executeAsync();
 
-        MiracleBlock.getInstance().getLogger().info("table创建完毕");
+        MiracleBlock.getInstance().getLogger().info(tableName + " table创建完毕");
 
         return "true";
     }

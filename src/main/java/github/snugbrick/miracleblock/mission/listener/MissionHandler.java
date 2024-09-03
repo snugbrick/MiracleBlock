@@ -3,10 +3,12 @@ package github.snugbrick.miracleblock.mission.listener;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
+import github.snugbrick.miracleblock.mission.PlayersMissionStatus;
 import github.snugbrick.miracleblock.mission.missionInven.MissionInventory;
 import github.snugbrick.miracleblock.mission.missionInven.MissionItemStack;
 import github.snugbrick.miracleblock.mission.msg.MissionMsg;
 import github.snugbrick.miracleblock.tools.AboutNBT;
+import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -19,11 +21,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.sql.SQLException;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -47,34 +50,26 @@ public class MissionHandler implements Listener {
             mission.setItemMeta(itemMeta);
             mission.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
             player.getInventory().addItem(mission);
+
+            //开启任务一
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 2));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 2));
+            MissionMsg.mission1Msg(player);
         }
-
-        //将任务改为已完成
-            /*
-            MissionInventory mi = new MissionInventory();
-            if (MissionItemStack.getMissionItemStackStatus(mi.getInventoryMissionItemStack(0)).equals(MissionStatus.UNDONE)) {
-                //TODO 玩家任务隔离
-                MissionInventory.addInventoryItem(MissionStatusHandler.getMissionIcon(MissionStatus.COMPLETED), 0);
-            }
-             */
-
-        //开启任务一
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 2));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 2));
-        MissionMsg.mission1Msg(player);
     }
 
     /**
      * 检测玩家打开任务书操作
      */
     @EventHandler
-    public void playerMissionHandler(PlayerInteractEvent e) {
+    public void playerMissionHandler(PlayerInteractEvent e) throws SQLException {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = e.getItem();
             player = e.getPlayer();
 
             if (item != null && AboutNBT.hasCustomNBT(item, "MissionBook")) {
-                new MissionInventory().openMissionInventory(player);
+                MissionInventory missionInventory = new MissionInventory(player);
+                missionInventory.openMissionInventory(player);
             }
         }
     }
@@ -83,7 +78,10 @@ public class MissionHandler implements Listener {
      * 检测玩家点击任务书图标
      */
     @EventHandler
-    public void playerClickMissionInventory(InventoryClickEvent e) {
+    public void playerClickMissionInventory(InventoryClickEvent e) throws SQLException {
+        if (e.getWhoClicked() instanceof Player) player = (Player) e.getWhoClicked();
+        else return;
+
         ItemStack currentItem = e.getCurrentItem();
 
         if (currentItem != null && AboutNBT.hasCustomNBT(currentItem, "MissionIcons")) {
@@ -95,20 +93,20 @@ public class MissionHandler implements Listener {
             }
 
             MissionStatusHandler msh = new MissionStatusHandler();
-            if (msh.isMissionDone(clickedIcon)) {
-                //TODO 领取奖励操作 玩家任务隔离
+            if (msh.isMissionDone(player, clickedIcon)) {
+                //TODO 领取奖励操作
                 player.getInventory().addItem(new ItemStack(Material.WOODEN_AXE));
                 //设置为已收集
-                MissionInventory.addInventoryItem(MissionStatusHandler.getMissionIcon(MissionStatus.COLLECTED), 0);
+                PlayersMissionStatus.setPlayerMissionStatus(player,
+                        LoadLangFiles.getMessageList("MissionName").get(e.getSlot()), MissionStatus.COLLECTED);
+                MissionInventory missionInventory = new MissionInventory(player);
+                missionInventory.openMissionInventory(player);
+                player.sendMessage("您已收集该任务");
             } else {
                 player.sendMessage("您未完成该任务");
             }
             e.setCancelled(true);
         }
-    }
-
-    public void onPlayerInPortal(PlayerPortalEvent e) {
-
     }
 
 

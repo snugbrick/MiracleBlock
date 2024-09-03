@@ -2,7 +2,10 @@ package github.snugbrick.miracleblock.mission;
 
 import github.snugbrick.miracleblock.mission.missionInven.MissionItemStack;
 import github.snugbrick.miracleblock.tools.AboutNBT;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.sql.SQLException;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -18,6 +21,7 @@ public class MissionStatusHandler extends Mission {
 
     /**
      * 从一个mission图标获取其中的状态
+     *
      * @param itemStack 待检测图标
      * @return 此图标的状态
      */
@@ -35,6 +39,7 @@ public class MissionStatusHandler extends Mission {
 
     /**
      * 通过状态来获取图标
+     *
      * @param missionStatus 对应状态
      * @return 图标物品
      */
@@ -53,13 +58,15 @@ public class MissionStatusHandler extends Mission {
 
     /**
      * 判断任务是否完成
+     *
      * @param clickedIcon 图标物品
      * @return 是否完成
      */
-    public boolean isMissionDone(MissionItemStack clickedIcon) {
+    public boolean isMissionDone(Player player, MissionItemStack clickedIcon) throws SQLException {
         missionItemStack = clickedIcon;
+        MissionStatus status = PlayersMissionStatus.getPlayerMissionStatus(player, missionItemStack.getItemMeta().getDisplayName());
 
-        return !MissionItemStack.isSameIcon(missionItemStack, MissionItemStack.getMissionItemStack("UNDONE"));
+        return status.equals(MissionStatus.COMPLETED) || status.equals(MissionStatus.COLLECTED);
     }
 
     @Override
