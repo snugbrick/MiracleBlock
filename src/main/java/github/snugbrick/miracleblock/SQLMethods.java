@@ -108,7 +108,7 @@ public enum SQLMethods {
                 MiracleBlock.getInstance().getLogger().info("Query执行错误");
             });
 
-            MiracleBlock.getInstance().getLogger().info("Query执行完毕 " + callBack.get(0));
+            MiracleBlock.getInstance().getLogger().info("Query执行完毕");
             return callBack;
         }
         return null;

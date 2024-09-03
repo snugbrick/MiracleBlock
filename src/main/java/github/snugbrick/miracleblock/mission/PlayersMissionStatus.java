@@ -51,17 +51,24 @@ public class PlayersMissionStatus {
                 SQLMethods.QUERY.runTasks("mission_status", "finished_mission", "player", player.getName());
         List<String> checkCollect =
                 SQLMethods.QUERY.runTasks("mission_status", "collected_mission", "player", player.getName());
-
-        while (true) {
-            if (checkFinished.iterator().hasNext()) {
-                String isFinishedMission = checkFinished.iterator().next();
-                if (isFinishedMission.equals(missionName)) return MissionStatus.COMPLETED;
-
-            } else if (checkCollect.iterator().hasNext()) {
-                String isCollectedMission = checkCollect.iterator().next();
-                if (isCollectedMission.equals(missionName)) return MissionStatus.COLLECTED;
-            } else {
-                break;
+        if (checkFinished != null) {
+            while (true) {
+                if (checkFinished.iterator().hasNext()) {
+                    String isFinishedMission = checkFinished.iterator().next();
+                    if (isFinishedMission.equals(missionName)) return MissionStatus.COMPLETED;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (checkCollect != null) {
+            while (true) {
+                if (checkCollect.iterator().hasNext()) {
+                    String isCollectedMission = checkCollect.iterator().next();
+                    if (isCollectedMission.equals(missionName)) return MissionStatus.COLLECTED;
+                } else {
+                    break;
+                }
             }
         }
 
@@ -72,10 +79,12 @@ public class PlayersMissionStatus {
         MissionStatus missionStatus = getPlayerMissionStatus(player, missionName);
         return MissionStatus.UNDONE.equals(missionStatus);
     }
+
     public static boolean isCOMPLETED(Player player, String missionName) throws SQLException {
         MissionStatus missionStatus = getPlayerMissionStatus(player, missionName);
         return MissionStatus.COMPLETED.equals(missionStatus);
     }
+
     public static boolean isCOLLECTED(Player player, String missionName) throws SQLException {
         MissionStatus missionStatus = getPlayerMissionStatus(player, missionName);
         return MissionStatus.COLLECTED.equals(missionStatus);
