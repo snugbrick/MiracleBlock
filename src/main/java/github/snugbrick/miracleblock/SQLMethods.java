@@ -25,20 +25,38 @@ public enum SQLMethods {
         this.code = code;
     }
 
-    public String runTasks(String tableName, String... args) throws SQLException {
+    /**
+     * {@code TABLE}: tableName-指定表 args-生成的所有列<br>
+     * {@code QUERY}: tableName-指定表 args-三个参数 第一个是被查找的列 第二个是你根据哪个列来进行查找 第三个是你根据第二参数指定列中的值来获取行以定位<br>
+     * {@code INSERT}: tableName-指定表 args-两个参数 第一个是被插值列，第二个是插值本身<br>
+     * {@code UPDATE}: tableName-指定表 args-四个参数 第一个参数指定更改列 第二参数指定更改值 第三参数结果更改列 第四参数结果更改值<br>
+     * {@code DELETE}: tableName-指定表 args-两个参数 第一个指定删除列 第二个指定删除列中的删除值<br>
+     *
+     * @param tableName 指定表
+     * @param args      参数
+     * @return 包含结果的列表
+     * @throws SQLException 数据库错误
+     */
+    public List<String> runTasks(String tableName, String... args) throws SQLException {
+        List<String> backValue = new ArrayList<>();
         switch (code) {
             case ("table"):
-                return executeTable(tableName, args);
+                backValue.add(executeTable(tableName, args));
+                return backValue;
             case ("query"):
                 return executeQuery(tableName, args);
             case ("insert"):
-                return executeInsert(tableName, args);
+                backValue.add(executeInsert(tableName, args));
+                return backValue;
             case ("update"):
-                return executeUpdate(tableName, args);
+                backValue.add(executeUpdate(tableName, args));
+                return backValue;
             case ("delete"):
-                return executeDelete(tableName, args);
+                backValue.add(executeDelete(tableName, args));
+                return backValue;
         }
-        return "false";
+        backValue.add("false");
+        return backValue;
     }
 
     /**
@@ -67,26 +85,31 @@ public enum SQLMethods {
      *                  第三个是你根据第二参数指定列中的值来获取行以定位
      * @return 被定位的值
      */
-    private String executeQuery(String tableName, String[] args) {
+    private List<String> executeQuery(String tableName, String... args) {
         if (args.length == 3) {
-            String callBack = sqlManager.createQuery()
+            List<String> callBack = sqlManager.createQuery()
                     .inTable(tableName)
                     .selectColumns(args[0])
                     .addCondition(args[1], args[2])
-                    .orderBy("id", false)
-                    .setLimit(1)
-                    //.setPageLimit(0, 5) //分页
+                    //.orderBy("id", false)
+                    //这里设定了最多500个任务，如果出问题找这里
+                    //.setPageLimit(0, 500) //分页
                     .build().execute(query -> {
                         ResultSet result = query.getResultSet();
-                        return result.next() ? result.getString(args[0]) : null;
+                        List<String> results = new ArrayList<>();
+                        while (result.next()) {
+                            MiracleBlock.getInstance().getLogger().info(result.getString(args[0]));
+                            results.add(result.getString(args[0]));
+                        }
+                        return results;
                     }, (exception, action) -> {
                         MiracleBlock.getInstance().getLogger().info("Query执行错误");
                     });
 
-            MiracleBlock.getInstance().getLogger().info("Query执行完毕 " + callBack);
+            MiracleBlock.getInstance().getLogger().info("Query执行完毕 " + callBack.get(0));
             return callBack;
         }
-        return "false";
+        return null;
     }
 
     /**
@@ -104,9 +127,7 @@ public enum SQLMethods {
             List<String> content = new ArrayList<>();
             for (int i = 0; i < 2 * (columnCount - 1); i += 2) {
                 column.add(args[i]);//0 2 5
-                MiracleBlock.getInstance().getLogger().info(args[i]);
                 content.add(args[i + 1]);//1 3 6
-                MiracleBlock.getInstance().getLogger().info(args[i + 1]);
             }
             //两个列表不行 一个列表一个数组就能行 还得麻烦我压数组 :/
             String[] commitContent = new String[3];
@@ -125,15 +146,15 @@ public enum SQLMethods {
 
     /**
      * @param tableName 指定表
-     * @param args      四个参数 第一个参数被更改列 第二参数被更改值 第三参数目标更改列 第四参数目标更改值
+     * @param args      四个参数 第一个参数指定更改列 第二参数指定更改值 第三参数结果更改列 第四参数结果更改值
      */
-    private String executeUpdate(String tableName, String[] args) {
-        if (args.length == 4) {
+    private String executeUpdate(String tableName, String[] args) {//8
+        if (args.length >= 4) {
 
             LinkedHashMap<String, Object> infoMap = new LinkedHashMap<>();
-            for (String arg : args) {
-                if (arg.equals(args[0]) || arg.equals(args[1])) continue;
-                infoMap.put(arg, arg);
+            for (int i = 0; i < args.length; i += 2) {//0 2 4 6
+                if (args[i].equals(args[0]) || args[i].equals(args[1])) continue;
+                infoMap.put(args[i], args[i + 1]);
             }
 
             sqlManager.createUpdate(tableName)

@@ -16,6 +16,11 @@ public class MissionStatusHandler extends Mission {
 
     private MissionItemStack missionItemStack;
 
+    /**
+     * 从一个mission图标获取其中的状态
+     * @param itemStack 待检测图标
+     * @return 此图标的状态
+     */
     public static MissionStatus getItemStackStatus(ItemStack itemStack) {
         if (AboutNBT.hasCustomNBT(itemStack, "UNDONE")) {
             return MissionStatus.UNDONE;
@@ -28,6 +33,11 @@ public class MissionStatusHandler extends Mission {
         }
     }
 
+    /**
+     * 通过状态来获取图标
+     * @param missionStatus 对应状态
+     * @return 图标物品
+     */
     public static MissionItemStack getMissionIcon(MissionStatus missionStatus) {
 
         if (missionStatus.equals(MissionStatus.UNDONE)) {
@@ -41,6 +51,11 @@ public class MissionStatusHandler extends Mission {
         return MissionItemStack.getMissionItemStack("NULL");
     }
 
+    /**
+     * 判断任务是否完成
+     * @param clickedIcon 图标物品
+     * @return 是否完成
+     */
     public boolean isMissionDone(MissionItemStack clickedIcon) {
         missionItemStack = clickedIcon;
 

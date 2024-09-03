@@ -20,6 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SqlCommands implements TabExecutor {
     SQLManager sqlManager;
 
+    /**
+     * 测试用sql指令
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean flag = false;

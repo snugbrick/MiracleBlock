@@ -5,6 +5,7 @@ import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionInventory;
 import github.snugbrick.miracleblock.mission.missionInven.MissionItemStack;
+import github.snugbrick.miracleblock.mission.msg.MissionMsg;
 import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,6 +22,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -29,28 +32,41 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class MissionHandler implements Listener {
     private Player player;
 
+    /**
+     * 给予玩家任务书操作
+     */
     @EventHandler
     public void playerMissionGetter(PlayerJoinEvent e) {
         player = e.getPlayer();
 
         if (!player.hasPlayedBefore()) {
+            //给予任务书
             ItemStack mission = AboutNBT.setCustomNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
             ItemMeta itemMeta = mission.getItemMeta();
             if (itemMeta != null) itemMeta.setDisplayName("任务书");
             mission.setItemMeta(itemMeta);
             mission.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
-
             player.getInventory().addItem(mission);
+        }
 
-            //将任务改为已完成
+        //将任务改为已完成
+            /*
             MissionInventory mi = new MissionInventory();
             if (MissionItemStack.getMissionItemStackStatus(mi.getInventoryMissionItemStack(0)).equals(MissionStatus.UNDONE)) {
                 //TODO 玩家任务隔离
                 MissionInventory.addInventoryItem(MissionStatusHandler.getMissionIcon(MissionStatus.COMPLETED), 0);
             }
-        }
+             */
+
+        //开启任务一
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 2));
+        MissionMsg.mission1Msg(player);
     }
 
+    /**
+     * 检测玩家打开任务书操作
+     */
     @EventHandler
     public void playerMissionHandler(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -63,6 +79,9 @@ public class MissionHandler implements Listener {
         }
     }
 
+    /**
+     * 检测玩家点击任务书图标
+     */
     @EventHandler
     public void playerClickMissionInventory(InventoryClickEvent e) {
         ItemStack currentItem = e.getCurrentItem();

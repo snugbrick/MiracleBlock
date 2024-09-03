@@ -17,12 +17,15 @@ public class MissionInventory {
     private static final Inventory customInventory = Bukkit.createInventory(null, 54, "Mission Menu");
 
     public void openMissionInventory(Player player) {
-        MissionItemStack wakeUpMissionItem = iconDisplayName(MissionItemStack.getMissionItemStack("UNDONE"),ConfigGetter.missionName.get(0));
-        addInventoryItem(wakeUpMissionItem, 0);
-
+        initInventory(27);
         player.openInventory(customInventory);
     }
 
+    /**
+     * 通过索引获取指定位置的任务物品
+     * @param index 索引
+     * @return 位置上的任务物品
+     */
     public MissionItemStack getInventoryMissionItemStack(int index) {
         MissionStatus missionStatus = MissionStatusHandler.getItemStackStatus(customInventory.getItem(index));
         MissionItemStack indexItem = MissionStatusHandler.getMissionIcon(missionStatus);
@@ -30,8 +33,20 @@ public class MissionInventory {
         return indexItem;
     }
 
+    /**
+     * 给指定索引上添加或替换物品
+     * @param item 指定的待替换物品
+     * @param index 索引
+     */
     public static void addInventoryItem(MissionItemStack item, int index) {
         customInventory.setItem(index, item);
+    }
+
+    private void initInventory(int missionNum) {
+        for (int l = 0; l < missionNum; l++) {
+            MissionItemStack firMission = iconDisplayName(MissionItemStack.getMissionItemStack("UNDONE"), ConfigGetter.missionName.get(l));
+            addInventoryItem(firMission, l);
+        }
     }
 
     private MissionItemStack iconDisplayName(MissionItemStack icon, String name) {

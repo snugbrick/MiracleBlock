@@ -17,6 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.SQLException;
 import java.util.Objects;
 
+/**
+ * 目前依赖protocol easysql mysql驱动
+ */
 public class MiracleBlock extends JavaPlugin {
     private static JavaPlugin instance;
     private final FileConfiguration config = getConfig();
@@ -49,6 +52,7 @@ public class MiracleBlock extends JavaPlugin {
         getLogger().info("Sql已经加载");
         try {
             SQLMethods.TABLE.runTasks("player_name", "player", "uuid", "island_serial");
+            SQLMethods.TABLE.runTasks("mission_status", "player", "uuid", "finished_mission","collected_mission");
             getLogger().info("数据库表已加载");
         } catch (SQLException e) {
             throw new RuntimeException(e);

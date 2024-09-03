@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.mission.missionInven;
 
-import github.snugbrick.miracleblock.api.Standardization;
 import github.snugbrick.miracleblock.mission.MissionStatus;
+import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -16,16 +16,25 @@ public class MissionItemStack extends ItemStack {
     private static final Map<ItemStack, String> missionItemStackGetNbt = new HashMap<>();
     private static final Map<MissionItemStack, MissionStatus> missionItemStackStatus = new HashMap<>();
 
-    public MissionItemStack(ItemStack icon) {
-        super(icon);
+    public MissionItemStack(ItemStack icon, String nbtKey, String nbtValue) {
+        super(AboutNBT.setCustomNBT(icon, nbtKey, nbtValue));
     }
 
+    /**
+     * 注册物品
+     * @param icon 物品
+     * @param key 用来对应物品的key
+     */
     public static void registerMissionItemStack(MissionItemStack icon, String key) {
         nbtGetMissionItemStack.put(key, icon);
         missionItemStackGetNbt.put(icon, key);
     }
 
-
+    /**
+     * 注册物品所代表的状态
+     * @param icon 物品
+     * @param status 对应的状态
+     */
     public static void registerMissionStatus(MissionItemStack icon, MissionStatus status) {
         missionItemStackStatus.put(icon, status);
     }
@@ -42,6 +51,12 @@ public class MissionItemStack extends ItemStack {
         return nbtGetMissionItemStack.get(key);
     }
 
+    /**
+     * 一体化创建注册 此处创建的物品无法更改状态 是不被Handler认可的
+     * @param icon 图标样式
+     * @param nbt 给图标添加的nbt标识
+     * @param status 图标所代表的状态
+     */
     public static MissionItemStack toIcon(ItemStack icon, String nbt, MissionStatus status) {
         MissionItemStack mis = toIcon(icon, nbt);
         registerMissionStatus(mis, status);
@@ -50,7 +65,7 @@ public class MissionItemStack extends ItemStack {
     }
 
     public static MissionItemStack toIcon(ItemStack icon, String nbt) {
-        MissionItemStack mis = new MissionItemStack(Standardization.missionStandardization(icon, nbt, nbt));
+        MissionItemStack mis = new MissionItemStack(icon, nbt, nbt);
         registerMissionItemStack(mis, nbt);
 
         return mis;

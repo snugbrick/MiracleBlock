@@ -63,6 +63,12 @@ public class WorldGen {
         }
     }
 
+    /**
+     * 结构复制方法
+     * @param sourceWorld 模板世界
+     * @param targetWorld 目标世界
+     * @param numberOfStructures 结构数量
+     */
     public void copyAndPasteStructure(World sourceWorld, World targetWorld, int numberOfStructures) {
         int x = 0;
         int z = 0;
