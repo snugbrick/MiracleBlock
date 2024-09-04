@@ -69,6 +69,10 @@ public class MissionHandler implements Listener {
 
             if (item != null && AboutNBT.hasCustomNBT(item, "MissionBook")) {
                 MissionInventory missionInventory = new MissionInventory(player);
+
+                if (!PlayersMissionStatus.isCOLLECTED(player, "where is here")) {
+                    PlayersMissionStatus.setPlayerMissionStatus(player, "where is here", MissionStatus.COMPLETED);
+                }
                 missionInventory.openMissionInventory(player);
             }
         }
@@ -94,12 +98,13 @@ public class MissionHandler implements Listener {
 
             MissionStatusHandler msh = new MissionStatusHandler();
             if (msh.isMissionDone(player, clickedIcon)) {
+                MissionInventory missionInventory = new MissionInventory(player);
                 //TODO 领取奖励操作
-                player.getInventory().addItem(new ItemStack(Material.WOODEN_AXE));
+                //->
                 //设置为已收集
                 PlayersMissionStatus.setPlayerMissionStatus(player,
                         LoadLangFiles.getMessageList("MissionName").get(e.getSlot()), MissionStatus.COLLECTED);
-                MissionInventory missionInventory = new MissionInventory(player);
+
                 missionInventory.openMissionInventory(player);
                 player.sendMessage("您已收集该任务");
             } else {

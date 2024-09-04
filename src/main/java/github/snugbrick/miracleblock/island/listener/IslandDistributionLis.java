@@ -33,7 +33,7 @@ public class IslandDistributionLis implements Listener {
                     SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
             //将玩家的岛屿写入数据库
             int serial = 0;
-            if (!distributedIsland.isEmpty()) {
+            if (distributedIsland != null) {
                 serial = Integer.parseInt(distributedIsland.get(0));
                 while (true) {
                     if (distributedIsland.iterator().hasNext()) {

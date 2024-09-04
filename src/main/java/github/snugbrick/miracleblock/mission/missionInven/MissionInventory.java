@@ -1,5 +1,6 @@
 package github.snugbrick.miracleblock.mission.missionInven;
 
+import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
 import github.snugbrick.miracleblock.mission.PlayersMissionStatus;
@@ -40,6 +41,7 @@ public class MissionInventory {
                 icon.setItemMeta(item_meta);
                 missionItemStack.add(icon);
 
+                //MiracleBlock.getInstance().getLogger().info(mission_name + "未完");
             } else if (PlayersMissionStatus.isCOMPLETED(player, mission_name)) {
                 MissionItemStack icon = MissionStatusHandler.getMissionIcon(MissionStatus.COMPLETED);
                 ItemMeta item_meta = icon.getItemMeta();
@@ -47,18 +49,22 @@ public class MissionInventory {
                 icon.setItemMeta(item_meta);
                 missionItemStack.add(icon);
 
+                //MiracleBlock.getInstance().getLogger().info(mission_name + "已完");
             } else if (PlayersMissionStatus.isCOLLECTED(player, mission_name)) {
                 MissionItemStack icon = MissionStatusHandler.getMissionIcon(MissionStatus.COLLECTED);
                 ItemMeta item_meta = icon.getItemMeta();
                 item_meta.setDisplayName(mission_name);
                 icon.setItemMeta(item_meta);
                 missionItemStack.add(icon);
+
+                //MiracleBlock.getInstance().getLogger().info(mission_name + "已收");
             }
         }
 
         int index = 0;
         for (MissionItemStack icon : missionItemStack) {
             addInventoryItem(icon, index);
+            index++;
         }
         player.openInventory(playerInventory);
     }

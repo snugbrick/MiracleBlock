@@ -11,28 +11,42 @@ import java.util.List;
  */
 public class PlayersMissionStatus {
     public static void setPlayerMissionStatus(Player player, String missionName, MissionStatus missionStatus) throws SQLException {
-        if (missionStatus.equals(MissionStatus.COLLECTED)) {
-            if (missionName.equals(SQLMethods.QUERY.runTasks("mission_status",
-                    "finished_mission", "finished_mission", missionName).get(0))) {
-                SQLMethods.DELETE.runTasks("mission_status", "finished_mission", missionName);
+        List<String> finishedMission = SQLMethods.QUERY.runTasks("mission_status",
+                "finished_mission", "finished_mission", missionName);
+        List<String> collected_mission = SQLMethods.QUERY.runTasks("mission_status",
+                "collected_mission", "collected_mission", missionName);
+
+        if (missionStatus.equals(MissionStatus.COLLECTED) && finishedMission != null) {
+/*
+            SQLMethods.UPDATE.runTasks("mission_status", "2",
+                    "player", player.getName(), "finished_mission", missionName,
+                    "collected_mission", missionName);
+ */
+
+            if (finishedMission.contains(missionName)) {
+                SQLMethods.DELETE.runTasks("mission_status",
+                        "player", player.getName(),
+                        "finished_mission", missionName);
+            }
+            if (!collected_mission.contains(missionName)) {
+                SQLMethods.INSERT.runTasks("mission_status",
+                        "player", player.getName(),
+                        "uuid", player.getUniqueId().toString(),
+                        "collected_mission", missionName);
             }
 
-            SQLMethods.UPDATE.runTasks("mission_status", "player", player.getName(),
-                    "collected_mission", missionName);
+        } else if (missionStatus.equals(MissionStatus.COMPLETED) && !finishedMission.contains(missionName)) {
 
-        } else if (missionStatus.equals(MissionStatus.COMPLETED)) {
             SQLMethods.INSERT.runTasks("mission_status",
                     "player", player.getName(),
                     "uuid", player.getUniqueId().toString(),
                     "finished_mission", missionName);
 
         } else if (missionStatus.equals(MissionStatus.UNDONE)) {
-            if (missionName.equals(SQLMethods.QUERY.runTasks("mission_status",
-                    "finished_mission", "finished_mission", missionName).get(0))) {
+            if (missionName.equals(finishedMission.get(0))) {
                 SQLMethods.DELETE.runTasks("mission_status", "finished_mission", missionName);
 
-            } else if (missionName.equals(SQLMethods.QUERY.runTasks("mission_status",
-                    "collected_mission", "collected_mission", missionName).get(0))) {
+            } else if (missionName.equals(collected_mission.get(0))) {
                 SQLMethods.DELETE.runTasks("mission_status", "collected_mission", missionName);
             }
         }
@@ -51,25 +65,11 @@ public class PlayersMissionStatus {
                 SQLMethods.QUERY.runTasks("mission_status", "finished_mission", "player", player.getName());
         List<String> checkCollect =
                 SQLMethods.QUERY.runTasks("mission_status", "collected_mission", "player", player.getName());
-        if (checkFinished != null) {
-            while (true) {
-                if (checkFinished.iterator().hasNext()) {
-                    String isFinishedMission = checkFinished.iterator().next();
-                    if (isFinishedMission.equals(missionName)) return MissionStatus.COMPLETED;
-                } else {
-                    break;
-                }
-            }
-        }
-        if (checkCollect != null) {
-            while (true) {
-                if (checkCollect.iterator().hasNext()) {
-                    String isCollectedMission = checkCollect.iterator().next();
-                    if (isCollectedMission.equals(missionName)) return MissionStatus.COLLECTED;
-                } else {
-                    break;
-                }
-            }
+
+        if (checkFinished != null && checkFinished.contains(missionName)) {
+            return MissionStatus.COMPLETED;
+        } else if (checkCollect != null && checkCollect.contains(missionName)) {
+            return MissionStatus.COLLECTED;
         }
 
         return MissionStatus.UNDONE;
