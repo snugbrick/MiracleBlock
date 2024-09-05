@@ -6,6 +6,7 @@ import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
+import github.snugbrick.miracleblock.items.weapon.SwordRegister;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
 import github.snugbrick.miracleblock.tools.LoadLangFiles;
@@ -35,6 +36,9 @@ public class MiracleBlock extends JavaPlugin {
         registerLis();
         registerCommand();
 
+        getLogger().info("正在加载语言文件");
+        new LoadLangFiles().loadMessagesFile();
+
         getLogger().info("正在加载template_world");
         new WorldGen().createTempRoom();
 
@@ -44,8 +48,10 @@ public class MiracleBlock extends JavaPlugin {
         getLogger().info("正在注册任务栏图标");
         new MissionIconRegister().registerIcon();
 
-        getLogger().info("正在加载语言文件");
-        new LoadLangFiles().loadMessagesFile();
+        getLogger().info("正在注册Sword");
+        new SwordRegister().swordRegister();
+
+
         getLogger().info(new LoadLangFiles().getMessage("welcome"));
 
         initSql();

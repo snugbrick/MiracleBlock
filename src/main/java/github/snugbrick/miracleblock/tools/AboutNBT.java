@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public class AboutNBT {
 
-    // 设置物品的自定义 NBT 数据
     public static ItemStack setCustomNBT(ItemStack item, String key, String value) {
         net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
@@ -21,7 +20,6 @@ public class AboutNBT {
         return CraftItemStack.asBukkitCopy(nmsItem);
     }
 
-    // 检查物品是否包含特定的 NBT 数据
     public static boolean hasCustomNBT(ItemStack item, String key) {
         net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
@@ -32,7 +30,6 @@ public class AboutNBT {
         return false;
     }
 
-    // 获取物品的自定义 NBT 数据
     public static String getCustomNBT(ItemStack item, String key) {
         net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 

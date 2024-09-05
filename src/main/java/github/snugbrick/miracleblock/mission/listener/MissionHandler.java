@@ -1,6 +1,7 @@
 package github.snugbrick.miracleblock.mission.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
+import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
 import github.snugbrick.miracleblock.mission.PlayersMissionStatus;
@@ -99,9 +100,9 @@ public class MissionHandler implements Listener {
             MissionStatusHandler msh = new MissionStatusHandler();
             if (msh.isMissionDone(player, clickedIcon)) {
                 MissionInventory missionInventory = new MissionInventory(player);
-                //TODO 领取奖励操作
-                //->
-                //设置为已收集
+
+                //领取奖励："钝剑" & 设置为已收集
+                player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
                 PlayersMissionStatus.setPlayerMissionStatus(player,
                         LoadLangFiles.getMessageList("MissionName").get(e.getSlot()), MissionStatus.COLLECTED);
 
@@ -113,7 +114,6 @@ public class MissionHandler implements Listener {
             e.setCancelled(true);
         }
     }
-
 
     //用于防止F快捷键获取
     @EventHandler
