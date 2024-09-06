@@ -53,8 +53,8 @@ public class MissionHandler implements Listener {
             player.getInventory().addItem(mission);
 
             //开启任务一
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 2));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 2));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 13 * 20, 2));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 13 * 20, 2));
             MissionMsg.mission1Msg(player);
         }
     }
@@ -71,8 +71,9 @@ public class MissionHandler implements Listener {
             if (item != null && AboutNBT.hasCustomNBT(item, "MissionBook")) {
                 MissionInventory missionInventory = new MissionInventory(player);
 
-                if (!PlayersMissionStatus.isCOLLECTED(player, "where is here")) {
-                    PlayersMissionStatus.setPlayerMissionStatus(player, "where is here", MissionStatus.COMPLETED);
+                if (!PlayersMissionStatus.isCOLLECTED(player, LoadLangFiles.getMessageList("MissionName").get(0))) {
+                    PlayersMissionStatus.setPlayerMissionStatus(player,
+                            LoadLangFiles.getMessageList("MissionName").get(0), MissionStatus.COMPLETED);
                 }
                 missionInventory.openMissionInventory(player);
             }
@@ -108,7 +109,9 @@ public class MissionHandler implements Listener {
 
                 missionInventory.openMissionInventory(player);
                 player.sendMessage("您已收集该任务");
-            } else {
+            } else if(msh.isMissionCollected(player,clickedIcon)){
+                player.sendMessage("您已收集该任务");
+            }else {
                 player.sendMessage("您未完成该任务");
             }
             e.setCancelled(true);

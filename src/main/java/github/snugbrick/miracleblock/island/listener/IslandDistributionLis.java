@@ -1,5 +1,6 @@
 package github.snugbrick.miracleblock.island.listener;
 
+import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.SQLMethods;
 import github.snugbrick.miracleblock.island.IslandRegister;
 import org.bukkit.Bukkit;
@@ -28,38 +29,56 @@ public class IslandDistributionLis implements Listener {
         if (world == null) return;
 
         if (!player.hasPlayedBefore()) {
-            //查询已分配岛屿
-            List<String> distributedIsland =
-                    SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
-            //将玩家的岛屿写入数据库
-            int serial = 0;
-            if (distributedIsland != null) {
-                serial = Integer.parseInt(distributedIsland.get(0));
-                while (true) {
-                    if (distributedIsland.iterator().hasNext()) {
-                        int num = Integer.parseInt(distributedIsland.iterator().next());
-                        if (num > serial) serial = num;
+            Bukkit.getScheduler().runTaskAsynchronously(MiracleBlock.getInstance(), () -> {
+                //查询已分配岛屿
+                List<String> distributedIsland;
+                try {
+                    distributedIsland = SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
+
+                    //将玩家的岛屿写入数据库
+                    int serial = 0;
+                    if (!distributedIsland.isEmpty()) {
+                        serial = distributedIsland.stream()
+                                .mapToInt(Integer::parseInt)
+                                .max()
+                                .orElse(0);
+
+                        SQLMethods.INSERT.runTasks("island_distribution",
+                                "player", player.getName(),
+                                "uuid", playerUUID.toString(),
+                                "island_serial", String.valueOf(serial + 1));
+                        tpPlayerToIsland(player);
                     } else {
-                        break;
+                        SQLMethods.INSERT.runTasks("island_distribution",
+                                "player", player.getName(),
+                                "uuid", playerUUID.toString(),
+                                "island_serial", String.valueOf(serial));
                     }
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
-            } else {
-                SQLMethods.INSERT.runTasks("island_distribution",
-                        "player", player.getName(),
-                        "uuid", playerUUID.toString(),
-                        "island_serial", String.valueOf(serial));
-            }
-            SQLMethods.INSERT.runTasks("island_distribution",
-                    "player", player.getName(),
-                    "uuid", playerUUID.toString(),
-                    "island_serial", String.valueOf(serial));
+            });
+        } else {
+            tpPlayerToIsland(player);
         }
-        //传送玩家去岛屿
-        List<String> playerIsland = SQLMethods.QUERY.runTasks("island_distribution",
-                "island_serial", "player", player.getName());
-        player.teleport(IslandRegister.getIsland(Integer.parseInt(playerIsland.get(0))).getSpawnPoint());
+    }
 
-
+    private void tpPlayerToIsland(Player player) {
+        Bukkit.getScheduler().runTaskAsynchronously(MiracleBlock.getInstance(), () -> {
+            try {
+                List<String> playerIsland = SQLMethods.QUERY.runTasks("island_distribution",
+                        "island_serial", "player", player.getName());
+                if (!playerIsland.isEmpty()) {
+                    int islandSerial = Integer.parseInt(playerIsland.get(0));
+                    Bukkit.getScheduler().runTask(MiracleBlock.getInstance(), () -> {
+                        player.teleport(IslandRegister.getIsland(islandSerial).getSpawnPoint());
+                    });
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @EventHandler

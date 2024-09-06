@@ -12,16 +12,11 @@ import java.util.List;
 public class PlayersMissionStatus {
     public static void setPlayerMissionStatus(Player player, String missionName, MissionStatus missionStatus) throws SQLException {
         List<String> finishedMission = SQLMethods.QUERY.runTasks("mission_status",
-                "finished_mission", "finished_mission", missionName);
+                "finished_mission", "finished_mission", missionName, "player", player.getName());
         List<String> collected_mission = SQLMethods.QUERY.runTasks("mission_status",
-                "collected_mission", "collected_mission", missionName);
+                "collected_mission", "collected_mission", missionName, "player", player.getName());
 
         if (missionStatus.equals(MissionStatus.COLLECTED) && finishedMission != null) {
-/*
-            SQLMethods.UPDATE.runTasks("mission_status", "2",
-                    "player", player.getName(), "finished_mission", missionName,
-                    "collected_mission", missionName);
- */
 
             if (finishedMission.contains(missionName)) {
                 SQLMethods.DELETE.runTasks("mission_status",

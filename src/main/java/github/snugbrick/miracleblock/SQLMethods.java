@@ -82,20 +82,26 @@ public enum SQLMethods {
      * 参数位置错一下就会出现奇妙的结果哦 >:)
      *
      * @param tableName 指定表
-     * @param args      三个参数 第一个是被查找的列 第二个是你根据哪个列来进行查找
-     *                  第三个是你根据第二参数指定列中的值来获取行以定位 二三参数为空则查询整列
+     * @param args      参数列表 第一个是被查找的列 第二、三参数是第一对条件列和值
+     *                  第四、五参数是第二对条件列和值 (可选) 如果没有提供第二对条件则仅使用第一对
      * @return 被定位的值
      */
     private List<String> executeQuery(String tableName, String... args) {
-        if (args.length <= 3) {
+        if (args.length >= 1 && args.length <= 5) {
             TableQueryBuilder tqb = sqlManager.createQuery()
                     .inTable(tableName)
                     .selectColumns(args[0]);
-            //都为空则查询整列
-            if (args[1] != null && args[2] != null)
+
+            // 如果提供了第一对条件
+            if (args.length >= 3 && args[1] != null && args[2] != null) {
                 tqb.addCondition(args[1], args[2]);
-            //.orderBy("id", false)
-            //.setPageLimit(0, 500) //分页
+            }
+
+            // 如果提供了第二对条件
+            if (args.length == 5 && args[3] != null && args[4] != null) {
+                tqb.addCondition(args[3], args[4]);
+            }
+
             List<String> callBack = tqb.build().execute(query -> {
                 ResultSet result = query.getResultSet();
                 List<String> results = new ArrayList<>();
@@ -104,8 +110,9 @@ public enum SQLMethods {
                 }
                 return results;
             }, (exception, action) -> {
-                MiracleBlock.getInstance().getLogger().info("Query执行错误");
+                MiracleBlock.getInstance().getLogger().info("Query执行错误: " + exception.getMessage());
             });
+
             return callBack;
         }
         return null;
@@ -189,7 +196,7 @@ public enum SQLMethods {
     private String executeDelete(String tableName, String[] args) {//4
         if (args.length % 2 == 0) {
             LinkedHashMap<String, Object> aimMap = new LinkedHashMap<>();
-            for (int i = 0; i < args.length; i+=2) {
+            for (int i = 0; i < args.length; i += 2) {
                 aimMap.put(args[i], args[i + 1]);
             }
             sqlManager.createDelete(tableName)

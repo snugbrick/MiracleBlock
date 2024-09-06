@@ -66,7 +66,14 @@ public class MissionStatusHandler extends Mission {
         missionItemStack = clickedIcon;
         MissionStatus status = PlayersMissionStatus.getPlayerMissionStatus(player, missionItemStack.getItemMeta().getDisplayName());
 
-        return status.equals(MissionStatus.COMPLETED) || status.equals(MissionStatus.COLLECTED);
+        return status.equals(MissionStatus.COMPLETED);
+    }
+
+    public boolean isMissionCollected(Player player, MissionItemStack clickedIcon) throws SQLException {
+        missionItemStack = clickedIcon;
+        MissionStatus status = PlayersMissionStatus.getPlayerMissionStatus(player, missionItemStack.getItemMeta().getDisplayName());
+
+        return status.equals(MissionStatus.COLLECTED);
     }
 
     @Override
