@@ -33,7 +33,7 @@ public class MiracleBlockItemStack extends ItemStack {
 
         if (container.has(new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"), PersistentDataType.STRING)) {
             SwordItemStack swordItemStack = (SwordItemStack) miracleItem;
-            swordItemStack.setItemWords(ItemWords.getRandomItemWords());
+            swordItemStack.setItemWords(ItemWords.getRandomItemWords(swordItemStack));
             return swordItemStack;
         }
         return miracleItem;

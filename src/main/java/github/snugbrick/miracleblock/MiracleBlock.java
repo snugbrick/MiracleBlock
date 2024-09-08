@@ -6,7 +6,10 @@ import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
+import github.snugbrick.miracleblock.items.ItemAdditional.ItemWords;
+import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordRegister;
+import github.snugbrick.miracleblock.items.weapon.attackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
 import github.snugbrick.miracleblock.tools.LoadLangFiles;
@@ -83,6 +86,7 @@ public class MiracleBlock extends JavaPlugin {
     private void registerLis() {
         getServer().getPluginManager().registerEvents(new IslandDistributionLis(), this);
         getServer().getPluginManager().registerEvents(new MissionHandler(), this);
+        getServer().getPluginManager().registerEvents(new attackReachChanger(), this);
     }
 
     private void registerCommand() {
