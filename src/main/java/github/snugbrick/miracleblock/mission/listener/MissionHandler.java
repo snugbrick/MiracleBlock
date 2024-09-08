@@ -96,8 +96,7 @@ public class MissionHandler implements Listener {
         ItemStack currentItem = e.getCurrentItem();
 
         if (currentItem != null && AboutNBT.hasCustomNBT(currentItem, "MissionIcons")) {
-            //TODO
-            player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
+            //player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
 
             MissionStatus missionStatus = MissionStatusHandler.getItemStackStatus(currentItem);
             MissionItemStack clickedIcon = MissionStatusHandler.getMissionIcon(missionStatus);
