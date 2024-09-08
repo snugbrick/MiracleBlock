@@ -64,7 +64,6 @@ public class MiracleBlock extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        test.aTest();
         getLogger().info("every thing is done,welcome to use MiracleBlock!");
     }
 

@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -47,9 +48,13 @@ public class MissionHandler implements Listener {
             //给予任务书
             ItemStack mission = AboutNBT.setCustomNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
             ItemMeta itemMeta = mission.getItemMeta();
-            if (itemMeta != null) itemMeta.setDisplayName("任务书");
+            if (itemMeta != null) {
+                itemMeta.setDisplayName("任务书");
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             mission.setItemMeta(itemMeta);
-            mission.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+            mission.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+
             player.getInventory().addItem(mission);
 
             //开启任务一

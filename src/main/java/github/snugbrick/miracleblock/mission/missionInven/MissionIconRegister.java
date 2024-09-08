@@ -2,9 +2,12 @@ package github.snugbrick.miracleblock.mission.missionInven;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;
+import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -16,7 +19,10 @@ public class MissionIconRegister {
         MissionItemStack.registerMissionStatus(MissionItemStack.getMissionItemStack("UNDONE"), MissionStatus.UNDONE);
 
         ItemStack item = new ItemStack(Material.PAPER);
-        item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta != null) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(itemMeta);
+        item.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
         MissionItemStack.registerMissionItemStack(new MissionItemStack(item, "COMPLETED", "COMPLETED"), "COMPLETED");
         MissionItemStack.registerMissionStatus(MissionItemStack.getMissionItemStack("COMPLETED"), MissionStatus.COMPLETED);
 

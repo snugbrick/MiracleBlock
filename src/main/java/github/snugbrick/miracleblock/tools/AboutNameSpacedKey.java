@@ -28,22 +28,18 @@ public class AboutNameSpacedKey {
     }
 
     /**
-     * 检查键是否存在 键存在则检查值是否相等
+     * 检查键是否存在
      *
      * @param item          被检查物品
      * @param key           被检查NameSpacedKey
-     * @param expectedValue 被检查值
      * @return boolean
      */
-    public static boolean hasNameSpacedKey(ItemStack item, NamespacedKey key, String expectedValue) {
+    public static boolean hasNameSpacedKey(ItemStack item, NamespacedKey key) {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
-                if (container.has(key, PersistentDataType.STRING)) {
-                    String value = container.get(key, PersistentDataType.STRING);
-                    return expectedValue.equals(value);
-                }
+                return container.has(key, PersistentDataType.STRING);
             }
         }
         return false;

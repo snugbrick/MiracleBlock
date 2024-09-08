@@ -7,7 +7,6 @@ public enum ItemLevel {
     UR,
     SSR,
     SR,
-    S,
     A,
     B,
     C
