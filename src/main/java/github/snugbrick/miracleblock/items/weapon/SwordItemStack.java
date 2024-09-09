@@ -9,6 +9,8 @@ import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemWords;
 import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.tools.AboutNBT;
+import github.snugbrick.miracleblock.tools.AboutNameSpacedKey;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -31,7 +33,16 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private ItemWords itemWords;
     private String displayName;
     private double customAttackRange;
-    private Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
+
+    public double getAttackSpeed() {
+        return attackSpeed;
+    }
+
+    public void setAttackSpeed(double attackSpeed) {
+        this.attackSpeed = attackSpeed;
+    }
+
+    private double attackSpeed;
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
@@ -49,8 +60,14 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         ItemMeta meta = swordItemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (meta != null) {
-            if (itemAttribute != null) lore.add("物品属性 " + itemAttribute.toString());
-            if (level != null) lore.add("物品等级 " + level.toString());
+            if (itemAttribute != null) {
+                lore.add("+=====物品属性=====+");
+                lore.add(itemAttribute.toString());
+            }
+            if (level != null) {
+                lore.add("+=====物品等级=====+");
+                lore.add(level.toString());
+            }
             meta.setLore(lore);
         }
         swordItemStack.setItemMeta(meta);
@@ -63,104 +80,57 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         return this;
     }
 
-    /**
-     * 设置词条是会同步设置武器名 武器名与setName后的名字相同 所以建议在setName后调用该方法
-     * 同时也会给物品添加增益
-     *
-     * @param itemWords 目标词条
-     * @return 本身
-     */
     public SwordItemStack setItemWords(ItemWords itemWords) {
         this.itemWords = itemWords;
         ItemMeta meta = this.getItemMeta();
-        int level = this.itemWords.getLevel();
-
         if (meta != null) {
             meta.setDisplayName(this.itemWords.toString() + " " + displayName);
-
-            MiracleBlock.getInstance().getLogger().info("修改了");
-            MiracleBlock.getInstance().getLogger().info(String.valueOf(damage));
-            MiracleBlock.getInstance().getLogger().info(itemWords.toString());
-            MiracleBlock.getInstance().getLogger().info(String.valueOf(customAttackRange));
-
-            //this.modifiers = ArrayListMultimap.create(Objects.requireNonNull(meta.getAttributeModifiers()));
-            MiracleBlock.getInstance().getLogger().info(this.modifiers.toString());
-
-            if (level == 0 || level == 1) {
-                AttributeModifier aimModifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed",
-                        -2.4 * 1.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                modifiers.removeAll(Attribute.GENERIC_ATTACK_SPEED);
-                modifiers.put(Attribute.GENERIC_ATTACK_SPEED, aimModifier);
-                meta.setAttributeModifiers(modifiers);
-
+            if (this.itemWords.getLevel() < 6) {
+                this.setDamage(20);
+                this.setAttackSpeed(0.8);
                 this.setCustomAttackRange(4.0);
-                if (level == 0) this.setDamage((int) (this.damage * 0.20), true);
-                else this.setDamage((int) (this.damage * 0.15), true);
-            } else if (level < 6 && 1 < level) {
-                AttributeModifier aimModifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed",
-                        -2.4 * 1.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                modifiers.removeAll(Attribute.GENERIC_ATTACK_SPEED);
-                modifiers.put(Attribute.GENERIC_ATTACK_SPEED, aimModifier);
-                meta.setAttributeModifiers(modifiers);
-
-                this.setCustomAttackRange(3.0);
-                this.setDamage((int) (this.damage * 0.10), true);
-            } else if (6 < level && level < 9) {
-                AttributeModifier aimModifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed",
-                        -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                modifiers.removeAll(Attribute.GENERIC_ATTACK_SPEED);
-                modifiers.put(Attribute.GENERIC_ATTACK_SPEED, aimModifier);
-                meta.setAttributeModifiers(modifiers);
-
-                this.setCustomAttackRange(3.0);
-                this.setDamage((int) (this.damage * 0.05), true);
             } else {
-                AttributeModifier aimModifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed",
-                        -2.4 * 0.8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                modifiers.removeAll(Attribute.GENERIC_ATTACK_SPEED);
-                modifiers.put(Attribute.GENERIC_ATTACK_SPEED, aimModifier);
-                meta.setAttributeModifiers(modifiers);
-
+                this.setDamage(10);
+                this.setAttackSpeed(1);
                 this.setCustomAttackRange(2.0);
-                this.setDamage((int) (-1 * this.damage * 0.2), true);
             }
-
             this.setItemMeta(meta);
-            MiracleBlock.getInstance().getLogger().info("修改了");
-            MiracleBlock.getInstance().getLogger().info(String.valueOf(damage));
-            MiracleBlock.getInstance().getLogger().info(itemWords.toString());
-            MiracleBlock.getInstance().getLogger().info(String.valueOf(customAttackRange));
-
         }
-
+        AboutNameSpacedKey.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), "range"), String.valueOf(this.getCustomAttackRange()));
+        AboutNameSpacedKey.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), "damage"), String.valueOf(this.getDamage()));
         return this;
     }
 
-    public SwordItemStack setDamage(int damage, Boolean isAdd) {
-        int copy = this.damage;
+    public SwordItemStack setDamage(int damage) {
         this.damage = damage;
-
-        ItemMeta meta = this.getItemMeta();
-        if (meta != null) {
-            AttributeModifier modifier;
-            if (isAdd) {
-                modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage",
-                        copy + damage, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                this.damage = copy;
-            } else {
-                modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage",
-                        damage, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-            }
-            modifiers.removeAll(Attribute.GENERIC_ATTACK_DAMAGE);
-            modifiers.put(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
-
-
-            meta.setAttributeModifiers(modifiers);
-            this.setItemMeta(meta);
-            return this;
-        }
-
         return this;
+    }
+
+    public static SwordItemStack addAttribute(SwordItemStack swordItemStack) {
+        ItemMeta itemMeta = swordItemStack.getItemMeta();
+        Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
+        if (itemMeta != null) {
+            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                itemMeta.removeAttributeModifier(equipmentSlot);
+            }
+            AttributeModifier damageModifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage",
+                    swordItemStack.getDamage(), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            AttributeModifier speedModifier = new AttributeModifier(UUID.randomUUID(), "generic.attack_speed",
+                    -2.4 * swordItemStack.getAttackSpeed(), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            modifiers.put(Attribute.GENERIC_ATTACK_DAMAGE, damageModifier);
+            modifiers.put(Attribute.GENERIC_ATTACK_SPEED, speedModifier);
+
+            itemMeta.setAttributeModifiers(modifiers);
+            swordItemStack.setItemMeta(itemMeta);
+        }
+        MiracleBlock.getInstance().getLogger().info("修改了");
+        MiracleBlock.getInstance().getLogger().info(String.valueOf(swordItemStack.getDamage()));
+        MiracleBlock.getInstance().getLogger().info(swordItemStack.getItemWords().toString());
+        MiracleBlock.getInstance().getLogger().info(String.valueOf(swordItemStack.getCustomAttackRange()));
+        //this.modifiers = ArrayListMultimap.create(Objects.requireNonNull(meta.getAttributeModifiers()));
+        MiracleBlock.getInstance().getLogger().info(modifiers.toString());
+
+        return swordItemStack;
     }
 
     public SwordItemStack setName(SwordItemStack swordItemStack, String name) {
