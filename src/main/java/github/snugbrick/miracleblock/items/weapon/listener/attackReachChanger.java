@@ -23,37 +23,42 @@ public class attackReachChanger implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR) {
             Player player = event.getPlayer();
+            ItemStack itemStack = event.getItem();
 
-            ItemStack itemStack = player.getInventory().getItemInMainHand();
-
-            if (itemStack.getItemMeta() != null) {
+            if (itemStack != null && itemStack.getItemMeta() != null) {
                 PersistentDataContainer container = Objects.requireNonNull(itemStack.getItemMeta()).getPersistentDataContainer();
 
                 if (container.has(new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"), PersistentDataType.STRING)) {
-                    double customAttackRange = Double.parseDouble(container.get(new NamespacedKey(MiracleBlock.getInstance(), "range"), PersistentDataType.STRING));
-                    customAttackRange -= 0.5;
-                    int damage = Integer.parseInt(container.get(new NamespacedKey(MiracleBlock.getInstance(), "damage"), PersistentDataType.STRING));
-                    Location startLocation = player.getEyeLocation().add(player.getLocation().getDirection().normalize().multiply(0.5));
+                    String range = container.get(new NamespacedKey(MiracleBlock.getInstance(), "range"), PersistentDataType.STRING);
+                    String damageS = container.get(new NamespacedKey(MiracleBlock.getInstance(), "damage"), PersistentDataType.STRING);
 
-                    RayTraceResult result = player.getWorld().rayTraceEntities(startLocation,
-                            player.getLocation().getDirection(), customAttackRange);
+                    if (range != null && damageS != null) {
 
-                    if (result != null && result.getHitEntity() != null) {
-                        Entity target = result.getHitEntity();
-                        double distance = player.getLocation().distance(target.getLocation());
+                        double customAttackRange = Double.parseDouble(range);
+                        customAttackRange -= 0.5;
+                        int damage = Integer.parseInt(damageS);
+                        Location startLocation = player.getEyeLocation().add(player.getLocation().getDirection().normalize().multiply(0.5));
 
-                        Vector directionToPlayer = player.getLocation().toVector().subtract(target.getLocation().toVector());
-                        directionToPlayer.normalize();
-                        Location newLocation = target.getLocation().add(directionToPlayer.multiply(1));
-                        //重设距离 保证举例检测是玩家视线到敌人碰撞箱边
-                        distance = newLocation.distance(player.getLocation());
+                        RayTraceResult result = player.getWorld().rayTraceEntities(startLocation,
+                                player.getLocation().getDirection(), customAttackRange);
 
-                        if (distance <= customAttackRange) {
-                            if (target instanceof LivingEntity) {
-                                LivingEntity livingTarget = (LivingEntity) target;
-                                livingTarget.damage(damage, player);
-                            } else {
-                                event.setCancelled(true);
+                        if (result != null && result.getHitEntity() != null) {
+                            Entity target = result.getHitEntity();
+                            double distance = player.getLocation().distance(target.getLocation());
+
+                            Vector directionToPlayer = player.getLocation().toVector().subtract(target.getLocation().toVector());
+                            directionToPlayer.normalize();
+                            Location newLocation = target.getLocation().add(directionToPlayer.multiply(1));
+                            //重设距离 保证举例检测是玩家视线到敌人碰撞箱边
+                            distance = newLocation.distance(player.getLocation());
+
+                            if (distance <= customAttackRange) {
+                                if (target instanceof LivingEntity) {
+                                    LivingEntity livingTarget = (LivingEntity) target;
+                                    livingTarget.damage(damage, player);
+                                } else {
+                                    event.setCancelled(true);
+                                }
                             }
                         }
                     }

@@ -44,10 +44,6 @@ public enum ItemWords {
         return getByLevel(randomLevel);
     }
 
-    public static boolean isReachedSword(SwordItemStack swordItemStack) {
-        return (swordItemStack.getItemWords().level == 0 || swordItemStack.getItemWords().level == 1);
-    }
-
     @Override
     public String toString() {
         switch (this.level) {
