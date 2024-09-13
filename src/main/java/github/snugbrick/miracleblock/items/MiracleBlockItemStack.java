@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,11 +22,15 @@ public class MiracleBlockItemStack extends ItemStack {
         super(AboutNameSpacedKey.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
     }
 
+    public MiracleBlockItemStack(ItemStack item) {
+        super(item);
+    }
+
     public static void register(MiracleBlockItemStack aimItem, String key) {
         allMiracleBlockItemStack.put(key, aimItem);
     }
 
-    public static MiracleBlockItemStack getMiracleBlockItemStack(String key) {
+    public static MiracleBlockItemStack getItem(String key) {
         MiracleBlockItemStack miracleItem = allMiracleBlockItemStack.get(key);
         ItemMeta miracleItemMeta = miracleItem.getItemMeta();
         PersistentDataContainer container = Objects.requireNonNull(miracleItemMeta).getPersistentDataContainer();
@@ -37,5 +40,9 @@ public class MiracleBlockItemStack extends ItemStack {
             return swordItemStack.setItemWords(ItemWords.getRandomItemWords(swordItemStack)).addGain();
         }
         return miracleItem;
+    }
+
+    public static Map<String, MiracleBlockItemStack> getAllMiracleBlockItemStack(){
+        return allMiracleBlockItemStack;
     }
 }

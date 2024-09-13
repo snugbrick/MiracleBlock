@@ -7,6 +7,8 @@ import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.weapon.SwordRegister;
+import github.snugbrick.miracleblock.items.weapon.command.GetMiracleSword;
+import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
 import github.snugbrick.miracleblock.items.weapon.listener.attackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
@@ -90,7 +92,8 @@ public class MiracleBlock extends JavaPlugin {
     private void registerCommand() {
         getCommand("totemplateworld").setExecutor(new ToTemplateWorld());
         getCommand("db-easy-sql").setExecutor(new SqlCommands());
-
+        getCommand("get-miracle-sword").setExecutor(new GetMiracleSword());
+        getCommand("set-item-inlaid").setExecutor(new SetInlaidCommand());
     }
 
     private void initSql() {

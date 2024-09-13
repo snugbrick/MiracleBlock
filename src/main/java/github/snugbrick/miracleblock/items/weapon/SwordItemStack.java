@@ -26,10 +26,10 @@ import java.util.stream.IntStream;
 public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private int damage;
     private Enchantment enchantment;
-    private final InlaidGemItemStack[] inlaidGems;
-    private final int slot;
-    private final ItemLevel level;
-    private final ItemAttribute itemAttribute;
+    private InlaidGemItemStack[] inlaidGems;
+    private int slot;
+    private ItemLevel level;
+    private ItemAttribute itemAttribute;
     private ItemWords itemWords;
     private String displayName;
     private double customAttackRange;
@@ -42,6 +42,10 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         slot = inlaidSlot;
         inlaidGems = new InlaidGemItemStack[slot];
         displayName = item.getType().toString();
+    }
+
+    public SwordItemStack(MiracleBlockItemStack miracleBlockItemStack) {
+        super(miracleBlockItemStack);
     }
 
     /**
@@ -111,7 +115,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
                 .setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
                 .setCustomAttackRange(this.getCustomAttackRange())
                 .setEnchantments(this.getEnchantment())
-                .setLore((String[]) this.getItemMeta().getLore().stream().toArray());
+                .setLore(this.getItemMeta().getLore().stream().toArray(String[]::new));
         return swordItemStack;
     }
 

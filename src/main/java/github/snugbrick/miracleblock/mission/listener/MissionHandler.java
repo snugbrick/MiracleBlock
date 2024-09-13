@@ -110,7 +110,7 @@ public class MissionHandler implements Listener {
                 MissionInventory missionInventory = new MissionInventory(player);
 
                 //领取奖励："钝剑" & 设置为已收集
-                player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
+                player.getInventory().addItem(MiracleBlockItemStack.getItem("dull_sword"));
                 PlayersMissionStatus.setPlayerMissionStatus(player,
                         LoadLangFiles.getMessageList("MissionName").get(e.getSlot()), MissionStatus.COLLECTED);
 

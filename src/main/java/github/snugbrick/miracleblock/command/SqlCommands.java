@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated
 public class SqlCommands implements TabExecutor {
     SQLManager sqlManager;
 
