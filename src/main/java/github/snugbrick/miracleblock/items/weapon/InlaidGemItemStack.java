@@ -11,7 +11,7 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
     private ItemAttribute itemAttribute;
     private String displayName;
 
-    public InlaidGemItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level) {
+    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
         this.level = level;
         this.itemAttribute = itemAttribute;

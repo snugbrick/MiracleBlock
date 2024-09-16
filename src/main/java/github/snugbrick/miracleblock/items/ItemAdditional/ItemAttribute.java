@@ -1,7 +1,5 @@
 package github.snugbrick.miracleblock.items.ItemAdditional;
 
-import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
-
 /**
  * 属性
  */
@@ -28,15 +26,25 @@ public enum ItemAttribute {
         return null;
     }
 
-    public void addGain(SwordItemStack swordItemStack, ItemAttribute itemAttribute) {
-        if (itemAttribute.attribute < 3) swordItemStack.setDamage(swordItemStack.getDamage() + 10);
-        else swordItemStack.setDamage(swordItemStack.getDamage() + 5);
-    }
-
-    public int getLevel() {
+    public int getAttribute() {
         return attribute;
     }
 
+    public GainPackage getGain(int attribute) {
+        switch (attribute) {
+            case 0:
+                return new GainPackage(1.1, 3, 1);
+            case 1:
+                return new GainPackage(1.0, 3, 1.1);
+            case 2:
+                return new GainPackage(1.2, 3, 0.9);
+            case 3:
+            case 4:
+            case 5:
+                return new GainPackage(1.0, 3, 1);
+        }
+        return null;
+    }
     @Override
     public String toString() {
         switch (this.attribute) {
@@ -54,5 +62,29 @@ public enum ItemAttribute {
                 return "木";
         }
         return null;
+    }
+
+    public class GainPackage {
+        private final double gainDamage;
+        private final double gainReach;
+        private final double gainAttackSpeed;
+
+        public GainPackage(double gainDamage, double gainReach, double gainAttackSpeed) {
+            this.gainDamage = gainDamage;
+            this.gainAttackSpeed = gainAttackSpeed;
+            this.gainReach = gainReach;
+        }
+
+        public double getGainAttackSpeed() {
+            return gainAttackSpeed;
+        }
+
+        public double getGainReach() {
+            return gainReach;
+        }
+
+        public double getGainDamage() {
+            return gainDamage;
+        }
     }
 }

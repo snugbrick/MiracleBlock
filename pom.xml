@@ -101,5 +101,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>github.snugbrick</groupId>
+            <artifactId>1.16.5-remapped-mojang</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 </project>

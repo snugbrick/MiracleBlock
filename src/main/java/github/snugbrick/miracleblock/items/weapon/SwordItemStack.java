@@ -33,7 +33,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private ItemWords itemWords;
     private String displayName;
     private double customAttackRange;
-    private double attackSpeed;
+    private double attackSpeed = 1;
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
@@ -86,6 +86,11 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
      */
     public SwordItemStack addGain() {
         ItemMeta itemMeta = this.getItemMeta();
+        ItemAttribute.GainPackage gainPackage = this.getItemAttribute().getGain(this.getItemAttribute().getAttribute());
+        if (gainPackage != null) {
+            this.damage *= (int) gainPackage.getGainDamage();
+            this.attackSpeed *= gainPackage.getGainAttackSpeed();
+        }
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
         if (itemMeta != null) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
@@ -100,6 +105,28 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
 
             itemMeta.setAttributeModifiers(modifiers);
             this.setItemMeta(itemMeta);
+        }
+        AboutNameSpacedKey.setNameSpacedKey(this,
+                new NamespacedKey(MiracleBlock.getInstance(), "range"), String.valueOf(this.getCustomAttackRange()));
+        AboutNameSpacedKey.setNameSpacedKey(this,
+                new NamespacedKey(MiracleBlock.getInstance(), "damage"), String.valueOf(this.getDamage()));
+        AboutNameSpacedKey.setNameSpacedKey(this,
+                new NamespacedKey(MiracleBlock.getInstance(), "attribute"), this.getItemAttribute().toString());
+        return this;
+    }
+
+    public SwordItemStack setItemWords(ItemWords itemWords) {
+        this.itemWords = itemWords;
+        ItemWords.GainPackage gain = itemWords.getGain(itemWords.getLevel());
+        ItemMeta meta = this.getItemMeta();
+
+        if (meta != null && gain != null) {
+            meta.setDisplayName(this.itemWords.toString() + " " + displayName);
+            this.setDamage((this.damage *= (int) gain.getGainDamage()));
+            this.setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed());
+            this.setCustomAttackRange(this.customAttackRange += gain.getGainReach());
+
+            this.setItemMeta(meta);
         }
         return this;
     }
@@ -132,27 +159,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
             this.setInlay(itemStacks.next(), i);
             i++;
         }
-        return this;
-    }
-
-    public SwordItemStack setItemWords(ItemWords itemWords) {
-        this.itemWords = itemWords;
-        ItemMeta meta = this.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(this.itemWords.toString() + " " + displayName);
-            if (this.itemWords.getLevel() < 6) {
-                this.setDamage(this.getDamage() + 10);
-                this.setAttackSpeed(0.8);
-                this.setCustomAttackRange(4.0);
-            } else {
-                this.setDamage(this.getDamage() + 5);
-                this.setAttackSpeed(1);
-                this.setCustomAttackRange(2.0);
-            }
-            this.setItemMeta(meta);
-        }
-        AboutNameSpacedKey.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), "range"), String.valueOf(this.getCustomAttackRange()));
-        AboutNameSpacedKey.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), "damage"), String.valueOf(this.getDamage()));
         return this;
     }
 

@@ -45,6 +45,15 @@ commands:
 
     permission-message: "/set-item-inlaid <miracle_sword_name> <miracle-Inlay-item>"
 
+  miracle-entity-gen:
+    description: miracle-entity-gen
+
+    usage: "miracle-entity-gen"
+
+    permission: ""
+
+    permission-message: "/miracle-entity-gen <miracle-entity-name>"
+
 
 permissions:
   op:

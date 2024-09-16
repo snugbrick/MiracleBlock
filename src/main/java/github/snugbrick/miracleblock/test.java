@@ -11,6 +11,7 @@ import org.bukkit.util.RayTraceResult;
 public class test implements Listener {
     private final double customAttackRange = 10.0; // 自定义攻击距离
 
+    //63号！到！77号！到！18号！到！
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {

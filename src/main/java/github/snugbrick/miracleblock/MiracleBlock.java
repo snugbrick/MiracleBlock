@@ -4,6 +4,8 @@ import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
+import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
+import github.snugbrick.miracleblock.entity.cmmand.MiracleEntityGen;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.weapon.SwordRegister;
@@ -54,8 +56,14 @@ public class MiracleBlock extends JavaPlugin {
         getLogger().info("正在注册Sword");
         new SwordRegister().swordRegister();
 
+        try {
+            getLogger().info("正在注册生物");
+            MiracleEntityRegister.registerMiracleEntity();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        getLogger().info(new LoadLangFiles().getMessage("welcome"));
+        getLogger().info(LoadLangFiles.getMessage("welcome"));
 
         initSql();
         getLogger().info("Sql已经加载");
@@ -94,6 +102,7 @@ public class MiracleBlock extends JavaPlugin {
         getCommand("db-easy-sql").setExecutor(new SqlCommands());
         getCommand("get-miracle-sword").setExecutor(new GetMiracleSword());
         getCommand("set-item-inlaid").setExecutor(new SetInlaidCommand());
+        getCommand("miracle-entity-gen").setExecutor(new MiracleEntityGen());
     }
 
     private void initSql() {
