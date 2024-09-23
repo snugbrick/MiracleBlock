@@ -10,7 +10,6 @@ import java.util.Iterator;
  */
 public interface CanInlaid {
     SwordItemStack setInlay(InlaidGemItemStack inlaidGemItemStack, int indexSlot);
-
     //for stream
     SwordItemStack setInlay(Iterator<InlaidGemItemStack> itemStacks);
 }

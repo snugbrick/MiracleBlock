@@ -5,11 +5,13 @@ import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
 import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class InlaidGemItemStack extends MiracleBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
     private String displayName;
+    private int modelNum;
 
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
@@ -33,6 +35,23 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
         return this;
     }
 
+    public InlaidGemItemStack setItemModelData(int num) {
+        this.modelNum = num;
+        ItemMeta itemMeta = this.getItemMeta();
+        if (itemMeta != null) itemMeta.setCustomModelData(num);
+        this.setItemMeta(itemMeta);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
+    }
+
+    public int getModelNum() {
+        return modelNum;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -43,6 +62,12 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
 
     public ItemLevel getLevel() {
         return level;
+    }
+
+    public static class GainPackage {
+        GainPackage() {
+
+        }
     }
 }
 

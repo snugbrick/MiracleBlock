@@ -1,6 +1,4 @@
-package github.snugbrick.miracleblock.items.ItemAdditional;
-
-import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
+package github.snugbrick.miracleblock.items.weapon;
 
 import java.util.Random;
 
@@ -47,32 +45,32 @@ public enum ItemWords {
     public GainPackage getGain(int level) {
         switch (level) {
             case 0:
-                return new GainPackage(1.5, 4, 1.6);
+                return new GainPackage(1.5, 4, 0.4);
             case 1:
-                return new GainPackage(1.4, 4, 1.4);
+                return new GainPackage(1.4, 4, 1);
             case 2:
-                return new GainPackage(1.3, 3, 1.2);
+                return new GainPackage(1.3, 3, 0.5);
             case 3:
                 return new GainPackage(1.2, 3, 1.2);
             case 4:
             case 5:
-                return new GainPackage(1.1, 3, 1.1);
+                return new GainPackage(1.1, 3, 1);
             case 6:
-                return new GainPackage(1.5, 3, 0.8);
+                return new GainPackage(1.5, 3, 0.7);
             case 7:
-                return new GainPackage(0.9, 3, 1.3);
+                return new GainPackage(0.9, 3, 1.0);
             case 8:
                 return new GainPackage(1.0, 3, 1.0);
             case 9:
-                return new GainPackage(0.8, 3, 0.7);
+                return new GainPackage(1.0, 3, 1.2);
             case 10:
-                return new GainPackage(0.6, 3, 1);
+                return new GainPackage(1.0, 3, 1.4);
             case 11:
-                return new GainPackage(0.9, 3, 0.5);
+                return new GainPackage(1.0, 3, 1.5);
             case 12:
-                return new GainPackage(0.5, 2, 1);
+                return new GainPackage(1.0, 2, 1.2);
             case 13:
-                return new GainPackage(0.4, 2, 0.4);
+                return new GainPackage(1.0, 2, 1.3);
         }
         return null;
     }

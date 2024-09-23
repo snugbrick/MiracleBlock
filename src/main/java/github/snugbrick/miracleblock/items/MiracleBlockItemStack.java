@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.items;
 
 import github.snugbrick.miracleblock.MiracleBlock;
-import github.snugbrick.miracleblock.items.ItemAdditional.ItemWords;
+import github.snugbrick.miracleblock.items.weapon.ItemWords;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.tools.AboutNameSpacedKey;
 import org.bukkit.NamespacedKey;
@@ -42,7 +42,7 @@ public class MiracleBlockItemStack extends ItemStack {
         return miracleItem;
     }
 
-    public static Map<String, MiracleBlockItemStack> getAllMiracleBlockItemStack(){
+    public static Map<String, MiracleBlockItemStack> getAllMiracleBlockItemStack() {
         return allMiracleBlockItemStack;
     }
 }

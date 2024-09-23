@@ -37,4 +37,13 @@ public class test implements Listener {
         }
     }
 
+    /**
+     * {
+     *     "parent": "item/generated",
+     *     "textures": {
+     *       "layer0": "miracle:item/dull_sword"
+     *     }
+     *   }
+     */
+
 }

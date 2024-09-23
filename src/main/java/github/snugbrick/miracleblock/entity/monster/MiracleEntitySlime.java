@@ -1,15 +1,21 @@
 package github.snugbrick.miracleblock.entity.monster;
 
 
+import com.mojang.datafixers.DSL;
+import com.mojang.datafixers.DataFix;
+import com.mojang.datafixers.DataFixer;
+import com.mojang.datafixers.TypeRewriteRule;
+import com.mojang.datafixers.schemas.Schema;
+import com.mojang.serialization.Dynamic;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 
-import java.lang.reflect.Field;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 
+//[02:36:24 ERROR]: No data fixer registered for miracle_entity:miracle_slime
 public class MiracleEntitySlime extends EntitySlime {
     public MiracleEntitySlime(EntityTypes<? extends EntitySlime> var0, World var1) {
         super(var0, var1);
@@ -34,10 +40,9 @@ public class MiracleEntitySlime extends EntitySlime {
                     .a(1.0F, 1.0F)
                     .a(new MinecraftKey("miracle_entity", "miracle_slime").toString());
 
-            Field field = IRegistry.ENTITY_TYPE.getClass().getDeclaredField("byKey");
-            field.setAccessible(true);
-            ((Map<MinecraftKey, EntityTypes<?>>) field.get(null))
-                    .put(new MinecraftKey("miracle_entity", "miracle_slime"), slimeType);
+            //a->registry
+            IRegistry.a(IRegistry.ENTITY_TYPE, new MinecraftKey("miracle_entity", "miracle_slime"), slimeType);
+
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -61,7 +66,6 @@ public class MiracleEntitySlime extends EntitySlime {
                 cooldownTimer--;
                 return false;
             }
-
             List<EntityPlayer> nearbyPlayers = this.miracleSlime.world.a(EntityPlayer.class,
                     this.miracleSlime.getBoundingBox().grow(10.0D, 10.0D, 10.0D));
 
@@ -72,7 +76,6 @@ public class MiracleEntitySlime extends EntitySlime {
                 }
             }
             return false;
-
         }
 
         @Override
@@ -109,8 +112,10 @@ public class MiracleEntitySlime extends EntitySlime {
                 this.miracleSlime.e(direction.x * speed, direction.y * speed, direction.z * speed); // e()是setDeltaMovement()
             }
         }
+
         public EntityPlayer getTargetPlayer() {
             return targetPlayer;
         }
+
     }
 }

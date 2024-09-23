@@ -27,10 +27,9 @@ public class MiracleEntityGen implements TabExecutor {
                     MiracleEntitySlime entityGen = new MiracleEntitySlime(((Player) sender).getLocation());
 
                     entityGen.setPosition(((Player) sender).getLocation().getX(),
-                            ((Player) sender).getLocation().getY(),((Player) sender).getLocation().getZ());
+                            ((Player) sender).getLocation().getY(), ((Player) sender).getLocation().getZ());
 
-                    ((CraftWorld) ((Player) sender).getWorld()).getHandle()
-                            .addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
+                    world.addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
                     break;
                 case "query":
                     sender.sendMessage(MiracleBlockItemStack.getAllMiracleBlockItemStack().toString());
