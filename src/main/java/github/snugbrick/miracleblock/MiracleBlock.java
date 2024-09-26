@@ -48,7 +48,11 @@ public class MiracleBlock extends JavaPlugin {
         new WorldGen().createTempRoom();
 
         getLogger().info("正在加载player_world");
-        new WorldGen().createPlayersRoom();
+        try {
+            new WorldGen().createPlayersRoom();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         getLogger().info("正在注册任务栏图标");
         new MissionIconRegister().registerIcon();

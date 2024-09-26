@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private double damage = 0;
@@ -71,7 +70,8 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
             if (slot != 0) {
                 lore.add("<========" + slot + "个槽位========>");
                 String result = IntStream.range(0, slot)
-                        .mapToObj(i -> i < inlaidGems.length ? "[" + inlaidGems[i].toString() + "]" : "[ ]")
+                        .mapToObj(i ->
+                                i < inlaidGems.length ? "[" /* +(inlaidGems[i] == null ? "" : inlaidGems[i].toString())*/ + "]" : "[ ]")
                         .collect(Collectors.joining("  "));
                 lore.add(result);
             }

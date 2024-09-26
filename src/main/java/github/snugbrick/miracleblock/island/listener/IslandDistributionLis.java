@@ -69,12 +69,10 @@ public class IslandDistributionLis implements Listener {
             try {
                 List<String> playerIsland = SQLMethods.QUERY.runTasks("island_distribution",
                         "island_serial", "player", player.getName());
-                if (!playerIsland.isEmpty()) {
-                    int islandSerial = Integer.parseInt(playerIsland.get(0));
-                    Bukkit.getScheduler().runTask(MiracleBlock.getInstance(), () -> {
-                        player.teleport(IslandRegister.getIsland(islandSerial).getSpawnPoint());
-                    });
-                }
+                int islandSerial = Integer.parseInt(playerIsland.get(0));
+                Bukkit.getScheduler().runTask(MiracleBlock.getInstance(), () -> {
+                    player.teleport(IslandRegister.getIsland(islandSerial).getSpawnPoint());
+                });
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -85,7 +83,7 @@ public class IslandDistributionLis implements Listener {
     public void playerDeadSendBack(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player && e.getDamage() >= ((Player) e.getEntity()).getHealth()) {
             e.setCancelled(true);
-            e.getEntity().teleport(Bukkit.getWorld("player_world").getSpawnLocation());
+            tpPlayerToIsland(((Player) e.getEntity()).getPlayer());
             ((Player) e.getEntity()).setHealth(((Player) e.getEntity()).getMaxHealth());
         }
     }

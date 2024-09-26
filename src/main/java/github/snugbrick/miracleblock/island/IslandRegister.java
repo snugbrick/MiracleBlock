@@ -1,11 +1,15 @@
 package github.snugbrick.miracleblock.island;
 
+import github.snugbrick.miracleblock.SQLMethods;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +27,11 @@ public class IslandRegister {
         return islandInfors.get(serial);
     }
 
+    public static IslandInformation getIsland(Player player) throws SQLException {
+        List<String> strings = SQLMethods.QUERY.runTasks("island_distribution","island_serial", "player", player.getName());
+        return islandInfors.get(Integer.parseInt(strings.get(0)));
+    }
+
 
     public static class IslandInformation {
         private Chunk playerHome;
@@ -35,7 +44,7 @@ public class IslandRegister {
         public IslandInformation(int x, int z, int serial) {
             World world = Bukkit.getWorld("player_world");
             if (world != null) playerHome = world.getChunkAt(x, z);
-            spawnPoint = new Location(world, x >> 4, 15, z >> 4);
+            spawnPoint = new Location(world, x + 8, 15, z + 8);
             this.serial = serial;
         }
 

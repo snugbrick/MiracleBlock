@@ -1,14 +1,18 @@
 package github.snugbrick.miracleblock.island;
 
 import github.snugbrick.miracleblock.MiracleBlock;
+import github.snugbrick.miracleblock.SQLMethods;
+import github.snugbrick.miracleblock.tools.Debug;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -30,7 +34,7 @@ public class WorldGen {
         Bukkit.getLogger().info(world.getName() + " 已创建");
     }
 
-    public void createPlayersRoom() {
+    public void createPlayersRoom() throws SQLException {
         WorldCreator worldCreator = new WorldCreator("player_world");
         worldCreator.environment(World.Environment.NORMAL)
                 .type(WorldType.FLAT)
@@ -38,7 +42,7 @@ public class WorldGen {
         world = worldCreator.createWorld();
         if (world != null && Bukkit.getWorld("template_world") != null) {
             world.setSpawnLocation(0, 15, 0);
-            copyAndPasteStructure(Bukkit.getWorld("template_world"), world, 16);
+            worldStructureGen(Bukkit.getWorld("template_world"), world, 16);
             MiracleBlock.getInstance().getLogger().info("模板复制已完成");
         }
         Bukkit.getLogger().info(world.getName() + " 已创建");
@@ -63,12 +67,79 @@ public class WorldGen {
         }
     }
 
+    public Block[][][] copyStructure(World sourceWorld, int startX, int startZ) {
+        Block[][][] structure = new Block[16][20][16];
+
+        for (int x = startX; x < startX + 16; x++) {
+            for (int z = startZ; z < startZ + 16; z++) {
+                for (int y = 0; y < 40; y++) {
+                    Block blockAt = sourceWorld.getBlockAt(x, y, z);
+                    if (blockAt.getType() != Material.AIR) structure[x][y][z] = blockAt;
+                }
+            }
+        }
+        return structure;
+    }
+
+
+    public void pasteStructure(World targetWorld, Block[][][] theStructure, int offsetX, int offsetZ) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 40; y++) {
+                    Block block = theStructure[x][y][z];
+                    if (block != null)
+                        targetWorld.getBlockAt(offsetX + x, y, offsetZ + z).setType(block.getType());
+                }
+            }
+        }
+    }
+
+    public void worldStructureGen(World sourceWorld, World targetWorld, int numberOfStructures) throws SQLException {
+        Block[][][] blocks = copyStructure(sourceWorld, 0, 0);
+        new Debug(0, "模板结构已被装载");
+
+        int serial_number = 0;
+        int offset = 800;
+        //正方形的边长
+        int length = ((int) Math.sqrt(numberOfStructures));
+        //右上顶点
+        int offsetX = length / 2, offsetZ = length / 2;
+
+        for (int i = 0; i < length; i++, serial_number++) {
+            if (!skipStructureGen(serial_number)) {
+                offsetX--;
+                continue;
+            }
+
+            pasteStructure(targetWorld, blocks, offsetX * offset, offsetZ * offset);
+
+            new IslandRegister().registerIslandInformation(offsetX * offset, offsetZ * offset, serial_number);
+            new Debug(0, offsetX * offset + " " + offsetZ * offset + " 已加载结构，序列号：" + serial_number);
+            offsetX--;
+            if (i == length - 1) {
+                i = -1;
+                offsetX = length / 2;
+                offsetZ--;
+                if (offsetZ == -length / 2) break;
+            }
+        }
+    }
+
+    //为空则不可以跳过 也就是说 返回值为true则不可以跳过
+    public boolean skipStructureGen(int serial) throws SQLException {
+        List<String> hasSame = SQLMethods.QUERY.runTasks("island_distribution", "island_serial").stream()
+                .filter(i -> Integer.parseInt(i) == serial).collect(Collectors.toList());
+        return hasSame.isEmpty();
+    }
+
     /**
      * 结构复制方法
-     * @param sourceWorld 模板世界
-     * @param targetWorld 目标世界
+     *
+     * @param sourceWorld        模板世界
+     * @param targetWorld        目标世界
      * @param numberOfStructures 结构数量
      */
+    @Deprecated
     public void copyAndPasteStructure(World sourceWorld, World targetWorld, int numberOfStructures) {
         int x = 0;
         int z = 0;
@@ -105,7 +176,6 @@ public class WorldGen {
         if (world == null) return;
 
         int length = ((int) Math.sqrt(numberOfStructures)) / 2;
-
 
         int zCounter = 0;
 
@@ -212,6 +282,7 @@ public class WorldGen {
         }
     }
 
+    @Deprecated
     private class BlockData {
         public Material type;
         public int x, y, z;
