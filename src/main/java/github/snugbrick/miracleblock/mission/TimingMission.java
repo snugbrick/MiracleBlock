@@ -1,7 +1,10 @@
 package github.snugbrick.miracleblock.mission;
 
 public interface TimingMission {
-    void setTiming(int hour);
+    default void setTiming(int hour) {
+    }
 
-    int getTiming();
+    default int getTiming() {
+        return 0;
+    }
 }

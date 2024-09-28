@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.items.weapon;
+package github.snugbrick.miracleblock.items.InlayItemStack;
 
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
@@ -11,7 +11,6 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
     private String displayName;
-    private int modelNum;
 
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
@@ -20,13 +19,33 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
         displayName = item.getType().toString();
     }
 
-    public InlaidGemItemStack setLevel(ItemLevel level) {
-        this.level = level;
+    /**
+     * 请在每个注册物品最后使用该方法 使物品得以完善
+     *
+     * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
+     */
+    public MiracleBlockItemStack buildItemLore() {
+        if (itemAttribute != null) {
+            this.setLore("<=======物品属性=======>");
+            this.setLore(this.itemAttribute.toString());
+        }
+        if (level != null) {
+            this.setLore("<=======物品等级=======>");
+            this.setLore(this.level.toString());
+        }
         return this;
     }
 
-    public InlaidGemItemStack setDisplayName(String displayName) {
+    public InlaidGemItemStack setName(String displayName) {
         this.displayName = displayName;
+        ItemMeta itemMeta = this.getItemMeta();
+        if (itemMeta != null) itemMeta.setDisplayName(displayName);
+        this.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public InlaidGemItemStack setLevel(ItemLevel level) {
+        this.level = level;
         return this;
     }
 
@@ -35,21 +54,9 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
         return this;
     }
 
-    public InlaidGemItemStack setItemModelData(int num) {
-        this.modelNum = num;
-        ItemMeta itemMeta = this.getItemMeta();
-        if (itemMeta != null) itemMeta.setCustomModelData(num);
-        this.setItemMeta(itemMeta);
-        return this;
-    }
-
     @Override
     public String toString() {
         return displayName;
-    }
-
-    public int getModelNum() {
-        return modelNum;
     }
 
     public String getDisplayName() {

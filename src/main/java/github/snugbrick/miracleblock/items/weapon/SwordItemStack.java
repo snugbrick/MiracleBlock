@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.CanInlaid;
+import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
 import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
@@ -29,11 +30,10 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private int slot;
     private ItemLevel level;
     private ItemAttribute itemAttribute;
-    private ItemWords itemWords;
+    private WeaponItemWords itemWords;
     private String displayName;
     private double customAttackRange;
     private double attackSpeed = 1;
-    private int modelNum;
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
@@ -50,8 +50,10 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
 
     /**
      * 请在每个注册物品最后使用该方法 使物品得以完善
+     *
+     * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
-    public SwordItemStack buildItemLore() {
+    public MiracleBlockItemStack buildItemLore() {
         ItemMeta meta = this.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (meta != null) {
@@ -116,9 +118,9 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         return this;
     }
 
-    public SwordItemStack setItemWords(ItemWords itemWords) {
+    public SwordItemStack setItemWords(WeaponItemWords itemWords) {
         this.itemWords = itemWords;
-        ItemWords.GainPackage gain = itemWords.getGain(itemWords.getLevel());
+        WeaponItemWords.GainPackage gain = itemWords.getGain(itemWords.getLevel());
         ItemMeta meta = this.getItemMeta();
 
         if (meta != null && gain != null) {
@@ -132,14 +134,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         return this;
     }
 
-    public SwordItemStack setItemModelData(int num) {
-        this.modelNum = num;
-        ItemMeta itemMeta = this.getItemMeta();
-        if (itemMeta != null) itemMeta.setCustomModelData(num);
-        this.setItemMeta(itemMeta);
-        return this;
-    }
-
     @Nonnull
     @Override
     public SwordItemStack clone() {
@@ -150,7 +144,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
                 .setInlay(Arrays.stream(this.getInlaidGemItemStack()).iterator())
                 .setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
                 .setCustomAttackRange(this.getCustomAttackRange())
-                .setItemModelData(this.modelNum)
                 .setEnchantments(this.getEnchantment())
                 .setLore(this.getItemMeta().getLore().stream().toArray(String[]::new));
         return swordItemStack;
@@ -191,18 +184,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         return this;
     }
 
-    public SwordItemStack setLore(String... lore) {
-        ItemMeta itemMeta = this.getItemMeta();
-        List<String> allLore;
-        if (itemMeta != null) {
-            allLore = new ArrayList<>(Arrays.asList(lore));
-            itemMeta.setLore(allLore);
-        }
-        this.setItemMeta(itemMeta);
-
-        return this;
-    }
-
     public SwordItemStack setEnchantments(Enchantment enchantments) {
         this.enchantment = enchantments;
         return this;
@@ -237,7 +218,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         return itemAttribute;
     }
 
-    public ItemWords getItemWords() {
+    public WeaponItemWords getItemWords() {
         return itemWords;
     }
 

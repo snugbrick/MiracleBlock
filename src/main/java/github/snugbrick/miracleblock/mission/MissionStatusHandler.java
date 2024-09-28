@@ -11,12 +11,9 @@ import java.sql.SQLException;
  * @author MiracleUR -> github.com/snugbrick
  * @version 1.0.0 2024.08.28 18:14
  */
-public class MissionStatusHandler extends Mission {
-
+public class MissionStatusHandler {
     private MissionType missionType;
-
     private MissionStatus missionStatus;
-
     private MissionItemStack missionItemStack;
 
     /**
@@ -52,7 +49,6 @@ public class MissionStatusHandler extends Mission {
         } else if (missionStatus.equals(MissionStatus.COLLECTED)) {
             return MissionItemStack.getMissionItemStack("COLLECTED");
         }
-
         return MissionItemStack.getMissionItemStack("NULL");
     }
 
@@ -76,22 +72,18 @@ public class MissionStatusHandler extends Mission {
         return status.equals(MissionStatus.COLLECTED);
     }
 
-    @Override
     public void setMissionType(MissionType missionType) {
         this.missionType = missionType;
     }
 
-    @Override
     public void setMissionStatus(MissionStatus missionStatus) {
         this.missionStatus = missionStatus;
     }
 
-    @Override
     public MissionType getMissionType() {
         return this.missionType;
     }
 
-    @Override
     public MissionStatus getMissionStatus() {
         return this.missionStatus;
     }

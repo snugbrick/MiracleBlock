@@ -43,7 +43,7 @@ public class WorldGen {
         if (world != null && Bukkit.getWorld("template_world") != null) {
             world.setSpawnLocation(0, 15, 0);
             worldStructureGen(Bukkit.getWorld("template_world"), world, 16);
-            MiracleBlock.getInstance().getLogger().info("模板复制已完成");
+            new Debug(0, "模板已经复制完毕");
         }
         Bukkit.getLogger().info(world.getName() + " 已创建");
     }

@@ -3,9 +3,9 @@ package github.snugbrick.miracleblock.mission.missionInven;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -18,6 +18,16 @@ public class MissionItemStack extends ItemStack {
 
     public MissionItemStack(ItemStack icon, String nbtKey, String nbtValue) {
         super(AboutNBT.setCustomNBT(AboutNBT.setCustomNBT(icon, nbtKey, nbtValue), "MissionIcons", "MissionIcons"));
+    }
+
+    public MissionItemStack setLore(String... lore) {
+        ItemMeta itemMeta = this.getItemMeta();
+        if (itemMeta != null) {
+            List<String> loreList = new ArrayList<>(Arrays.asList(lore));
+            itemMeta.setLore(loreList);
+            this.setItemMeta(itemMeta);
+        }
+        return this;
     }
 
     /**

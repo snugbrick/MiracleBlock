@@ -41,4 +41,8 @@ public class TasksLater {
             }
         }.runTaskLater(MiracleBlock.getInstance(), 20L * delay);
     }
+
+    public static void executeLater(int delay, BukkitRunnable bukkitRunnable) {
+        bukkitRunnable.runTaskLater(MiracleBlock.getInstance(), 20L * delay);
+    }
 }

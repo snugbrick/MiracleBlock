@@ -27,14 +27,14 @@ commands:
 
     permission-message: "你妹有op啊，执行不了啊awa"
 
-  get-miracle-sword:
-    description: get-miracle-sword
+  get-miracle-item:
+    description: get-miracle-item
 
-    usage: "get-miracle-sword"
+    usage: "get-miracle-item"
 
     permission: ""
 
-    permission-message: "/get-miracle-sword <miracle_sword_name>"
+    permission-message: "/get-miracle-sword <miracle_item_key>"
 
   set-item-inlaid:
     description: set-item-inlaid

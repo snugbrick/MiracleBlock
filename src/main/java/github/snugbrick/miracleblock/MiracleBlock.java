@@ -8,8 +8,8 @@ import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
 import github.snugbrick.miracleblock.entity.cmmand.MiracleEntityGen;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
-import github.snugbrick.miracleblock.items.weapon.SwordRegister;
-import github.snugbrick.miracleblock.items.weapon.command.GetMiracleSword;
+import github.snugbrick.miracleblock.items.MainRegister;
+import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
 import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
 import github.snugbrick.miracleblock.items.weapon.listener.attackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
@@ -57,8 +57,8 @@ public class MiracleBlock extends JavaPlugin {
         getLogger().info("正在注册任务栏图标");
         new MissionIconRegister().registerIcon();
 
-        getLogger().info("正在注册Sword");
-        new SwordRegister().swordRegister();
+        getLogger().info("正在注册物品");
+        new MainRegister().mainReg();
 
         try {
             getLogger().info("正在注册生物");
@@ -104,7 +104,7 @@ public class MiracleBlock extends JavaPlugin {
     private void registerCommand() {
         getCommand("totemplateworld").setExecutor(new ToTemplateWorld());
         getCommand("db-easy-sql").setExecutor(new SqlCommands());
-        getCommand("get-miracle-sword").setExecutor(new GetMiracleSword());
+        getCommand("get-miracle-item").setExecutor(new GetMiracleItemStack());
         getCommand("set-item-inlaid").setExecutor(new SetInlaidCommand());
         getCommand("miracle-entity-gen").setExecutor(new MiracleEntityGen());
     }

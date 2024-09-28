@@ -2,7 +2,7 @@ package github.snugbrick.miracleblock.items.weapon;
 
 import java.util.Random;
 
-public enum ItemWords {
+public enum WeaponItemWords {
     LEGEND(0),
     SHINING(1),
     DEMON(2),
@@ -20,7 +20,7 @@ public enum ItemWords {
 
     private final int level;
 
-    ItemWords(int level) {
+    WeaponItemWords(int level) {
         this.level = level;
     }
 
@@ -28,8 +28,8 @@ public enum ItemWords {
         return level;
     }
 
-    public static ItemWords getByLevel(int level) {
-        for (ItemWords item : ItemWords.values()) {
+    public static WeaponItemWords getByLevel(int level) {
+        for (WeaponItemWords item : WeaponItemWords.values()) {
             if (item.level == level) {
                 return item;
             }
@@ -37,7 +37,7 @@ public enum ItemWords {
         return null;
     }
 
-    public static ItemWords getRandomItemWords(SwordItemStack swordItemStack) {
+    public static WeaponItemWords getRandomItemWords(SwordItemStack swordItemStack) {
         int randomLevel = new Random().nextInt(14);
         return getByLevel(randomLevel);
     }
