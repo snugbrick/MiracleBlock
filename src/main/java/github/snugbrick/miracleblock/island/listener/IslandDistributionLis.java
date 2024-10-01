@@ -3,6 +3,7 @@ package github.snugbrick.miracleblock.island.listener;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.SQLMethods;
 import github.snugbrick.miracleblock.island.IslandRegister;
+import github.snugbrick.miracleblock.tools.Debug;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -71,6 +72,7 @@ public class IslandDistributionLis implements Listener {
                         "island_serial", "player", player.getName());
                 int islandSerial = Integer.parseInt(playerIsland.get(0));
                 Bukkit.getScheduler().runTask(MiracleBlock.getInstance(), () -> {
+                    new Debug(0, "已将玩家传送至" + islandSerial + "号岛屿，玩家名：" + player.getName());
                     player.teleport(IslandRegister.getIsland(islandSerial).getSpawnPoint());
                 });
             } catch (SQLException e) {

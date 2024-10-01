@@ -1,6 +1,9 @@
 package github.snugbrick.miracleblock.items.weapon.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
+import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
+import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
+import github.snugbrick.miracleblock.tools.Debug;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -19,6 +22,15 @@ import org.bukkit.util.Vector;
 import java.util.Objects;
 
 public class attackReachChanger implements Listener {
+    //@EventHandler
+    public void onPlayerInteract1(PlayerInteractEvent event) {
+        if (event.getAction() == Action.LEFT_CLICK_AIR) {
+            Player player = event.getPlayer();
+            SwordItemStack swordItemStack = new SwordItemStack(new MiracleBlockItemStack(player.getInventory().getItemInMainHand()));
+            new Debug(0, swordItemStack.getItemWords().toString());
+        }
+    }
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR) {

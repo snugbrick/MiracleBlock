@@ -9,11 +9,13 @@ import github.snugbrick.miracleblock.entity.cmmand.MiracleEntityGen;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.MainRegister;
+import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
 import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
 import github.snugbrick.miracleblock.items.weapon.listener.attackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
+import github.snugbrick.miracleblock.tools.Debug;
 import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -37,6 +39,16 @@ public class MiracleBlock extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
 
+        initSql();//初始化数据库
+        getLogger().info("Sql已经加载");
+        try {
+            SQLMethods.TABLE.runTasks("island_distribution", "player", "uuid", "island_serial");
+            SQLMethods.TABLE.runTasks("mission_status", "player", "uuid", "finished_mission", "collected_mission");
+            getLogger().info("数据库表已加载");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         getLogger().info("MiracleBlock已经加载");
         registerLis();
         registerCommand();
@@ -59,23 +71,12 @@ public class MiracleBlock extends JavaPlugin {
 
         getLogger().info("正在注册物品");
         new MainRegister().mainReg();
+        new Debug(0, "已注册" + MiracleBlockItemStack.getAllMiracleBlockItemStack().size() + "个物品");
 
         try {
             getLogger().info("正在注册生物");
             MiracleEntityRegister.registerMiracleEntity();
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        getLogger().info(LoadLangFiles.getMessage("welcome"));
-
-        initSql();
-        getLogger().info("Sql已经加载");
-        try {
-            SQLMethods.TABLE.runTasks("island_distribution", "player", "uuid", "island_serial");
-            SQLMethods.TABLE.runTasks("mission_status", "player", "uuid", "finished_mission", "collected_mission");
-            getLogger().info("数据库表已加载");
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 

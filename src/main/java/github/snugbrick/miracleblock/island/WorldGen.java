@@ -68,7 +68,7 @@ public class WorldGen {
     }
 
     public Block[][][] copyStructure(World sourceWorld, int startX, int startZ) {
-        Block[][][] structure = new Block[16][20][16];
+        Block[][][] structure = new Block[16][40][16];
 
         for (int x = startX; x < startX + 16; x++) {
             for (int z = startZ; z < startZ + 16; z++) {
@@ -106,14 +106,13 @@ public class WorldGen {
         int offsetX = length / 2, offsetZ = length / 2;
 
         for (int i = 0; i < length; i++, serial_number++) {
+            new IslandRegister().registerIslandInformation(offsetX * offset, offsetZ * offset, serial_number);
+
             if (!skipStructureGen(serial_number)) {
                 offsetX--;
                 continue;
             }
-
             pasteStructure(targetWorld, blocks, offsetX * offset, offsetZ * offset);
-
-            new IslandRegister().registerIslandInformation(offsetX * offset, offsetZ * offset, serial_number);
             new Debug(0, offsetX * offset + " " + offsetZ * offset + " 已加载结构，序列号：" + serial_number);
             offsetX--;
             if (i == length - 1) {
