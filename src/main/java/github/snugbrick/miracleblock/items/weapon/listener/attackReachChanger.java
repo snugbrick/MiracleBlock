@@ -49,16 +49,19 @@ public class attackReachChanger implements Listener {
                         double customAttackRange = Double.parseDouble(range);
                         customAttackRange -= 0.5;
                         int damage = Integer.parseInt(damageS);
+                        //开始玩家坐标
                         Location startLocation = player.getEyeLocation().add(player.getLocation().getDirection().normalize().multiply(0.5));
-
+                        //获得玩家视线
                         RayTraceResult result = player.getWorld().rayTraceEntities(startLocation,
                                 player.getLocation().getDirection(), customAttackRange);
 
                         if (result != null && result.getHitEntity() != null) {
                             Entity target = result.getHitEntity();
+                            //获得玩家距离目标生物距离
                             double distance = player.getLocation().distance(target.getLocation());
-
+                            //转化为向量
                             Vector directionToPlayer = player.getLocation().toVector().subtract(target.getLocation().toVector());
+                            //统一为单位向量
                             directionToPlayer.normalize();
                             Location newLocation = target.getLocation().add(directionToPlayer.multiply(1));
                             //重设距离 保证举例检测是玩家视线到敌人碰撞箱边
