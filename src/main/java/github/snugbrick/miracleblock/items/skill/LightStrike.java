@@ -9,14 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * 雷击技能
+ */
 public class LightStrike {
     private static final Random random = new Random();
 
-    public LightStrike(World world, double x, double y, double z, Entity entity) {
-        this(world, new Location(world, x, y, z), new Location(world, entity.getX(), entity.getEyeY(), entity.getZ()));
+    /**
+     * 生成雷击
+     * @param world 世界
+     * @param x 玩家坐标x
+     * @param y 玩家坐标y
+     * @param z 玩家坐标z
+     * @param entity 目标生物
+     */
+    public static void genLightingStrike(World world, double x, double y, double z, Entity entity) {
+        genLightingStrike(world, new Location(world, x, y, z), new Location(world, entity.getX(), entity.getEyeY(), entity.getZ()));
     }
 
-    public LightStrike(World world, Location startLoc, Location targetLoc) {
+    /**
+     * @param world 指定世界
+     * @param startLoc 起始坐标
+     * @param targetLoc 目标坐标
+     */
+    public static void genLightingStrike(World world, Location startLoc, Location targetLoc) {
 
 
         List<List<Double>> locationList1 = new ArrayList<>();

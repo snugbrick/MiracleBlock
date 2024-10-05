@@ -10,10 +10,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class MiracleBlockItemStack extends ItemStack {
     private static final Map<String, MiracleBlockItemStack> allMiracleBlockItemStack = new HashMap<>();
+    private int model;
 
     public MiracleBlockItemStack(ItemStack item, String key, String value) {
         super(AboutNameSpacedKey.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
@@ -36,7 +38,6 @@ public class MiracleBlockItemStack extends ItemStack {
             itemMeta.setLore(allLore);
         }
         this.setItemMeta(itemMeta);
-
         return this;
     }
 
@@ -46,10 +47,19 @@ public class MiracleBlockItemStack extends ItemStack {
      * @param num 序号
      */
     public MiracleBlockItemStack setItemModelData(int num) {
+        this.model = num;
         ItemMeta itemMeta = this.getItemMeta();
         if (itemMeta != null) itemMeta.setCustomModelData(num);
         this.setItemMeta(itemMeta);
         return this;
+    }
+
+    @Nonnull
+    @Override
+    public MiracleBlockItemStack clone() {
+        MiracleBlockItemStack aimItem = (MiracleBlockItemStack) super.clone();
+        aimItem.setItemModelData(this.model);
+        return aimItem;
     }
 
     public static void register(MiracleBlockItemStack aimItem, String key) {
