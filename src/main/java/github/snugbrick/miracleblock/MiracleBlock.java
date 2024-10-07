@@ -36,6 +36,7 @@ public class MiracleBlock extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        new Debug(0,"正在启用MiracleBlock");
         saveDefaultConfig();
         reloadConfig();
 
