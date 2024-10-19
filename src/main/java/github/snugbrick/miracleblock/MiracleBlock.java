@@ -42,12 +42,6 @@ public class MiracleBlock extends JavaPlugin {
     public void onEnable() {
         instance = this;
         new Debug(0, "MiraBlock已进入加载");
-        new Debug(0, "  __  __ _           ____  _            _    ");
-        new Debug(0, " |  \\/  (_)_ __ __ _| __ )| | ___   ___| | __");
-        new Debug(0, " | |\\/| | | '__/ _` |  _ \\| |/ _ \\ / __| |/ /");
-        new Debug(0, " | |  | | | | | (_| | |_) | | (_) | (__|   < ");
-        new Debug(0, " |_|  |_|_|_|  \\__,_|____/|_|\\___/ \\___|_|\\_\\");
-
         saveDefaultConfig();
         reloadConfig();
 

@@ -62,8 +62,6 @@ public class IronCurtain implements _Ability {
 
         Location loc = player.getLocation();
         World world = player.getWorld();
-        Random random = new Random();
-
         new BukkitRunnable() {
             final double move = 0.05;
             double sec = 0;
@@ -92,5 +90,10 @@ public class IronCurtain implements _Ability {
                 sec += move;
             }
         }.runTaskTimer(MiracleBlock.getInstance(), 0L, 3L);
+    }
+
+    @Override
+    public void playSound() {
+
     }
 }

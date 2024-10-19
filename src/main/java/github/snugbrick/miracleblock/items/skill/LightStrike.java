@@ -67,6 +67,11 @@ public class LightStrike implements _Ability {
         }
     }
 
+    @Override
+    public void playSound() {
+
+    }
+
     private static void refineLocationList(List<List<Double>> locationList) {
         boolean refined;
         do {

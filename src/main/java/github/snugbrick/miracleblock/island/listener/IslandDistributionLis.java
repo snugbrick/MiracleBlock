@@ -39,7 +39,7 @@ public class IslandDistributionLis implements Listener {
                     //将玩家的岛屿写入数据库
                     int serial = 0;
                     if (distributedIsland != null) {
-                        if(!distributedIsland.isEmpty()) {
+                        if (!distributedIsland.isEmpty()) {
                             serial = distributedIsland.stream()
                                     .mapToInt(Integer::parseInt)
                                     .max()
@@ -67,7 +67,7 @@ public class IslandDistributionLis implements Listener {
         }
     }
 
-    private void tpPlayerToIsland(Player player) {
+    private static void tpPlayerToIsland(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(MiracleBlock.getInstance(), () -> {
             try {
                 List<String> playerIsland = SQLMethods.QUERY.runTasks("island_distribution",

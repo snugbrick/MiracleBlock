@@ -19,4 +19,9 @@ public class BreakDown implements _Ability {
     public void genParticle() {
 
     }
+
+    @Override
+    public void playSound() {
+
+    }
 }

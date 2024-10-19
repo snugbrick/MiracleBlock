@@ -1,15 +1,14 @@
 package github.snugbrick.miracleblock.island;
 
-import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.SQLMethods;
 import github.snugbrick.miracleblock.tools.Debug;
+import github.snugbrick.miracleblock.tools.SpawnNPC;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -114,6 +113,12 @@ public class WorldGen {
             }
             pasteStructure(targetWorld, blocks, offsetX * offset, offsetZ * offset);
             new Debug(0, offsetX * offset + " " + offsetZ * offset + " 已加载结构，序列号：" + serial_number);
+            SpawnNPC.spawnNPC(new Location(targetWorld,
+                            offsetX * offset,
+                            15,
+                            offsetZ * offset),
+                    "jimmy", "MiracleUR_PtII");
+            new Debug(0, offsetX * offset + " " + offsetZ * offset + " 的jimmy已经生成");
             offsetX--;
             if (i == length - 1) {
                 i = -1;
@@ -131,13 +136,13 @@ public class WorldGen {
         return hasSame.isEmpty();
     }
 
-    /**
+    /*
      * 结构复制方法
      *
      * @param sourceWorld        模板世界
      * @param targetWorld        目标世界
      * @param numberOfStructures 结构数量
-     */
+
     @Deprecated
     public void copyAndPasteStructure(World sourceWorld, World targetWorld, int numberOfStructures) {
         int x = 0;
@@ -292,6 +297,6 @@ public class WorldGen {
             this.y = y;
             this.z = z;
         }
-    }
+    }*/
 }
 

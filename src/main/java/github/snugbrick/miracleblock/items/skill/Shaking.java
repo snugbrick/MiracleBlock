@@ -30,6 +30,11 @@ public class Shaking implements _Skill {
     }
 
     @Override
+    public void playSound() {
+
+    }
+
+    @Override
     public void setColdDown(int cold_down) {
         this.cold_down = cold_down;
     }

@@ -79,19 +79,20 @@
     </repositories>
 
     <dependencies>
+        <!-- SuperVanish -->
+        <dependency>
+            <groupId>com.github.LeonMangler</groupId>
+            <artifactId>SuperVanish</artifactId>
+            <version>6.2.18-3</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- spigotAPI -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- SuperVanish -->
-        <dependency>
-            <groupId>com.github.LeonMangler</groupId>
-            <artifactId>SuperVanish</artifactId>
-            <version>6.2.18-3</version>
         </dependency>
 
         <!-- citizens -->
