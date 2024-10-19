@@ -68,9 +68,18 @@
             <id>rosewooddev-repo</id>
             <url>https://repo.rosewooddev.io/repository/public/</url>
         </repository>
+        <repository>
+            <id>citizens-repo</id>
+            <url>https://maven.citizensnpcs.co/repo</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- spigotAPI -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -78,6 +87,29 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- SuperVanish -->
+        <dependency>
+            <groupId>com.github.LeonMangler</groupId>
+            <artifactId>SuperVanish</artifactId>
+            <version>6.2.18-3</version>
+        </dependency>
+
+        <!-- citizens -->
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizens-main</artifactId>
+            <version>2.0.27-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- nms -->
         <dependency>
             <groupId>github.snugbrick</groupId>
             <artifactId>nms-1.16.5</artifactId>
@@ -85,6 +117,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- protocolLib -->
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
@@ -92,12 +125,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- easysql -->
         <dependency>
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
             <version>0.4.7</version>
         </dependency>
 
+        <!-- mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -105,6 +140,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- nms-remapped -->
         <dependency>
             <groupId>github.snugbrick</groupId>
             <artifactId>1.16.5-remapped-mojang</artifactId>

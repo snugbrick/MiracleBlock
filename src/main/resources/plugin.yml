@@ -6,7 +6,8 @@ authors: [ MiracleUR ]
 description: a rpg trying
 website: https://github.com/snugbrick
 
-depend: [ ]
+depend: [ Citizens,ProtocolLib,SuperVanish ]
+softdepend: [ PremiumVanish ]
 
 commands:
   totemplateworld:

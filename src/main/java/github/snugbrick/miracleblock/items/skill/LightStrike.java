@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * 雷击技能
  */
-public class LightStrike implements Skills {
+public class LightStrike implements _Ability {
     private static final Random random = new Random();
     private final World world;
     private final Location startLoc, targetLoc;
@@ -43,7 +43,7 @@ public class LightStrike implements Skills {
     }
 
     @Override
-    public void tasks() {
+    public void runTasks() {
         List<Double> locationStart = new ArrayList<>();
         List<Double> locationEnd = new ArrayList<>();
 
@@ -61,9 +61,9 @@ public class LightStrike implements Skills {
     }
 
     @Override
-    public void particle() {
+    public void genParticle() {
         for (List<Double> locationGet : locationList1) {
-            world.spawnParticle(Particle.END_ROD, new Location(world, locationGet.get(0), locationGet.get(1), locationGet.get(2)), 1, 0, 0, 0, 0);
+            world.spawnParticle(Particle.END_ROD, new Location(world, locationGet.get(0), locationGet.get(1), locationGet.get(2)), 0, 0, 0, 0, 0);
         }
     }
 

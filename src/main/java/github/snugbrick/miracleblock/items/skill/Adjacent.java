@@ -14,11 +14,12 @@ import java.util.Map;
 /**
  * 技能毗邻
  */
-public class Adjacent implements Skills {
+public class Adjacent implements _Skill {
     private final Player triggerPlayer;
     private final Location targetLocation;
     private final double damage;
     private final int loopCount;
+    private int cold_down;
 
     public Adjacent(Player triggerPlayer, Location targetLocation, double damage, int loopCount) {
         this.triggerPlayer = triggerPlayer;
@@ -33,11 +34,11 @@ public class Adjacent implements Skills {
 
     @Override
     public void run() {
-        tasks();
+        runTasks();
     }
 
     @Override
-    public void tasks() {
+    public void runTasks() {
         if (targetLocation.getWorld() != null) {
             Collection<Entity> nearbyEntity = targetLocation.getWorld().getNearbyEntities(targetLocation, 1.0, 1.0, 1.0);
             Map<Double, Entity> allDistance = new HashMap<>();
@@ -62,16 +63,26 @@ public class Adjacent implements Skills {
                     LivingEntity livingTarget = (LivingEntity) closestEntity;
                     livingTarget.damage(damage, triggerPlayer);
                 }
-                particle();
+                genParticle();
             }
         }
     }
 
     @Override
-    public void particle() {
+    public void genParticle() {
         Location playerLocation = triggerPlayer.getLocation();
         Vector player2Target = playerLocation.toVector().subtract(targetLocation.toVector());
         Vector newPlayer2Target = player2Target.normalize().multiply(player2Target.length() - 1);
         triggerPlayer.getWorld().spawnParticle(Particle.SWEEP_ATTACK, newPlayer2Target.toLocation(triggerPlayer.getWorld()), 1);
+    }
+
+    @Override
+    public void setColdDown(int cold_down) {
+        this.cold_down=cold_down;
+    }
+
+    @Override
+    public int getColdDown() {
+        return cold_down;
     }
 }

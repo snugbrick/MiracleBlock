@@ -2,6 +2,8 @@ package github.snugbrick.miracleblock;
 
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
@@ -11,6 +13,8 @@ import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.MainRegister;
 import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
+import github.snugbrick.miracleblock.items.skill.listener.Illusion;
+import github.snugbrick.miracleblock.items.skill.listener.IronCurtain;
 import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
 import github.snugbrick.miracleblock.items.weapon.listener.attackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
@@ -26,17 +30,24 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 /**
- * 目前依赖protocol easysql mysql驱动
+ * 目前依赖protocol easysql mysql驱动 Citizens
  */
 public class MiracleBlock extends JavaPlugin {
     private static JavaPlugin instance;
     private final FileConfiguration config = getConfig();
     private static SQLManager sqlManager;
+    private static ProtocolManager protocolManager;
 
     @Override
     public void onEnable() {
         instance = this;
-        new Debug(0,"正在启用MiracleBlock");
+        new Debug(0, "MiraBlock已进入加载");
+        new Debug(0, "  __  __ _           ____  _            _    ");
+        new Debug(0, " |  \\/  (_)_ __ __ _| __ )| | ___   ___| | __");
+        new Debug(0, " | |\\/| | | '__/ _` |  _ \\| |/ _ \\ / __| |/ /");
+        new Debug(0, " | |  | | | | | (_| | |_) | | (_) | (__|   < ");
+        new Debug(0, " |_|  |_|_|_|  \\__,_|____/|_|\\___/ \\___|_|\\_\\");
+
         saveDefaultConfig();
         reloadConfig();
 
@@ -50,7 +61,6 @@ public class MiracleBlock extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        getLogger().info("MiracleBlock已经加载");
         registerLis();
         registerCommand();
 
@@ -81,7 +91,20 @@ public class MiracleBlock extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        getLogger().info("every thing is done,welcome to use MiracleBlock!");
+        try {
+            protocolManager = ProtocolLibrary.getProtocolManager();
+            getLogger().info("ProtocolLib 已成功初始化!");
+        } catch (Exception e) {
+            getLogger().severe("无法初始化 ProtocolLib: " + e.getMessage());
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
+        getLogger().info("every thing is done,welcome to use MiraBlock!");
+        new Debug(0, "  __  __ _           ____  _            _    ");
+        new Debug(0, " |  \\/  (_)_ __ __ _| __ )| | ___   ___| | __");
+        new Debug(0, " | |\\/| | | '__/ _` |  _ \\| |/ _ \\ / __| |/ /");
+        new Debug(0, " | |  | | | | | (_| | |_) | | (_) | (__|   < ");
+        new Debug(0, " |_|  |_|_|_|  \\__,_|____/|_|\\___/ \\___|_|\\_\\");
     }
 
     @Override
@@ -101,6 +124,8 @@ public class MiracleBlock extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new IslandDistributionLis(), this);
         getServer().getPluginManager().registerEvents(new MissionHandler(), this);
         getServer().getPluginManager().registerEvents(new attackReachChanger(), this);
+        getServer().getPluginManager().registerEvents(new IronCurtain(), this);
+        getServer().getPluginManager().registerEvents(new Illusion(), this);
     }
 
     private void registerCommand() {
@@ -133,6 +158,10 @@ public class MiracleBlock extends JavaPlugin {
             this.getLogger().info("是数据库寄了！错误: " + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);
         }
+    }
+
+    public static ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 
     public static SQLManager getSqlManager() {

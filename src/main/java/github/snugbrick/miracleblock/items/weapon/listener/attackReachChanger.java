@@ -2,6 +2,7 @@ package github.snugbrick.miracleblock.items.weapon.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.skill.Adjacent;
+import github.snugbrick.miracleblock.items.skill.Illusion;
 import github.snugbrick.miracleblock.items.skill.IronCurtain;
 import github.snugbrick.miracleblock.items.skill.LightStrike;
 import github.snugbrick.miracleblock.tools.Debug;
@@ -27,9 +28,10 @@ public class attackReachChanger implements Listener {
     public void onPlayerInteract1(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR) {
             Player player = event.getPlayer();
+            new Illusion(player, 5).run();
             new Debug(0, "正在准备铁幕");
             new IronCurtain(player, 5).run();
-            new Adjacent(player, new Location(player.getWorld(), player.getLocation().getX() + 5, player.getLocation().getY()+5, player.getLocation().getZ() + 5), 10, 2).run();
+            new Adjacent(player, new Location(player.getWorld(), player.getLocation().getX() + 5, player.getLocation().getY() + 5, player.getLocation().getZ() + 5), 10, 2).run();
             new LightStrike(player.getWorld(), player.getLocation(), new Location(player.getWorld(), player.getLocation().getX() + 1, player.getLocation().getY(), player.getLocation().getZ() + 1)).run();
         }
     }

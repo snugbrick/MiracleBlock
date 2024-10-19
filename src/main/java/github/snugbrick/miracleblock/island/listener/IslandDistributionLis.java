@@ -38,17 +38,19 @@ public class IslandDistributionLis implements Listener {
 
                     //将玩家的岛屿写入数据库
                     int serial = 0;
-                    if (!distributedIsland.isEmpty()) {
-                        serial = distributedIsland.stream()
-                                .mapToInt(Integer::parseInt)
-                                .max()
-                                .orElse(0);
+                    if (distributedIsland != null) {
+                        if(!distributedIsland.isEmpty()) {
+                            serial = distributedIsland.stream()
+                                    .mapToInt(Integer::parseInt)
+                                    .max()
+                                    .orElse(0);
 
-                        SQLMethods.INSERT.runTasks("island_distribution",
-                                "player", player.getName(),
-                                "uuid", playerUUID.toString(),
-                                "island_serial", String.valueOf(serial + 1));
-                        tpPlayerToIsland(player);
+                            SQLMethods.INSERT.runTasks("island_distribution",
+                                    "player", player.getName(),
+                                    "uuid", playerUUID.toString(),
+                                    "island_serial", String.valueOf(serial + 1));
+                            tpPlayerToIsland(player);
+                        }
                     } else {
                         SQLMethods.INSERT.runTasks("island_distribution",
                                 "player", player.getName(),
