@@ -89,7 +89,7 @@ public class Illusion implements _Skill {
     @Override
     public void genParticle() {
         Location triggerLoc = player.getLocation();
-        player.getWorld().spawnParticle(Particle.REDSTONE, triggerLoc, 15, 0.5, 1, 0.5,
+        player.getWorld().spawnParticle(Particle.REDSTONE, triggerLoc, 15, 0.5, 0.5, 0.5,
                 new Particle.DustOptions(Color.fromRGB(205, 255, 247), 2));
     }
 
