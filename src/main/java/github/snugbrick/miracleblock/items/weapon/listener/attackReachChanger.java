@@ -3,6 +3,7 @@ package github.snugbrick.miracleblock.items.weapon.listener;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.skill.*;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,15 +21,18 @@ import org.bukkit.util.Vector;
 import java.util.Objects;
 
 public class attackReachChanger implements Listener {
-    @EventHandler
+    @EventHandler//痉挛 弧光
     public void onPlayerInteract1(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR) {
             Player player = event.getPlayer();
-            new WayOut(player, 5).run();
-            new Illusion(player, 5).run();
-            new IronCurtain(player, 5).run();
-            new Adjacent(player, new Location(player.getWorld(), player.getLocation().getX() + 5, player.getLocation().getY() + 5, player.getLocation().getZ() + 5), 10, 2).run();
-            new LightStrike(player.getWorld(), player.getLocation(), new Location(player.getWorld(), player.getLocation().getX() + 50, player.getLocation().getY(), player.getLocation().getZ() + 10)).run();
+            if (!player.getInventory().getItemInMainHand().getType().equals(Material.BOW)) {
+                new WayOut(player, 5).run();
+                new Shaking(player, new Vector(1, 1, 1), 1.5, 5.0, 5).run();
+                new Illusion(player, 5).run();
+                new IronCurtain(player, 5).run();
+                new Adjacent(player, new Location(player.getWorld(), player.getLocation().getX() + 5, player.getLocation().getY() + 5, player.getLocation().getZ() + 5), 10, 2).run();
+                new LightStrike(player.getWorld(), player.getLocation(), new Location(player.getWorld(), player.getLocation().getX() + 50, player.getLocation().getY(), player.getLocation().getZ() + 10)).run();
+            }
         }
     }
 

@@ -58,7 +58,7 @@ public class IronCurtain implements _Ability {
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
         }
         team.addEntry(player.getName());
-        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, second * 20, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, second * 20, 0, true, false));
 
         Location loc = player.getLocation();
         World world = player.getWorld();

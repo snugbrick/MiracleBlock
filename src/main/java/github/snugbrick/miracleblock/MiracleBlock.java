@@ -13,6 +13,7 @@ import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.MainRegister;
 import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
+import github.snugbrick.miracleblock.items.skill.listener.EnergyGatheringLis;
 import github.snugbrick.miracleblock.items.skill.listener.Illusion;
 import github.snugbrick.miracleblock.items.skill.listener.IronCurtain;
 import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
@@ -120,6 +121,7 @@ public class MiracleBlock extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new attackReachChanger(), this);
         getServer().getPluginManager().registerEvents(new IronCurtain(), this);
         getServer().getPluginManager().registerEvents(new Illusion(), this);
+        getServer().getPluginManager().registerEvents(new EnergyGatheringLis(), this);
     }
 
     private void registerCommand() {

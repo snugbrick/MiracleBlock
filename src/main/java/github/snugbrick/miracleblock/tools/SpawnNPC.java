@@ -17,12 +17,11 @@ public class SpawnNPC {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.createNPC(EntityType.PLAYER, name);
         if (skin == null) {
-            npc.setProtected(true);
-            npc.spawn(location);
-        } else {
             if (Skin.get(skinName, true).isValid()) {
                 Skin.get(skinName, true).apply((SkinnableEntity) npc);
             }
         }
+        npc.setProtected(true);
+        npc.spawn(location);
     }
 }
