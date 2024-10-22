@@ -5,7 +5,9 @@ import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Arrow
+import org.bukkit.entity.LivingEntity
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.util.RayTraceResult
 import org.bukkit.util.Vector
 import kotlin.math.cos
 import kotlin.math.sin
@@ -14,16 +16,27 @@ import kotlin.math.sin
 class EnergyGathering(
     private val force: Float, //拉弓程度
     private val arrow: Arrow, //箭矢本身
-    private val vector: Vector //方向
-
+    private val vector: Vector, //方向
+    private val addDamage: Double //增加的伤害
 ) : _Skill {
     private var coldDown: Int = 0
     private val arrowLocation = arrow.location
     private val shooter = arrow.shooter
-    private val maxDistance = 160
+    private val maxDistance = 160.0
+    private val originDamage = arrow.damage
     override fun runTasks() {
+        arrow.damage += addDamage
         arrow.setGravity(false);
         if (force == 1F) {
+            val result: RayTraceResult? = arrow.world.rayTraceEntities(
+                arrow.location,
+                vector,
+                maxDistance
+            )
+            if (result?.hitEntity != null && result.hitEntity is LivingEntity) {
+                val target = result.hitEntity as LivingEntity
+                target.damage(originDamage + addDamage * 2)
+            }
             arrow.remove()
         }
 
@@ -61,7 +74,7 @@ class EnergyGathering(
 
         if (force == 1F) {
             val directionOffset = vector.normalize()//.multiply(0.2)
-            for (i in 1..maxDistance + 1) {
+            for (i in 1..maxDistance.toInt() + 1) {
                 val everyLocation = arrowLocation.clone().add(directionOffset.multiply(i))
                 for (a in 1..31) {
                     everyLocation.world?.spawnParticle(

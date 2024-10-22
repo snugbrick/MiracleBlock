@@ -1,7 +1,6 @@
 package github.snugbrick.miracleblock.items.skill.listener
 
 import github.snugbrick.miracleblock.items.skill.EnergyGathering
-import github.snugbrick.miracleblock.tools.Debug
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -13,7 +12,7 @@ class EnergyGatheringLis : Listener {
     @EventHandler
     fun onPlayerShoot(e: EntityShootBowEvent) {
         if (e.entity is Player) {
-            EnergyGathering(e.force, e.projectile as Arrow, e.projectile.velocity.normalize()).run()
+            EnergyGathering(e.force, e.projectile as Arrow, e.projectile.velocity.normalize(), 7.0).run()
         }
     }
 }

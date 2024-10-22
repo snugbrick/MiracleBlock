@@ -4,6 +4,7 @@ import github.snugbrick.miracleblock.MiracleBlock;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -13,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Objects;
+
 public class Illusion implements Listener {
     @EventHandler
     public void playerHitFakePlayer(EntityDamageByEntityEvent e) {
@@ -20,13 +23,10 @@ public class Illusion implements Listener {
         if (e.getEntity() instanceof SkinnableEntity) {
             NPC npc = CitizensAPI.getNPCRegistry().getNPC(e.getEntity());
 
-            boolean lock = true;
-            if (e.getEntity() instanceof Player) {
-                if (npc.getName().equals(e.getEntity().getName())) {
-                    lock = false;
+            if (e.getDamager() instanceof Player) {
+                if (npc.getName().equals(e.getDamager().getName())) {
                     e.setCancelled(true);
-                }
-                if (lock) {
+                } else {
                     new BukkitRunnable() {
 
                         @Override
@@ -36,15 +36,15 @@ public class Illusion implements Listener {
                     }.runTaskLater(MiracleBlock.getInstance(), 2L);
 
                     Location location = npc.getEntity().getLocation();
-                    location.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, location, 0, 1, 1, 1, 0.5);
+                    Objects.requireNonNull(location.getWorld()).spawnParticle(Particle.REDSTONE, location, 15, 0.5, 0.5, 0.5,
+                            new Particle.DustOptions(Color.fromRGB(205, 255, 247), 2));
 
                     LivingEntity player = (Player) e.getDamager();
                     player.damage(e.getDamage());
-                    player.sendMessage(((Player) e.getDamager()).getName() + ">" +"这 这不可能");
+                    player.sendMessage(((Player) e.getDamager()).getName() + ">" + "这 这不可能");
                     player.sendMessage("还是先看看自己的样子吧");
                 }
             }
-
         }
     }
 }
