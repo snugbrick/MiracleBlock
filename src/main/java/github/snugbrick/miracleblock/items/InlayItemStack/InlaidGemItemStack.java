@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.items.InlayItemStack;
 
-import github.snugbrick.miracleblock.MainItemStack;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
 import github.snugbrick.miracleblock.tools.AboutNBT;
@@ -13,7 +13,7 @@ public class InlaidGemItemStack extends MainItemStack {
     private ItemAttribute itemAttribute;
 
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
-        super(AboutNBT.setCustomNBT(item, key, value), key, value);
+        super(item, key, value);
         this.level = level;
         this.itemAttribute = itemAttribute;
     }

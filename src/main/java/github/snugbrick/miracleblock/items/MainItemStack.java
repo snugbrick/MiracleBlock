@@ -1,5 +1,6 @@
-package github.snugbrick.miracleblock;
+package github.snugbrick.miracleblock.items;
 
+import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords;
 import github.snugbrick.miracleblock.tools.AboutNameSpacedKey;

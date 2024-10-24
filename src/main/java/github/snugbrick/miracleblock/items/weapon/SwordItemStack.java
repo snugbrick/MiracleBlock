@@ -2,7 +2,7 @@ package github.snugbrick.miracleblock.items.weapon;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import github.snugbrick.miracleblock.MainItemStack;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.CanInlaid;
 import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
@@ -35,7 +35,7 @@ public class SwordItemStack extends MainItemStack implements CanInlaid {
     private double attackSpeed = 1;
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level) {
-        super(AboutNBT.setCustomNBT(item, key, value), key, value);
+        super(item, key, value);
         this.level = level;
         this.itemAttribute = itemAttribute;
         slot = inlaidSlot;

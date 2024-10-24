@@ -1,14 +1,13 @@
 package github.snugbrick.miracleblock.entity.cmmand;
 
-import github.snugbrick.miracleblock.entity.monster.MiracleEntitySlime;
-import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
+import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.List;
 
@@ -23,16 +22,17 @@ public class MiracleEntityGen implements TabExecutor {
             WorldServer world = ((CraftWorld) ((Player) sender).getWorld()).getHandle();
 
             switch (args[0]) {
-                case "miracle_slime":
-                    MiracleEntitySlime entityGen = new MiracleEntitySlime(((Player) sender).getLocation());
+                case "Second_Binary_Star":
+                    SecondBinaryStar.Companion.spawnNPC("Second_Binary_Star",((Player) sender).getLocation());
+                    //MiracleEntitySlime entityGen = new MiracleEntitySlime(((Player) sender).getLocation());
 
-                    entityGen.setPosition(((Player) sender).getLocation().getX(),
-                            ((Player) sender).getLocation().getY(), ((Player) sender).getLocation().getZ());
+                    //entityGen.setPosition(((Player) sender).getLocation().getX(),
+                            //((Player) sender).getLocation().getY(), ((Player) sender).getLocation().getZ());
 
-                    world.addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
+                    //world.addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
                     break;
                 case "query":
-                    sender.sendMessage(MiracleBlockItemStack.getAllMiracleBlockItemStack().toString());
+                    sender.sendMessage(MainItemStack.getAllMiracleBlockItemStack().toString());
                     break;
             }
         }

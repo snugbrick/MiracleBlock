@@ -1,11 +1,12 @@
 package github.snugbrick.miracleblock.items.skill
 
 import github.snugbrick.miracleblock.MiracleBlock
-import org.bukkit.Color
-import org.bukkit.Location
-import org.bukkit.Particle
+import github.snugbrick.miracleblock.api.event.LaserHitEvent
+import org.bukkit.*
 import org.bukkit.entity.Arrow
+import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.util.RayTraceResult
 import org.bukkit.util.Vector
@@ -20,9 +21,10 @@ class EnergyGathering(
     private val addDamage: Double //增加的伤害
 ) : _Skill {
     private var coldDown: Int = 0
-    private val arrowLocation = arrow.location
-    private val shooter = arrow.shooter
     private val maxDistance = 160.0
+
+    private val arrowLocation = arrow.location
+    private val shooter = arrow.shooter as Entity
     private val originDamage = arrow.damage
     override fun runTasks() {
         arrow.damage += addDamage
@@ -35,7 +37,13 @@ class EnergyGathering(
             )
             if (result?.hitEntity != null && result.hitEntity is LivingEntity) {
                 val target = result.hitEntity as LivingEntity
-                target.damage(originDamage + addDamage * 2)
+
+                val hitDamage = originDamage + addDamage * 2
+                target.damage(hitDamage)
+
+                //调用LineHitEvent
+                val event = LaserHitEvent(shooter, target, hitDamage)
+                Bukkit.getServer().pluginManager.callEvent(event)
             }
             arrow.remove()
         }
@@ -88,6 +96,8 @@ class EnergyGathering(
     }
 
     override fun playSound() {
+        if (force == 1F && shooter is Player)
+            shooter.world.playSound(shooter.location, Sound.BLOCK_BEACON_DEACTIVATE, 1F, 0F);
     }
 
     override fun setColdDown(cold_down: Int) {

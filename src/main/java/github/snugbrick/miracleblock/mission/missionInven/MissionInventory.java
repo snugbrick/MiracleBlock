@@ -1,6 +1,5 @@
 package github.snugbrick.miracleblock.mission.missionInven;
 
-import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
 import github.snugbrick.miracleblock.mission.PlayersMissionStatus;

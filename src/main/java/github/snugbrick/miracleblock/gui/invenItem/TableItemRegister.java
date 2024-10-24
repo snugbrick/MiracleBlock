@@ -1,6 +1,6 @@
-package github.snugbrick.miracleblock.table.inven;
+package github.snugbrick.miracleblock.gui.invenItem;
 
-import github.snugbrick.miracleblock.MainItemStack;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

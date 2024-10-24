@@ -1,5 +1,6 @@
 package github.snugbrick.miracleblock.items.skill.listener
 
+import github.snugbrick.miracleblock.api.event.LaserHitEvent
 import github.snugbrick.miracleblock.items.skill.EnergyGathering
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player

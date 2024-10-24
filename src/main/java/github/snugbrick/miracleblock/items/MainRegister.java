@@ -1,8 +1,8 @@
-package github.snugbrick.miracleblock;
+package github.snugbrick.miracleblock.items;
 
 import github.snugbrick.miracleblock.items.InlayItemStack.InlayItemRegister;
 import github.snugbrick.miracleblock.items.weapon.SwordRegister;
-import github.snugbrick.miracleblock.table.inven.TableItemRegister;
+import github.snugbrick.miracleblock.gui.invenItem.TableItemRegister;
 
 public class MainRegister {
     public void mainReg() {

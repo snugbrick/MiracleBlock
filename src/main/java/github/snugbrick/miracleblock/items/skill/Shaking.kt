@@ -73,12 +73,4 @@ class Shaking(
     override fun getColdDown(): Int {
         return this.coldDown
     }
-
-    companion object {
-        val thisPlayer: Player? = null
-
-        fun printHi() {
-            println("Hi")
-        }//	20240927215025GmGZZ订单号
-    }
 }

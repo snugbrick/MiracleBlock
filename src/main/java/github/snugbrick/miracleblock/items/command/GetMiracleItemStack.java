@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.items.command;
 
-import github.snugbrick.miracleblock.MainItemStack;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;

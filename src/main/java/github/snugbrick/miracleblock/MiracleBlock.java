@@ -8,16 +8,17 @@ import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
 import github.snugbrick.miracleblock.entity.cmmand.MiracleEntityGen;
+import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStarTrait;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import github.snugbrick.miracleblock.items.MainRegister;
-import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
 import github.snugbrick.miracleblock.items.skill.listener.EnergyGatheringLis;
 import github.snugbrick.miracleblock.items.skill.listener.Illusion;
 import github.snugbrick.miracleblock.items.skill.listener.IronCurtain;
 import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
-import github.snugbrick.miracleblock.items.weapon.listener.attackReachChanger;
+import github.snugbrick.miracleblock.items.weapon.listener.AttackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
 import github.snugbrick.miracleblock.tools.Debug;
@@ -77,7 +78,7 @@ public class MiracleBlock extends JavaPlugin {
 
         getLogger().info("正在注册物品");
         new MainRegister().mainReg();
-        new Debug(0, "已注册" + MiracleBlockItemStack.getAllMiracleBlockItemStack().size() + "个物品");
+        new Debug(0, "已注册" + MainItemStack.getAllMiracleBlockItemStack().size() + "个物品");
 
         try {
             getLogger().info("正在注册生物");
@@ -94,6 +95,15 @@ public class MiracleBlock extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        if (getServer().getPluginManager().getPlugin("Citizens") == null ||
+                !Objects.requireNonNull(getServer().getPluginManager().getPlugin("Citizens")).isEnabled()) {
+            new Debug(1, "Citizens未开启  MiraBlock正在卸载");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            net.citizensnpcs.api.CitizensAPI.getTraitFactory()
+                    .registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SecondBinaryStarTrait.class));
+        }
+
         getLogger().info("every thing is done,welcome to use MiraBlock!");
         new Debug(0, "  __  __ _           ____  _            _    ");
         new Debug(0, " |  \\/  (_)_ __ __ _| __ )| | ___   ___| | __");
@@ -105,7 +115,7 @@ public class MiracleBlock extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("MiracleBlock已经卸载");
-        //ProtocolLibrary.getProtocolManager().removePacketListeners(this);
+        ProtocolLibrary.getProtocolManager().removePacketListeners(this);
         if (Objects.nonNull(sqlManager)) {
             EasySQL.shutdownManager(sqlManager);
         }
@@ -118,7 +128,7 @@ public class MiracleBlock extends JavaPlugin {
     private void registerLis() {
         getServer().getPluginManager().registerEvents(new IslandDistributionLis(), this);
         getServer().getPluginManager().registerEvents(new MissionHandler(), this);
-        getServer().getPluginManager().registerEvents(new attackReachChanger(), this);
+        getServer().getPluginManager().registerEvents(new AttackReachChanger(), this);
         getServer().getPluginManager().registerEvents(new IronCurtain(), this);
         getServer().getPluginManager().registerEvents(new Illusion(), this);
         getServer().getPluginManager().registerEvents(new EnergyGatheringLis(), this);

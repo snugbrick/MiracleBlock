@@ -20,7 +20,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public class attackReachChanger implements Listener {
+public class AttackReachChanger implements Listener {
     @EventHandler//痉挛 弧光
     public void onPlayerInteract1(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR) {

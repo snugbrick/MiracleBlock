@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.items.weapon.command;
 
 import github.snugbrick.miracleblock.MiracleBlock;
-import github.snugbrick.miracleblock.MainItemStack;
+import github.snugbrick.miracleblock.items.MainItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

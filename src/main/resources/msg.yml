@@ -1,0 +1,26 @@
+#下面这行填写是谁说的话
+"Player":
+#下面这行填写消息的具体内容 注意前面加上- （空格也是要有的）
+  - "where is here"
+  - "i feel headache"
+
+"jimmy":
+  - "hello"
+  - "this is a island"
+ - "i dont know where is here either"
+ - "any way, take this sword, i made it by myself"
+
+#你也可以进行嵌套 例如这样
+"part_1":
+	"Mike":
+		- "Hi"
+		- "here is main island"
+		- "you can but anything you want here"
+	"jhon":
+		- "Hi"
+		- "here is iron forge"
+		- "you can but anything weapon you want here"
+"part_2":
+	"?":
+		- "i fell pain"
+		- "but i dont know where it came from"
