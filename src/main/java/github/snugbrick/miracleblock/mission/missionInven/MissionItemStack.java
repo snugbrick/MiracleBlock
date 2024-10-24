@@ -70,6 +70,7 @@ public class MissionItemStack extends ItemStack {
      * @param nbt    给图标添加的nbt标识
      * @param status 图标所代表的状态
      */
+    @Deprecated
     public static MissionItemStack toIcon(ItemStack icon, String nbt, MissionStatus status) {
         MissionItemStack mis = toIcon(icon, nbt);
         registerMissionStatus(mis, status);
@@ -77,6 +78,7 @@ public class MissionItemStack extends ItemStack {
         return mis;
     }
 
+    @Deprecated
     public static MissionItemStack toIcon(ItemStack icon, String nbt) {
         MissionItemStack mis = new MissionItemStack(icon, nbt, nbt);
         registerMissionItemStack(mis, nbt);
@@ -87,6 +89,4 @@ public class MissionItemStack extends ItemStack {
     public static boolean isSameIcon(MissionItemStack fromIcon, MissionItemStack aimIcon) {
         return fromIcon.equals(aimIcon);
     }
-
-
 }

@@ -2,10 +2,10 @@ package github.snugbrick.miracleblock.items.armor;
 
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
-import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
+import github.snugbrick.miracleblock.MainItemStack;
 import org.bukkit.inventory.ItemStack;
 
-public class ArmorItemStack extends MiracleBlockItemStack {
+public class ArmorItemStack extends MainItemStack {
     private double armor_prot;
     private double armor_toughness;
     private int promote_health;
@@ -18,7 +18,7 @@ public class ArmorItemStack extends MiracleBlockItemStack {
         this.itemLevel = itemLevel;
     }
 
-    public ArmorItemStack(MiracleBlockItemStack miracleBlockItemStack) {
+    public ArmorItemStack(MainItemStack miracleBlockItemStack) {
         super(miracleBlockItemStack);
     }
 

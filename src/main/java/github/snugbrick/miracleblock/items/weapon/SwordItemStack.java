@@ -2,12 +2,12 @@ package github.snugbrick.miracleblock.items.weapon;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import github.snugbrick.miracleblock.MainItemStack;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.CanInlaid;
 import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
-import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.tools.AboutNBT;
 import github.snugbrick.miracleblock.tools.AboutNameSpacedKey;
 import org.bukkit.NamespacedKey;
@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
+public class SwordItemStack extends MainItemStack implements CanInlaid {
     private double damage = 0;
     private Enchantment enchantment;
     private InlaidGemItemStack[] inlaidGems;
@@ -31,7 +31,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
     private WeaponItemWords itemWords;
-    private String displayName;
     private double customAttackRange;
     private double attackSpeed = 1;
 
@@ -41,10 +40,9 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         this.itemAttribute = itemAttribute;
         slot = inlaidSlot;
         inlaidGems = new InlaidGemItemStack[slot];
-        displayName = item.getType().toString();
     }
 
-    public SwordItemStack(MiracleBlockItemStack miracleBlockItemStack) {
+    public SwordItemStack(MainItemStack miracleBlockItemStack) {
         super(miracleBlockItemStack);
     }
 
@@ -53,7 +51,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
      *
      * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
-    public MiracleBlockItemStack buildItemLore() {
+    public MainItemStack buildSword() {
         ItemMeta meta = this.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (meta != null) {
@@ -124,7 +122,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
         ItemMeta meta = this.getItemMeta();
 
         if (meta != null && gain != null) {
-            meta.setDisplayName(this.itemWords.toString() + " " + displayName);
+            meta.setDisplayName(this.itemWords.toString() + " " + this.getItemMeta().getDisplayName());
             this.setDamage(this.damage *= gain.getGainDamage());
             this.setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed());
             this.setCustomAttackRange(this.customAttackRange += gain.getGainReach());
@@ -142,7 +140,7 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
                 .setDamage(this.getDamage())
                 .setAttackSpeed(this.getAttackSpeed())
                 .setInlay(Arrays.stream(this.getInlaidGemItemStack()).iterator())
-                .setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
+                //.setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
                 .setCustomAttackRange(this.getCustomAttackRange())
                 .setEnchantments(this.getEnchantment())
                 .setLore(this.getItemMeta().getLore().stream().toArray(String[]::new));
@@ -172,15 +170,6 @@ public class SwordItemStack extends MiracleBlockItemStack implements CanInlaid {
 
     public SwordItemStack setDamage(double damage) {
         this.damage = damage;
-        return this;
-    }
-
-    public SwordItemStack setName(String name) {
-        ItemMeta itemMeta = this.getItemMeta();
-        if (itemMeta != null) itemMeta.setDisplayName(name);
-        this.setItemMeta(itemMeta);
-        displayName = name;
-
         return this;
     }
 

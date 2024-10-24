@@ -1,22 +1,21 @@
 package github.snugbrick.miracleblock.items.InlayItemStack;
 
+import github.snugbrick.miracleblock.MainItemStack;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
-import github.snugbrick.miracleblock.items.MiracleBlockItemStack;
 import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-public class InlaidGemItemStack extends MiracleBlockItemStack {
+import java.util.Objects;
+
+public class InlaidGemItemStack extends MainItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
-    private String displayName;
 
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
         super(AboutNBT.setCustomNBT(item, key, value), key, value);
         this.level = level;
         this.itemAttribute = itemAttribute;
-        displayName = item.getType().toString();
     }
 
     /**
@@ -24,7 +23,7 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
      *
      * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
-    public MiracleBlockItemStack buildItemLore() {
+    public MainItemStack buildItemLore() {
         if (itemAttribute != null) {
             this.setLore("<=======物品属性=======>");
             this.setLore(this.itemAttribute.toString());
@@ -33,14 +32,6 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
             this.setLore("<=======物品等级=======>");
             this.setLore(this.level.toString());
         }
-        return this;
-    }
-
-    public InlaidGemItemStack setName(String displayName) {
-        this.displayName = displayName;
-        ItemMeta itemMeta = this.getItemMeta();
-        if (itemMeta != null) itemMeta.setDisplayName(displayName);
-        this.setItemMeta(itemMeta);
         return this;
     }
 
@@ -56,11 +47,11 @@ public class InlaidGemItemStack extends MiracleBlockItemStack {
 
     @Override
     public String toString() {
-        return displayName;
+        return this.getDisplayName();
     }
 
     public String getDisplayName() {
-        return displayName;
+        return Objects.requireNonNull(this.getItemMeta()).getDisplayName();
     }
 
     public ItemAttribute getItemAttribute() {
