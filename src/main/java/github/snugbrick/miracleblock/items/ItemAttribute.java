@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.items.ItemAdditional;
+package github.snugbrick.miracleblock.items;
 
 /**
  * 属性
@@ -26,6 +26,19 @@ public enum ItemAttribute {
         return null;
     }
 
+    public static ItemAttribute getByByte(byte b) {
+        return getByNumber(b & 0xFF);
+    }
+
+    public static byte getAttributeByByte(ItemAttribute attribute) {
+        for (ItemAttribute attributes : ItemAttribute.values()) {
+            if (attributes.equals(attribute)) {
+                return (byte) attributes.attribute;
+            }
+        }
+        return 0;
+    }
+
     public int getAttribute() {
         return attribute;
     }
@@ -45,6 +58,7 @@ public enum ItemAttribute {
         }
         return null;
     }
+
     @Override
     public String toString() {
         switch (this.attribute) {

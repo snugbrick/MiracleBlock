@@ -18,28 +18,41 @@ public enum WeaponItemWords {
     POWERLESS(12),
     SHATTERED(13);
 
-    private final int level;
+    private final int words;
 
-    WeaponItemWords(int level) {
-        this.level = level;
+    WeaponItemWords(int words) {
+        this.words = words;
     }
 
     public int getLevel() {
-        return level;
+        return words;
     }
 
-    public static WeaponItemWords getByLevel(int level) {
+    public static WeaponItemWords getByInt(int words) {
         for (WeaponItemWords item : WeaponItemWords.values()) {
-            if (item.level == level) {
+            if (item.words == words) {
                 return item;
             }
         }
         return null;
     }
 
+    public static WeaponItemWords getByByte(byte b) {
+        return getByInt(b & 0xFF);
+    }
+
+    public static byte getWordsByByte(WeaponItemWords words) {
+        for (WeaponItemWords theWords : WeaponItemWords.values()) {
+            if (theWords.equals(words)) {
+                return (byte) theWords.words;
+            }
+        }
+        return 0;
+    }
+
     public static WeaponItemWords getRandomItemWords(SwordItemStack swordItemStack) {
         int randomLevel = new Random().nextInt(14);
-        return getByLevel(randomLevel);
+        return getByInt(randomLevel);
     }
 
     public GainPackage getGain(int level) {
@@ -77,7 +90,7 @@ public enum WeaponItemWords {
 
     @Override
     public String toString() {
-        switch (this.level) {
+        switch (this.words) {
             case 0:
                 return "传说的";
             case 1:
