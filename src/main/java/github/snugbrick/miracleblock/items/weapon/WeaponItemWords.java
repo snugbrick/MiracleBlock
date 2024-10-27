@@ -37,17 +37,22 @@ public enum WeaponItemWords {
         return null;
     }
 
-    public static WeaponItemWords getByByte(byte b) {
-        return getByInt(b & 0xFF);
-    }
-
-    public static byte getWordsByByte(WeaponItemWords words) {
+    public static WeaponItemWords getByString(String name) {
         for (WeaponItemWords theWords : WeaponItemWords.values()) {
-            if (theWords.equals(words)) {
-                return (byte) theWords.words;
+            if (theWords.toString() != null && theWords.toString().equals(name)) {
+                return theWords;
             }
         }
-        return 0;
+        return null;
+    }
+
+    public static String getStringByWords(WeaponItemWords words) {
+        for (WeaponItemWords theWords : WeaponItemWords.values()) {
+            if (theWords.equals(words)) {
+                return theWords.toString();
+            }
+        }
+        return null;
     }
 
     public static WeaponItemWords getRandomItemWords(SwordItemStack swordItemStack) {

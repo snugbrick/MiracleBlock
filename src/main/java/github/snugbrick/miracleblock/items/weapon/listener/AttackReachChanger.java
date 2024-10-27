@@ -53,9 +53,9 @@ public class AttackReachChanger implements Listener {
 
                         double customAttackRange = Double.parseDouble(range);
                         customAttackRange -= 0.5;
-                        double damage = Integer.parseInt(damageS);
+                        double damage = Double.parseDouble(damageS);
                         //开始玩家坐标
-                        Location startLocation = player.getEyeLocation().add(player.getLocation().getDirection().normalize().multiply(0.5));
+                        Location startLocation = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(0.5));
                         //获得玩家视线
                         RayTraceResult result = player.getWorld().rayTraceEntities(startLocation,
                                 player.getLocation().getDirection(), customAttackRange);

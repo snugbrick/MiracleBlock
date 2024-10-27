@@ -1,9 +1,8 @@
 package github.snugbrick.miracleblock.items.InlayItemStack;
 
+import github.snugbrick.miracleblock.items.ItemAttribute;
+import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MainItemStack;
-import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
-import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
-import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
@@ -18,6 +17,10 @@ public class InlaidGemItemStack extends MainItemStack {
         this.itemAttribute = itemAttribute;
     }
 
+    public InlaidGemItemStack(MainItemStack item) {
+        super(item);
+    }
+
     /**
      * 请在每个注册物品最后使用该方法 使物品得以完善
      *
@@ -25,12 +28,12 @@ public class InlaidGemItemStack extends MainItemStack {
      */
     public MainItemStack buildItemLore() {
         if (itemAttribute != null) {
-            this.setLore("<=======物品属性=======>");
-            this.setLore(this.itemAttribute.toString());
+            this.setLore(false, "<=======物品属性=======>");
+            this.setLore(false, this.itemAttribute.toString());
         }
         if (level != null) {
-            this.setLore("<=======物品等级=======>");
-            this.setLore(this.level.toString());
+            this.setLore(false, "<=======物品等级=======>");
+            this.setLore(false, this.level.toString());
         }
         return this;
     }

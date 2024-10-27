@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class AboutNameSpacedKey {
+public class NSK {
     /**
      * 设置物品的NameSpacedKey
      *
@@ -30,8 +30,8 @@ public class AboutNameSpacedKey {
     /**
      * 检查键是否存在
      *
-     * @param item          被检查物品
-     * @param key           被检查NameSpacedKey
+     * @param item 被检查物品
+     * @param key  被检查NameSpacedKey
      * @return boolean
      */
     public static boolean hasNameSpacedKey(ItemStack item, NamespacedKey key) {
@@ -61,6 +61,6 @@ public class AboutNameSpacedKey {
                 return container.get(key, PersistentDataType.STRING);
             }
         }
-        return null;
+        return "null";
     }
 }

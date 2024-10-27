@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
  * @author MiracleUR -> github.com/snugbrick
  * @version 1.0.0 2024.08.26 05:10
  */
-public class AboutNBT {
+public class NBT {
 
     public static ItemStack setCustomNBT(ItemStack item, String key, String value) {
         net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);

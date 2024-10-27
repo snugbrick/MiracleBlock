@@ -1,14 +1,10 @@
 package github.snugbrick.miracleblock.items;
 
 import github.snugbrick.miracleblock.MiracleBlock;
-import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
-import github.snugbrick.miracleblock.items.weapon.WeaponItemWords;
-import github.snugbrick.miracleblock.tools.AboutNameSpacedKey;
+import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -18,7 +14,7 @@ public class MainItemStack extends ItemStack {
     private int model;
 
     public MainItemStack(ItemStack item, String key, String value) {
-        super(AboutNameSpacedKey.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
+        super(NSK.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
     }
 
     public MainItemStack(ItemStack item) {
@@ -26,16 +22,24 @@ public class MainItemStack extends ItemStack {
     }
 
     /**
-     * 设置物品简介
+     * 设置物品简介 第一个参数设置是否覆盖
      *
      * @param lore 内容
      */
-    public MainItemStack setLore(String... lore) {
+    public MainItemStack setLore(Boolean isCover, String... lore) {
         ItemMeta itemMeta = this.getItemMeta();
-        List<String> allLore;
-        if (itemMeta != null) {
-            allLore = new ArrayList<>(Arrays.asList(lore));
-            itemMeta.setLore(allLore);
+        if (itemMeta != null && !isCover) {
+            List<String> allLore = new ArrayList<>(Arrays.asList(lore));
+            List<String> originLore = itemMeta.getLore();
+            if (originLore != null) {
+                originLore.addAll(allLore);
+                itemMeta.setLore(originLore);
+            } else {
+                itemMeta.setLore(allLore);
+            }
+        } else {
+            if (itemMeta != null)
+                itemMeta.setLore(Arrays.asList(lore));
         }
         this.setItemMeta(itemMeta);
         return this;
@@ -82,15 +86,8 @@ public class MainItemStack extends ItemStack {
     }
 
     public static MainItemStack getItem(String key) {
-        MainItemStack miracleItem = allMiracleBlockItemStack.get(key);
-        ItemMeta miracleItemMeta = miracleItem.getItemMeta();
-        PersistentDataContainer container = Objects.requireNonNull(miracleItemMeta).getPersistentDataContainer();
-
-        if (container.has(new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"), PersistentDataType.STRING)) {
-            SwordItemStack swordItemStack = (SwordItemStack) miracleItem;
-            return swordItemStack.setItemWords(WeaponItemWords.getRandomItemWords(swordItemStack)).addGain();
-        }
-        return miracleItem;
+        if (key == null) return null;
+        return allMiracleBlockItemStack.get(key) == null ? null : allMiracleBlockItemStack.get(key);
     }
 
     public static Map<String, MainItemStack> getAllMiracleBlockItemStack() {

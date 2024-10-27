@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@Deprecated
 public class SetInlaidCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -2,7 +2,6 @@ package github.snugbrick.miracleblock.mission.missionInven;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.mission.MissionStatus;
-import github.snugbrick.miracleblock.tools.AboutNBT;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

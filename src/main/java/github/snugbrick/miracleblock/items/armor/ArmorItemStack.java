@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.items.armor;
 
-import github.snugbrick.miracleblock.items.ItemAdditional.ItemAttribute;
-import github.snugbrick.miracleblock.items.ItemAdditional.ItemLevel;
+import github.snugbrick.miracleblock.items.ItemAttribute;
+import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MainItemStack;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,11 +1,17 @@
 package github.snugbrick.miracleblock;
 
+import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
+import github.snugbrick.miracleblock.tools.Debug;
+import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.RayTraceResult;
 
 public class test implements Listener {
@@ -33,6 +39,28 @@ public class test implements Listener {
                     // 超出自定义攻击距离，取消攻击
                     event.setCancelled(true);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerAttack(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+            new Debug(0, "你所持有的物品是：" + itemInMainHand.toString() + "它属于ItemStack");
+
+            MainItemStack mainItemStack = new MainItemStack(itemInMainHand);
+            new Debug(0, "2你所持有的物品是：" + mainItemStack.toString() + "它属于MainItemStack");
+
+            if (NBT.hasCustomNBT(mainItemStack, "miracle_sword")) {
+                SwordItemStack swordItemStack = new SwordItemStack(mainItemStack);
+                new Debug(0, "3你所持有的物品是：" + swordItemStack.toString() + "它属于SwordItemStack");
+                new Debug(0, "其level是：" + swordItemStack.getLevel());
+                new Debug(0, "其attackDamage是：" + swordItemStack.getDamage());
+                new Debug(0, "其attackSpeed是：" + swordItemStack.getAttackSpeed());
+                new Debug(0, "其itemWords是：" + swordItemStack.getItemWords().toString());
+                new Debug(0, "其itemAttribute是：" + swordItemStack.getItemAttribute().toString());
             }
         }
     }

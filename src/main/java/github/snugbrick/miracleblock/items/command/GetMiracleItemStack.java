@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@Deprecated
 public class GetMiracleItemStack implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
