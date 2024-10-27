@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock;
 
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.tools.Debug;
 import github.snugbrick.miracleblock.tools.NBT;
@@ -50,7 +50,7 @@ public class test implements Listener {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             new Debug(0, "你所持有的物品是：" + itemInMainHand.toString() + "它属于ItemStack");
 
-            MainItemStack mainItemStack = new MainItemStack(itemInMainHand);
+            MiraBlockItemStack mainItemStack = new MiraBlockItemStack(itemInMainHand);
             new Debug(0, "2你所持有的物品是：" + mainItemStack.toString() + "它属于MainItemStack");
 
             if (NBT.hasCustomNBT(mainItemStack, "miracle_sword")) {

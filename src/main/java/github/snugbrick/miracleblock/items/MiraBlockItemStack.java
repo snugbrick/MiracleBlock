@@ -9,15 +9,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class MainItemStack extends ItemStack {
-    private static final Map<String, MainItemStack> allMiracleBlockItemStack = new HashMap<>();
+public class MiraBlockItemStack extends ItemStack {
+    private static final Map<String, MiraBlockItemStack> allMiracleBlockItemStack = new HashMap<>();
     private int model;
 
-    public MainItemStack(ItemStack item, String key, String value) {
+    public MiraBlockItemStack(ItemStack item, String key, String value) {
         super(NSK.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
     }
 
-    public MainItemStack(ItemStack item) {
+    public MiraBlockItemStack(ItemStack item) {
         super(item);
     }
 
@@ -26,7 +26,7 @@ public class MainItemStack extends ItemStack {
      *
      * @param lore 内容
      */
-    public MainItemStack setLore(Boolean isCover, String... lore) {
+    public MiraBlockItemStack setLore(Boolean isCover, String... lore) {
         ItemMeta itemMeta = this.getItemMeta();
         if (itemMeta != null && !isCover) {
             List<String> allLore = new ArrayList<>(Arrays.asList(lore));
@@ -45,7 +45,7 @@ public class MainItemStack extends ItemStack {
         return this;
     }
 
-    public MainItemStack setName(String name) {
+    public MiraBlockItemStack setName(String name) {
         ItemMeta itemMeta = this.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setDisplayName(name);
@@ -61,7 +61,7 @@ public class MainItemStack extends ItemStack {
      *
      * @param num 序号
      */
-    public MainItemStack setItemModelData(int num) {
+    public MiraBlockItemStack setItemModelData(int num) {
         this.model = num;
         ItemMeta itemMeta = this.getItemMeta();
         if (itemMeta != null) itemMeta.setCustomModelData(num);
@@ -71,13 +71,13 @@ public class MainItemStack extends ItemStack {
 
     @Nonnull
     @Override
-    public MainItemStack clone() {
-        MainItemStack aimItem = (MainItemStack) super.clone();
+    public MiraBlockItemStack clone() {
+        MiraBlockItemStack aimItem = (MiraBlockItemStack) super.clone();
         aimItem.setItemModelData(this.model);
         return aimItem;
     }
 
-    public static void register(MainItemStack aimItem, String key) {
+    public static void register(MiraBlockItemStack aimItem, String key) {
         allMiracleBlockItemStack.put(key, aimItem);
     }
 
@@ -85,12 +85,12 @@ public class MainItemStack extends ItemStack {
         allMiracleBlockItemStack.put(key, this);
     }
 
-    public static MainItemStack getItem(String key) {
+    public static MiraBlockItemStack getItem(String key) {
         if (key == null) return null;
         return allMiracleBlockItemStack.get(key) == null ? null : allMiracleBlockItemStack.get(key);
     }
 
-    public static Map<String, MainItemStack> getAllMiracleBlockItemStack() {
+    public static Map<String, MiraBlockItemStack> getAllMiracleBlockItemStack() {
         return allMiracleBlockItemStack;
     }
 }

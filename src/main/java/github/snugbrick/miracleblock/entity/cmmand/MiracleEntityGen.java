@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.entity.cmmand;
 
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,7 +32,7 @@ public class MiracleEntityGen implements TabExecutor {
                     //world.addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
                     break;
                 case "query":
-                    sender.sendMessage(MainItemStack.getAllMiracleBlockItemStack().toString());
+                    sender.sendMessage(MiraBlockItemStack.getAllMiracleBlockItemStack().toString());
                     break;
             }
         }

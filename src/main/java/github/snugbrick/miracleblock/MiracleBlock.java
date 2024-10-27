@@ -11,7 +11,7 @@ import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStarTrait;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.MainRegister;
 import github.snugbrick.miracleblock.items.skill.listener.EnergyGatheringLis;
 import github.snugbrick.miracleblock.items.skill.listener.Illusion;
@@ -78,7 +78,7 @@ public class MiracleBlock extends JavaPlugin {
 
         getLogger().info("正在注册物品");
         new MainRegister().mainReg();
-        new Debug(0, "已注册" + MainItemStack.getAllMiracleBlockItemStack().size() + "个物品");
+        new Debug(0, "已注册" + MiraBlockItemStack.getAllMiracleBlockItemStack().size() + "个物品");
 
         try {
             getLogger().info("正在注册生物");

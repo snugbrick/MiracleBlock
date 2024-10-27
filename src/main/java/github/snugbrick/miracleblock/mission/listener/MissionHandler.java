@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.mission.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.mission.MissionStatus;
 import github.snugbrick.miracleblock.mission.MissionStatusHandler;
 import github.snugbrick.miracleblock.mission.PlayersMissionStatus;
@@ -96,8 +96,6 @@ public class MissionHandler implements Listener {
         ItemStack currentItem = e.getCurrentItem();
 
         if (currentItem != null && NBT.hasCustomNBT(currentItem, "MissionIcons")) {
-            //player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
-
             MissionStatus missionStatus = MissionStatusHandler.getItemStackStatus(currentItem);
             MissionItemStack clickedIcon = MissionStatusHandler.getMissionIcon(missionStatus);
 
@@ -110,7 +108,7 @@ public class MissionHandler implements Listener {
                 MissionInventory missionInventory = new MissionInventory(player);
 
                 //领取奖励："钝剑" & 设置为已收集
-                player.getInventory().addItem(MainItemStack.getItem("dull_sword"));
+                player.getInventory().addItem(MiraBlockItemStack.getItem("dull_sword"));
                 PlayersMissionStatus.setPlayerMissionStatus(player,
                         LoadLangFiles.getMessageList("MissionName").get(e.getSlot()), MissionStatus.COLLECTED);
 

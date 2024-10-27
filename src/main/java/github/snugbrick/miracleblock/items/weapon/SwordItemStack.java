@@ -7,7 +7,7 @@ import github.snugbrick.miracleblock.items.CanInlaid;
 import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.tools.NBT;
 import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SwordItemStack extends MainItemStack implements CanInlaid {
+public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     private double damage = 0;//
     private Enchantment enchantment;
     private InlaidGemItemStack[] inlaidGems;
@@ -45,7 +45,7 @@ public class SwordItemStack extends MainItemStack implements CanInlaid {
         inlaidGems = new InlaidGemItemStack[slot + 1];
     }
 
-    public SwordItemStack(MainItemStack miracleBlockItemStack) {
+    public SwordItemStack(MiraBlockItemStack miracleBlockItemStack) {
         super(miracleBlockItemStack);
         ItemMeta meta = miracleBlockItemStack.getItemMeta();
         if (meta != null) {
@@ -64,7 +64,7 @@ public class SwordItemStack extends MainItemStack implements CanInlaid {
                 for (int i = 0; i < slot; i++) {
                     String inlaidKey = getKeyValue("inlaid" + i);
                     if (inlaidKey != null) {
-                        MainItemStack item = MainItemStack.getItem(inlaidKey);
+                        MiraBlockItemStack item = MiraBlockItemStack.getItem(inlaidKey);
                         inlaidGems[i] = new InlaidGemItemStack(item);
                     } else inlaidGems[i] = null;
                 }
@@ -78,7 +78,7 @@ public class SwordItemStack extends MainItemStack implements CanInlaid {
      *
      * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
-    public MainItemStack buildSword() {
+    public MiraBlockItemStack buildSword() {
         //添加增益
         this.addGain();
         ItemMeta meta = this.getItemMeta();

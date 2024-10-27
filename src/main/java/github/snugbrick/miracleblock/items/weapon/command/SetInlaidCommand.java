@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.items.weapon.command;
 
 import github.snugbrick.miracleblock.MiracleBlock;
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,13 +19,13 @@ public class SetInlaidCommand implements TabExecutor {
             switch (args[0]) {
                 case "let-into":
                     ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
-                    MainItemStack miracleBlockItemStack = new MainItemStack(itemStack);
+                    MiraBlockItemStack miracleBlockItemStack = new MiraBlockItemStack(itemStack);
                     SwordItemStack swordItemStack = new SwordItemStack(miracleBlockItemStack);
                     MiracleBlock.getInstance().getLogger().info(swordItemStack.toString());
                     //swordItemStack.setInlay();
                     break;
                 case "take-out":
-                    sender.sendMessage(MainItemStack.getAllMiracleBlockItemStack().toString());
+                    sender.sendMessage(MiraBlockItemStack.getAllMiracleBlockItemStack().toString());
                     break;
             }
         }

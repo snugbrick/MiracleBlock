@@ -2,12 +2,12 @@ package github.snugbrick.miracleblock.items.InlayItemStack;
 
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
-import github.snugbrick.miracleblock.items.MainItemStack;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class InlaidGemItemStack extends MainItemStack {
+public class InlaidGemItemStack extends MiraBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
 
@@ -17,7 +17,7 @@ public class InlaidGemItemStack extends MainItemStack {
         this.itemAttribute = itemAttribute;
     }
 
-    public InlaidGemItemStack(MainItemStack item) {
+    public InlaidGemItemStack(MiraBlockItemStack item) {
         super(item);
     }
 
@@ -26,7 +26,7 @@ public class InlaidGemItemStack extends MainItemStack {
      *
      * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
-    public MainItemStack buildItemLore() {
+    public MiraBlockItemStack buildItemLore() {
         if (itemAttribute != null) {
             this.setLore(false, "<=======物品属性=======>");
             this.setLore(false, this.itemAttribute.toString());
