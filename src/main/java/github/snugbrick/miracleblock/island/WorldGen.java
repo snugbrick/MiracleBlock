@@ -117,7 +117,7 @@ public class WorldGen {
                             offsetX * offset,
                             15,
                             offsetZ * offset),
-                    "jimmy", "MiracleUR_PtII");
+                    "jimmy", "MiracleUR_PtII", true);
             new Debug(0, offsetX * offset + " " + offsetZ * offset + " 的jimmy已经生成");
             offsetX--;
             if (i == length - 1) {

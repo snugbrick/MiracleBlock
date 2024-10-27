@@ -1,6 +1,5 @@
 package github.snugbrick.miracleblock.entity.cmmand;
 
-import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar;
 import github.snugbrick.miracleblock.items.MainItemStack;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.command.Command;
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@Deprecated
 public class MiracleEntityGen implements TabExecutor {
     //Bukkit World to NMS World
     //org.bukkit.World bukkitWorld = nmsWorld.getWorld();
@@ -23,11 +23,11 @@ public class MiracleEntityGen implements TabExecutor {
 
             switch (args[0]) {
                 case "Second_Binary_Star":
-                    SecondBinaryStar.Companion.spawnNPC("Second_Binary_Star",((Player) sender).getLocation());
+                    //SecondBinaryStar.Companion.spawnNPC("Second_Binary_Star", ((Player) sender).getLocation(),);
                     //MiracleEntitySlime entityGen = new MiracleEntitySlime(((Player) sender).getLocation());
 
                     //entityGen.setPosition(((Player) sender).getLocation().getX(),
-                            //((Player) sender).getLocation().getY(), ((Player) sender).getLocation().getZ());
+                    //((Player) sender).getLocation().getY(), ((Player) sender).getLocation().getZ());
 
                     //world.addEntity(new MiracleEntitySlime(((Player) sender).getPlayer().getLocation()), CreatureSpawnEvent.SpawnReason.CUSTOM);
                     break;

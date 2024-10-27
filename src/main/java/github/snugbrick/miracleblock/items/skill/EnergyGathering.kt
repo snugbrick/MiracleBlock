@@ -24,20 +24,31 @@ class EnergyGathering(
     private val maxDistance = 160.0
 
     private val arrowLocation = arrow.location
-    private val shooter = arrow.shooter as Entity
+    private val shooter = arrow.shooter as Entity as LivingEntity
     private val originDamage = arrow.damage
+
     override fun runTasks() {
         arrow.damage += addDamage
         arrow.setGravity(false);
         if (force == 1F) {
-            val result: RayTraceResult? = arrow.world.rayTraceEntities(
-                arrow.location,
-                vector,
+            val result: RayTraceResult? = shooter.world.rayTraceEntities(
+                shooter.eyeLocation.add(
+                    shooter.eyeLocation.direction.normalize()
+                        .multiply(0.5)
+                ),
+                shooter.eyeLocation.direction,
                 maxDistance
             )
+            //
+            //println("RayTrace Result: $result")
             if (result?.hitEntity != null && result.hitEntity is LivingEntity) {
+                if (result.hitEntity is Player)
+                    if ((result.hitEntity as Player).name == shooter.name) return
+                //
+                //Debug(0, "命中了")
                 val target = result.hitEntity as LivingEntity
-
+                //
+                //println("Hit target: ${target.type}")
                 val hitDamage = originDamage + addDamage * 2
                 target.damage(hitDamage)
 
@@ -70,7 +81,9 @@ class EnergyGathering(
 
                 // 垂直于飞行向量的两个向量
                 val perpendicular1 = getPerpendicularVector(vector)
-                val perpendicular2: Vector = vector.clone().crossProduct(perpendicular1).normalize()
+                val perpendicular2: Vector = vector.clone()
+                    .crossProduct(perpendicular1)
+                    .normalize()
 
                 // 生成粒子圈
                 generateParticleCircle(arrow.location, perpendicular1, perpendicular2, maxRadius);
@@ -83,7 +96,8 @@ class EnergyGathering(
         if (force == 1F) {
             val directionOffset = vector.normalize()//.multiply(0.2)
             for (i in 1..maxDistance.toInt() + 1) {
-                val everyLocation = arrowLocation.clone().add(directionOffset.multiply(i))
+                val everyLocation = arrowLocation.clone()
+                    .add(directionOffset.multiply(i))
                 for (a in 1..31) {
                     everyLocation.world?.spawnParticle(
                         Particle.REDSTONE, everyLocation.add(directionOffset.multiply(1.0 + a / 30)), 0,
@@ -129,12 +143,19 @@ class EnergyGathering(
         for (i in 0 until points) {
             val angle = i * angleStep
             // 圆上每个点的坐标
-            val offset = perpendicular1.clone().multiply(cos(angle)).add(perpendicular2.clone().multiply(sin(angle)))
+            val offset = perpendicular1.clone()
+                .multiply(cos(angle))
+                .add(
+                    perpendicular2.clone()
+                        .multiply(sin(angle))
+                )
                 .multiply(radius)
 
-            val newVec = vector.normalize().multiply(0.5)
+            val newVec = vector.normalize()
+                .multiply(0.5)
             location.world?.spawnParticle(
-                Particle.REDSTONE, location.clone().add(offset), 0,
+                Particle.REDSTONE, location.clone()
+                    .add(offset), 0,
                 newVec.x, newVec.y, newVec.z, 0.1, Particle.DustOptions(Color.fromRGB(205, 255, 247), 1.5f)
             )
         }

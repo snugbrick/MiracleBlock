@@ -2,6 +2,7 @@ package github.snugbrick.miracleblock.island.listener;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.SQLMethods;
+import github.snugbrick.miracleblock.api.event.Player2IslandEvent;
 import github.snugbrick.miracleblock.island.IslandRegister;
 import github.snugbrick.miracleblock.tools.Debug;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,8 +22,9 @@ import java.util.UUID;
  * @version 1.0.0 2024.08.25 17:07
  */
 public class IslandDistributionLis implements Listener {
+
     @EventHandler(priority = EventPriority.LOWEST)
-    public void newPlayerJoinLis(PlayerJoinEvent event) throws SQLException {
+    public void newPlayerJoinLis(Player2IslandEvent event) throws SQLException {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
         World world = Bukkit.getWorld("player_world");

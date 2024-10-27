@@ -26,8 +26,13 @@ public enum ItemAttribute {
         return null;
     }
 
-    public static ItemAttribute getByByte(byte b) {
-        return getByNumber(b & 0xFF);
+    public static ItemAttribute getByString(String name) {
+        for (ItemAttribute attributes : ItemAttribute.values()) {
+            if (attributes.toString() != null && attributes.toString().equals(name)) {
+                return attributes;
+            }
+        }
+        return null;
     }
 
     public static byte getAttributeByByte(ItemAttribute attribute) {

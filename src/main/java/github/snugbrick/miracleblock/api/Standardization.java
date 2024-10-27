@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.api;
 
-import github.snugbrick.miracleblock.tools.AboutNBT;
+import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 @Deprecated
 public class Standardization {
     /**
-     *  标准化物品 已弃用
+     * 标准化物品 已弃用
      */
     public static ItemStack missionStandardization(ItemStack itemStack, String nbtKey, String nbtValue) {
-        ItemStack sendItem = AboutNBT.setCustomNBT(itemStack, nbtKey, nbtValue);
-        return AboutNBT.setCustomNBT(sendItem, "MissionIcons", "MissionIcons");
+        ItemStack sendItem = NBT.setCustomNBT(itemStack, nbtKey, nbtValue);
+        return NBT.setCustomNBT(sendItem, "MissionIcons", "MissionIcons");
     }
 }

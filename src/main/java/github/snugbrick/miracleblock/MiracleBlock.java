@@ -4,20 +4,18 @@ import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import github.snugbrick.miracleblock.command.CommonCommand;
 import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
-import github.snugbrick.miracleblock.entity.cmmand.MiracleEntityGen;
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStarTrait;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.MainItemStack;
 import github.snugbrick.miracleblock.items.MainRegister;
-import github.snugbrick.miracleblock.items.command.GetMiracleItemStack;
 import github.snugbrick.miracleblock.items.skill.listener.EnergyGatheringLis;
 import github.snugbrick.miracleblock.items.skill.listener.Illusion;
 import github.snugbrick.miracleblock.items.skill.listener.IronCurtain;
-import github.snugbrick.miracleblock.items.weapon.command.SetInlaidCommand;
 import github.snugbrick.miracleblock.items.weapon.listener.AttackReachChanger;
 import github.snugbrick.miracleblock.mission.listener.MissionHandler;
 import github.snugbrick.miracleblock.mission.missionInven.MissionIconRegister;
@@ -32,7 +30,9 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 /**
- * 目前依赖protocol easysql mysql驱动 Citizens
+ * 目前依赖protocol easysql mysql驱动 Citizens SuperVanish
+ * <p>
+ * miracleur1314@outlook.com
  */
 public class MiracleBlock extends JavaPlugin {
     private static JavaPlugin instance;
@@ -132,14 +132,15 @@ public class MiracleBlock extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new IronCurtain(), this);
         getServer().getPluginManager().registerEvents(new Illusion(), this);
         getServer().getPluginManager().registerEvents(new EnergyGatheringLis(), this);
+        getServer().getPluginManager().registerEvents(new test(), this);
     }
 
     private void registerCommand() {
         getCommand("totemplateworld").setExecutor(new ToTemplateWorld());
         getCommand("db-easy-sql").setExecutor(new SqlCommands());
-        getCommand("get-miracle-item").setExecutor(new GetMiracleItemStack());
-        getCommand("set-item-inlaid").setExecutor(new SetInlaidCommand());
-        getCommand("miracle-entity-gen").setExecutor(new MiracleEntityGen());
+        getCommand("mb").setExecutor(new CommonCommand());
+        //getCommand("set-item-inlaid").setExecutor(new SetInlaidCommand());
+        //getCommand("miracle-entity-gen").setExecutor(new MiracleEntityGen());
     }
 
     private void initSql() {

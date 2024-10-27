@@ -17,21 +17,12 @@ public enum ItemLevel {
         this.level = level;
     }
 
-    public static ItemLevel getByByte(byte b) {
+    public static ItemLevel getByString(String name) {
         for (ItemLevel levels : ItemLevel.values()) {
-            if (levels.level == b) {
+            if (levels.toString().equals(name)) {
                 return levels;
             }
         }
         return null;
-    }
-
-    public static byte getLevelByByte(ItemLevel itemLevel) {
-        for (ItemLevel levels : ItemLevel.values()) {
-            if (levels.equals(itemLevel)) {
-                return (byte) levels.level;
-            }
-        }
-        return 0;
     }
 }

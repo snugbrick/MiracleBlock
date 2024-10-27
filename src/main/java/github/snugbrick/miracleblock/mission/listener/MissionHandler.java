@@ -8,8 +8,8 @@ import github.snugbrick.miracleblock.mission.PlayersMissionStatus;
 import github.snugbrick.miracleblock.mission.missionInven.MissionInventory;
 import github.snugbrick.miracleblock.mission.missionInven.MissionItemStack;
 import github.snugbrick.miracleblock.mission.msg.MissionMsg;
-import github.snugbrick.miracleblock.tools.AboutNBT;
 import github.snugbrick.miracleblock.tools.LoadLangFiles;
+import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -46,7 +46,7 @@ public class MissionHandler implements Listener {
 
         if (!player.hasPlayedBefore()) {
             //给予任务书
-            ItemStack mission = AboutNBT.setCustomNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
+            ItemStack mission = NBT.setCustomNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
             ItemMeta itemMeta = mission.getItemMeta();
             if (itemMeta != null) {
                 itemMeta.setDisplayName("任务书");
@@ -73,7 +73,7 @@ public class MissionHandler implements Listener {
             ItemStack item = e.getItem();
             player = e.getPlayer();
 
-            if (item != null && AboutNBT.hasCustomNBT(item, "MissionBook")) {
+            if (item != null && NBT.hasCustomNBT(item, "MissionBook")) {
                 MissionInventory missionInventory = new MissionInventory(player);
 
                 if (!PlayersMissionStatus.isCOLLECTED(player, LoadLangFiles.getMessageList("MissionName").get(0))) {
@@ -95,7 +95,7 @@ public class MissionHandler implements Listener {
 
         ItemStack currentItem = e.getCurrentItem();
 
-        if (currentItem != null && AboutNBT.hasCustomNBT(currentItem, "MissionIcons")) {
+        if (currentItem != null && NBT.hasCustomNBT(currentItem, "MissionIcons")) {
             //player.getInventory().addItem(MiracleBlockItemStack.getMiracleBlockItemStack("dull_sword"));
 
             MissionStatus missionStatus = MissionStatusHandler.getItemStackStatus(currentItem);
@@ -116,9 +116,9 @@ public class MissionHandler implements Listener {
 
                 missionInventory.openMissionInventory(player);
                 player.sendMessage("您已收集该任务");
-            } else if(msh.isMissionCollected(player,clickedIcon)){
+            } else if (msh.isMissionCollected(player, clickedIcon)) {
                 player.sendMessage("您已收集该任务");
-            }else {
+            } else {
                 player.sendMessage("您未完成该任务");
             }
             e.setCancelled(true);
@@ -138,7 +138,7 @@ public class MissionHandler implements Listener {
     private static void cleanInventory(Player player) {
         for (final ItemStack currentItem : player.getInventory().getContents()) {
             if (currentItem == null) continue;
-            if (!AboutNBT.hasCustomNBT(currentItem, "MissionIcons")) continue;
+            if (!NBT.hasCustomNBT(currentItem, "MissionIcons")) continue;
             player.getInventory().remove(currentItem);
         }
         player.updateInventory();

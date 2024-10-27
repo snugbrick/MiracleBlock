@@ -47,34 +47,29 @@ public class SwordItemStack extends MainItemStack implements CanInlaid {
 
     public SwordItemStack(MainItemStack miracleBlockItemStack) {
         super(miracleBlockItemStack);
-        if (miracleBlockItemStack != null && miracleBlockItemStack.hasItemMeta()) {
-            ItemMeta meta = miracleBlockItemStack.getItemMeta();
-            if (meta != null) {
-                PersistentDataContainer container = meta.getPersistentDataContainer();
-                NamespacedKey key = new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword");
+        ItemMeta meta = miracleBlockItemStack.getItemMeta();
+        if (meta != null) {
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword");
 
-                if (container.has(key, PersistentDataType.STRING)) {
-                    this.damage = (Double.parseDouble(Objects.requireNonNull(getKeyValue("damage"), "Damage key not found")));
-                    this.attackSpeed = (Double.parseDouble(Objects.requireNonNull(getKeyValue("attackSpeed"), "Attack speed key not found")));
-                    this.customAttackRange = (Double.parseDouble(Objects.requireNonNull(getKeyValue("range"), "Range key not found")));
+            if (container.has(key, PersistentDataType.STRING)) {
+                this.damage = (Double.parseDouble(Objects.requireNonNull(getKeyValue("damage"), "Damage key not found")));
+                this.attackSpeed = (Double.parseDouble(Objects.requireNonNull(getKeyValue("attackSpeed"), "Attack speed key not found")));
+                this.customAttackRange = (Double.parseDouble(Objects.requireNonNull(getKeyValue("range"), "Range key not found")));
 
-                    this.level = ItemLevel.getByString(getKeyValue("level"));
-                    this.itemAttribute = ItemAttribute.getByString(getKeyValue("attribute"));
-                    this.itemWords = WeaponItemWords.getByString(getKeyValue("words"));
+                this.level = ItemLevel.getByString(getKeyValue("level"));
+                this.itemAttribute = ItemAttribute.getByString(getKeyValue("attribute"));
+                this.itemWords = WeaponItemWords.getByString(getKeyValue("words"));
 
-                    for (int i = 0; i < slot; i++) {
-                        String inlaidKey = getKeyValue("inlaid" + i);
-                        if (inlaidKey != null) {
-                            MainItemStack item = MainItemStack.getItem(inlaidKey);
-                            inlaidGems[i] = new InlaidGemItemStack(item);
-                        } else {
-                            inlaidGems[i] = null;
-                        }
-                    }
+                for (int i = 0; i < slot; i++) {
+                    String inlaidKey = getKeyValue("inlaid" + i);
+                    if (inlaidKey != null) {
+                        MainItemStack item = MainItemStack.getItem(inlaidKey);
+                        inlaidGems[i] = new InlaidGemItemStack(item);
+                    } else inlaidGems[i] = null;
                 }
             }
         }
-
     }
 
 

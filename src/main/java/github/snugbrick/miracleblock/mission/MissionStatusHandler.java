@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.mission;
 
 import github.snugbrick.miracleblock.mission.missionInven.MissionItemStack;
-import github.snugbrick.miracleblock.tools.AboutNBT;
+import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,11 +23,11 @@ public class MissionStatusHandler {
      * @return 此图标的状态
      */
     public static MissionStatus getItemStackStatus(ItemStack itemStack) {
-        if (AboutNBT.hasCustomNBT(itemStack, "UNDONE")) {
+        if (NBT.hasCustomNBT(itemStack, "UNDONE")) {
             return MissionStatus.UNDONE;
-        } else if (AboutNBT.hasCustomNBT(itemStack, "COMPLETED")) {
+        } else if (NBT.hasCustomNBT(itemStack, "COMPLETED")) {
             return MissionStatus.COMPLETED;
-        } else if (AboutNBT.hasCustomNBT(itemStack, "COLLECTED")) {
+        } else if (NBT.hasCustomNBT(itemStack, "COLLECTED")) {
             return MissionStatus.COLLECTED;
         } else {
             return null;
