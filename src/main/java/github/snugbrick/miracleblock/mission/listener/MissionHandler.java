@@ -46,7 +46,7 @@ public class MissionHandler implements Listener {
 
         if (!player.hasPlayedBefore()) {
             //给予任务书
-            ItemStack mission = NBT.setCustomNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
+            ItemStack mission = NBT.setNBT(new ItemStack(Material.BOOK), "MissionBook", "0");
             ItemMeta itemMeta = mission.getItemMeta();
             if (itemMeta != null) {
                 itemMeta.setDisplayName("任务书");

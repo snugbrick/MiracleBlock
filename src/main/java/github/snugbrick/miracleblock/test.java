@@ -4,6 +4,8 @@ import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.tools.Debug;
 import github.snugbrick.miracleblock.tools.NBT;
+import github.snugbrick.miracleblock.tools.NSK;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,12 +55,13 @@ public class test implements Listener {
             MiraBlockItemStack mainItemStack = new MiraBlockItemStack(itemInMainHand);
             new Debug(0, "2你所持有的物品是：" + mainItemStack.toString() + "它属于MainItemStack");
 
-            if (NBT.hasCustomNBT(mainItemStack, "miracle_sword")) {
+            if (NSK.hasNameSpacedKey(mainItemStack, new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"))) {
                 SwordItemStack swordItemStack = new SwordItemStack(mainItemStack);
                 new Debug(0, "3你所持有的物品是：" + swordItemStack.toString() + "它属于SwordItemStack");
+
                 new Debug(0, "其level是：" + swordItemStack.getLevel());
                 new Debug(0, "其attackDamage是：" + swordItemStack.getDamage());
-                new Debug(0, "其attackSpeed是：" + swordItemStack.getAttackSpeed());
+                //new Debug(0, "其attackSpeed是：" + swordItemStack.getAttackSpeed());
                 new Debug(0, "其itemWords是：" + swordItemStack.getItemWords().toString());
                 new Debug(0, "其itemAttribute是：" + swordItemStack.getItemAttribute().toString());
             }

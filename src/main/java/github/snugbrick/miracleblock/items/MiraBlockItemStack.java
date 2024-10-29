@@ -15,6 +15,7 @@ public class MiraBlockItemStack extends ItemStack {
 
     public MiraBlockItemStack(ItemStack item, String key, String value) {
         super(NSK.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
+        //super(NBT.setNBT(item, key, value));
     }
 
     public MiraBlockItemStack(ItemStack item) {
@@ -50,6 +51,7 @@ public class MiraBlockItemStack extends ItemStack {
         if (itemMeta != null) {
             itemMeta.setDisplayName(name);
             this.setItemMeta(itemMeta);
+            this.setKeyValue("name", name);
 
             return this;
         }
@@ -67,6 +69,20 @@ public class MiraBlockItemStack extends ItemStack {
         if (itemMeta != null) itemMeta.setCustomModelData(num);
         this.setItemMeta(itemMeta);
         return this;
+    }
+
+    protected void setKeyValue(String key, String value) {
+        NSK.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key), value);
+    }
+
+    protected String getKeyValue(String key) {
+        return NSK.getNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key)) == null ?
+                null : NSK.getNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key));
+    }
+
+    protected Boolean removeNSK(String key) {
+        return NSK.getNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key)) != null
+                && NSK.removeNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key));
     }
 
     @Nonnull

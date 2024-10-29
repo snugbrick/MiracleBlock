@@ -17,7 +17,7 @@ public class MissionItemStack extends ItemStack {
     private static final Map<MissionItemStack, MissionStatus> missionItemStackStatus = new HashMap<>();
 
     public MissionItemStack(ItemStack icon, String nbtKey, String nbtValue) {
-        super(NBT.setCustomNBT(NBT.setCustomNBT(icon, nbtKey, nbtValue), "MissionIcons", "MissionIcons"));
+        super(NBT.setNBT(NBT.setNBT(icon, nbtKey, nbtValue), "MissionIcons", "MissionIcons"));
     }
 
     public MissionItemStack setLore(String... lore) {
@@ -60,7 +60,7 @@ public class MissionItemStack extends ItemStack {
     }
 
     public static MissionItemStack getMissionItemStack(String key) {
-        return nbtGetMissionItemStack.get(key);
+        return nbtGetMissionItemStack.get(key) == null ? null : nbtGetMissionItemStack.get(key);
     }
 
     /**

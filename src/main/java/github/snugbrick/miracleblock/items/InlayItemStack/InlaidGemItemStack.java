@@ -3,6 +3,7 @@ package github.snugbrick.miracleblock.items.InlayItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
@@ -40,11 +41,15 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
 
     public InlaidGemItemStack setLevel(ItemLevel level) {
         this.level = level;
+        if (NBT.removeNBT(this, "level"))
+            NBT.setNBT(this, "level", level.toString());
         return this;
     }
 
     public InlaidGemItemStack setItemAttribute(ItemAttribute itemAttribute) {
         this.itemAttribute = itemAttribute;
+        if (NBT.removeNBT(this, "itemAttribute"))
+            NBT.setNBT(this, "itemAttribute", itemAttribute.toString());
         return this;
     }
 

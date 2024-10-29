@@ -8,13 +8,14 @@ import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
+import github.snugbrick.miracleblock.tools.Debug
+import github.snugbrick.miracleblock.tools.NSK
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import org.bukkit.entity.Player
-import org.bukkit.persistence.PersistentDataType
 
 class CommonCommand : TabExecutor {
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String>? {
@@ -57,11 +58,15 @@ class CommonCommand : TabExecutor {
 
                 "setItemWords" -> {
                     val swordItemStack = SwordItemStack(itemStack)
-                    val container = swordItemStack.itemMeta?.persistentDataContainer ?: return false
-                    if (container.has(NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"), PersistentDataType.STRING)) {
-                        swordItemStack.setItemWords(WeaponItemWords.getRandomItemWords(swordItemStack))
-                            .addGain()
+                    if (NSK.hasNameSpacedKey(swordItemStack, NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"))) {
+                        val randomItemWords = WeaponItemWords.getRandomItemWords(swordItemStack)
+                        //
+                        Debug(0, "randomItemWords: $randomItemWords")
+                        swordItemStack.setItemWords(randomItemWords).buildSword()
+                        swordItemStack.addGain()
+                        sender.sendMessage("已更改为 $randomItemWords")
                     }
+                    sender.inventory.setItemInMainHand(swordItemStack)
                 }
 
                 "gui" -> {

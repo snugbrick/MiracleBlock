@@ -9,11 +9,9 @@ import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.tools.NBT;
-import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -27,7 +25,6 @@ import java.util.stream.IntStream;
 
 public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     private double damage = 0;//
-    private Enchantment enchantment;
     private InlaidGemItemStack[] inlaidGems;
     private int slot;
     private ItemLevel level;//
@@ -37,10 +34,12 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     private double attackSpeed = 1;//
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level, WeaponItemWords itemwords) {
-        super(NBT.setCustomNBT(item, key, value), key, value);
-        this.level = level;
-        this.itemAttribute = itemAttribute;
-        this.itemWords = itemwords;
+        super(NBT.setNBT(item, key, value), key, value);
+        this.setLevel(level);
+        this.setItemAttribute(itemAttribute);
+        this.setItemWords(itemwords);
+        this.setCustomAttackRange(3.0);
+        this.setAttackSpeed(1.0);
         slot = inlaidSlot;
         inlaidGems = new InlaidGemItemStack[slot + 1];
     }
@@ -88,6 +87,10 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                 lore.add("<=======物品属性=======>");
                 lore.add(itemAttribute.toString());
             }
+            if (itemWords != null) {
+                lore.add("<=======物品词条=======>");
+                lore.add(itemWords.toString());
+            }
             if (level != null) {
                 lore.add("<=======物品等级=======>");
                 lore.add(level.toString());
@@ -108,27 +111,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         }
         this.setItemMeta(meta);
 
-        this.setKeyValue("attribute", this.getItemAttribute().toString());
-        this.setKeyValue("level", this.getLevel().toString());
-        this.setKeyValue("words", this.getItemWords().toString());
-        this.setKeyValue("range", String.valueOf(this.getCustomAttackRange()));
-        this.setKeyValue("damage", String.valueOf(this.getDamage()));
-        this.setKeyValue("attackSpeed", String.valueOf(this.getAttackSpeed()));
-        for (int i = 0; i < slot; i++) {
-            if (inlaidGems[i] != null) {
-                this.setKeyValue("inlaid" + i, inlaidGems[i].toString());
-            }
-        }
         return this;
-    }
-
-    private void setKeyValue(String key, String value) {
-        NSK.setNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key), value);
-    }
-
-    private String getKeyValue(String key) {
-        return NSK.getNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key)) == null ?
-                null : NSK.getNameSpacedKey(this, new NamespacedKey(MiracleBlock.getInstance(), key));
     }
 
     public SwordItemStack setItemWords(WeaponItemWords itemWords) {
@@ -137,15 +120,23 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         ItemMeta meta = this.getItemMeta();
 
         if (meta != null && gain != null) {
-            meta.setDisplayName(this.itemWords.toString() + " " + this.getItemMeta().getDisplayName());
-            this.setDamage(this.damage *= gain.getGainDamage());
-            this.setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed());
-            this.setCustomAttackRange(this.customAttackRange += gain.getGainReach());
+            meta.setDisplayName(this.itemWords.toString() + " " +
+                    Arrays.stream(meta.getDisplayName().split(" ", 2))
+                            .skip(1)
+                            .findFirst()
+                            .orElse(meta.getDisplayName()));
+            this.setDamage(this.damage *= gain.getGainDamage())
+                    .setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed())
+                    .setCustomAttackRange(this.customAttackRange += gain.getGainReach());
 
             this.setItemMeta(meta);
+
+            super.removeNSK("words");
+            this.setKeyValue("words", itemWords.toString());
         }
         return this;
     }
+
 
     /**
      * 添加属性 将词条 属性加成赋予物品
@@ -154,8 +145,8 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         ItemMeta itemMeta = this.getItemMeta();
         ItemAttribute.GainPackage gainPackage = this.getItemAttribute().getGain(this.getItemAttribute().getAttribute());
         if (gainPackage != null) {
-            this.damage *= gainPackage.getGainDamage();
-            this.attackSpeed *= gainPackage.getGainAttackSpeed();
+            this.setDamage(this.damage * gainPackage.getGainDamage());
+            this.setAttackSpeed(this.attackSpeed * gainPackage.getGainAttackSpeed());
         }
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
         if (itemMeta != null) {
@@ -174,6 +165,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         }
     }
 
+
     @Nonnull
     @Override
     public SwordItemStack clone() {
@@ -184,7 +176,6 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                 .setInlay(Arrays.stream(this.getInlaidGemItemStack()).iterator())
                 //.setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
                 .setCustomAttackRange(this.getCustomAttackRange())
-                .setEnchantments(this.getEnchantment())
                 .setLore(false, this.getItemMeta().getLore().stream().toArray(String[]::new));
         return swordItemStack;
     }
@@ -192,11 +183,9 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     @Override
     public SwordItemStack setInlay(InlaidGemItemStack inlaidGemItemStack, int indexSlot) {
         this.inlaidGems[indexSlot] = inlaidGemItemStack;
-        return this;
-    }
-
-    public SwordItemStack removeInlay(int indexSlot) {
-        this.inlaidGems[indexSlot] = null;
+        if (!super.removeNSK("inlaid" + indexSlot)) {
+            super.setKeyValue("inlaid" + indexSlot, inlaidGemItemStack.toString());
+        }
         return this;
     }
 
@@ -210,35 +199,47 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         return this;
     }
 
+    public SwordItemStack removeInlay(int indexSlot) {
+        this.inlaidGems[indexSlot] = null;
+        super.removeNSK("inlaid" + indexSlot);
+        return this;
+    }
+
     public SwordItemStack setAttackSpeed(double attackSpeed) {
         this.attackSpeed = attackSpeed;
+        if (!super.removeNSK("attackSpeed"))
+            this.setKeyValue("attackSpeed", String.valueOf(this.getAttackSpeed()));
         return this;
     }
 
     public SwordItemStack setLevel(ItemLevel itemLevel) {
         this.level = itemLevel;
+        if (!super.removeNSK("level"))
+            this.setKeyValue("level", this.getLevel().toString());
         return this;
     }
 
     public SwordItemStack setDamage(double damage) {
         this.damage = damage;
-        return this;
-    }
-
-    public SwordItemStack setEnchantments(Enchantment enchantments) {
-        this.enchantment = enchantments;
+        if (!super.removeNSK("damage"))
+            this.setKeyValue("damage", String.valueOf(this.getDamage()));
         return this;
     }
 
     public SwordItemStack setCustomAttackRange(double customAttackRange) {
         this.customAttackRange = customAttackRange;
+        if (!super.removeNSK("range"))
+            this.setKeyValue("range", String.valueOf(this.getCustomAttackRange()));
         return this;
     }
 
     public SwordItemStack setItemAttribute(ItemAttribute itemAttribute) {
         this.itemAttribute = itemAttribute;
+        if (!super.removeNSK("attribute"))
+            this.setKeyValue("attribute", this.getItemAttribute().toString());
         return this;
     }
+
 
     public double getDamage() {
         return damage;
@@ -246,10 +247,6 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
 
     public int getSlotCount() {
         return slot;
-    }
-
-    public Enchantment getEnchantment() {
-        return enchantment;
     }
 
     public InlaidGemItemStack[] getInlaidGemItemStack() {

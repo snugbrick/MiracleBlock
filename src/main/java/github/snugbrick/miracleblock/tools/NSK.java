@@ -63,4 +63,16 @@ public class NSK {
         }
         return "null";
     }
+
+    public static Boolean removeNameSpacedKey(ItemStack item, NamespacedKey key) {
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                container.remove(key);
+                return true;
+            }
+        }
+        return false;
+    }
 }

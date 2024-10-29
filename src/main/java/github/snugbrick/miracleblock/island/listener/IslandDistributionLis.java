@@ -32,26 +32,21 @@ public class IslandDistributionLis implements Listener {
 
         if (!player.hasPlayedBefore()) {
             Bukkit.getScheduler().runTaskAsynchronously(MiracleBlock.getInstance(), () -> {
-                //查询已分配岛屿
-                List<String> distributedIsland;
                 try {
-                    distributedIsland = SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
+                    List<String> distributedIsland = SQLMethods.QUERY.runTasks("island_distribution", "island_serial");
 
-                    //将玩家的岛屿写入数据库
                     int serial = 0;
-                    if (distributedIsland != null) {
-                        if (!distributedIsland.isEmpty()) {
-                            serial = distributedIsland.stream()
-                                    .mapToInt(Integer::parseInt)
-                                    .max()
-                                    .orElse(0);
+                    if (distributedIsland != null && !distributedIsland.isEmpty()) {
+                        serial = distributedIsland.stream()
+                                .mapToInt(Integer::parseInt)
+                                .max()
+                                .orElse(0);
 
-                            SQLMethods.INSERT.runTasks("island_distribution",
-                                    "player", player.getName(),
-                                    "uuid", playerUUID.toString(),
-                                    "island_serial", String.valueOf(serial + 1));
-                            tpPlayerToIsland(player);
-                        }
+                        SQLMethods.INSERT.runTasks("island_distribution",
+                                "player", player.getName(),
+                                "uuid", playerUUID.toString(),
+                                "island_serial", String.valueOf(serial + 1));
+                        tpPlayerToIsland(player);
                     } else {
                         SQLMethods.INSERT.runTasks("island_distribution",
                                 "player", player.getName(),

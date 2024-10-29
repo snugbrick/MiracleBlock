@@ -38,10 +38,6 @@ class MiracleCraftingTable(private val player: Player, private val title: String
         player.openInventory(craftingTable)
     }
 
-    fun getInven(): Inventory {
-        return craftingTable
-    }
-
     private var clickedPlayer: Player? = null
 
     @EventHandler

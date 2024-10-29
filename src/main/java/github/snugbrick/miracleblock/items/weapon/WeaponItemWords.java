@@ -128,7 +128,7 @@ public enum WeaponItemWords {
         return null;
     }
 
-    public class GainPackage {
+    public static class GainPackage {
         private final double gainDamage;
         private final double gainReach;
         private final double gainAttackSpeed;

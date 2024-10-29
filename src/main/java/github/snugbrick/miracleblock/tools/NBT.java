@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class NBT {
 
-    public static ItemStack setCustomNBT(ItemStack item, String key, String value) {
+    public static ItemStack setNBT(ItemStack item, String key, String value) {
         net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
 
@@ -38,5 +38,17 @@ public class NBT {
             if (tagCompound != null) return tagCompound.getString(key);
         }
         return null;
+    }
+
+    public static Boolean removeNBT(ItemStack item, String key) {
+        net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tagCompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+
+        if (tagCompound != null) {
+            tagCompound.remove(key);
+            nmsItem.setTag(tagCompound);
+            return true;
+        }
+        return false;
     }
 }

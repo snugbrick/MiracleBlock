@@ -13,7 +13,7 @@ public class Standardization {
      * 标准化物品 已弃用
      */
     public static ItemStack missionStandardization(ItemStack itemStack, String nbtKey, String nbtValue) {
-        ItemStack sendItem = NBT.setCustomNBT(itemStack, nbtKey, nbtValue);
-        return NBT.setCustomNBT(sendItem, "MissionIcons", "MissionIcons");
+        ItemStack sendItem = NBT.setNBT(itemStack, nbtKey, nbtValue);
+        return NBT.setNBT(sendItem, "MissionIcons", "MissionIcons");
     }
 }
