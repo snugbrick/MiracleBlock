@@ -1,6 +1,7 @@
 package github.snugbrick.miracleblock.items;
 
 import github.snugbrick.miracleblock.MiracleBlock;
+import github.snugbrick.miracleblock.tools.NBT;
 import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +15,8 @@ public class MiraBlockItemStack extends ItemStack {
     private int model;
 
     public MiraBlockItemStack(ItemStack item, String key, String value) {
-        super(NSK.setNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), key), value));
-        //super(NBT.setNBT(item, key, value));
+        super(NSK.setNameSpacedKey(NBT.setNBT(item,key,value), new NamespacedKey(MiracleBlock.getInstance(), key), value));
+        //只有这样才可以被NSK.hasNameSpacedKey()检测
     }
 
     public MiraBlockItemStack(ItemStack item) {
@@ -51,7 +52,6 @@ public class MiraBlockItemStack extends ItemStack {
         if (itemMeta != null) {
             itemMeta.setDisplayName(name);
             this.setItemMeta(itemMeta);
-            this.setKeyValue("name", name);
 
             return this;
         }

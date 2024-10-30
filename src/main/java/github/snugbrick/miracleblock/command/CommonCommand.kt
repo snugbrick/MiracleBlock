@@ -72,7 +72,7 @@ class CommonCommand : TabExecutor {
                 "gui" -> {
                     if (args.size < 2) sender.sendMessage("null args, usage -> /mb gui <gui-name>")
                     when (args[1]) {
-                        "crafting-table" -> MiracleCraftingTable(sender, "${sender.name}'s Crafting Table").open(sender)
+                        "crafting-table" -> MiracleCraftingTable(sender,  "mirablock crafting table").open(sender)
                     }
                 }
             }

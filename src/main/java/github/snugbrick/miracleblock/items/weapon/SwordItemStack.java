@@ -34,7 +34,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     private double attackSpeed = 1;//
 
     public SwordItemStack(ItemStack item, String key, String value, int inlaidSlot, ItemAttribute itemAttribute, ItemLevel level, WeaponItemWords itemwords) {
-        super(NBT.setNBT(item, key, value), key, value);
+        super(item, key, value);
         this.setLevel(level);
         this.setItemAttribute(itemAttribute);
         this.setItemWords(itemwords);
@@ -103,7 +103,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                 lore.add("<========" + slot + "个槽位========>");
                 String result = IntStream.range(0, slot)
                         .mapToObj(i ->
-                                i < inlaidGems.length ? "[" + (inlaidGems[i] == null ? "" : inlaidGems[i].toString()) + "]" : "[ ]")
+                                i < inlaidGems.length ? "[" + (inlaidGems[i] == null ? " " : inlaidGems[i].toString()) + "]" : "[ ]")
                         .collect(Collectors.joining("  "));
                 lore.add(result);
             }
@@ -113,30 +113,6 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
 
         return this;
     }
-
-    public SwordItemStack setItemWords(WeaponItemWords itemWords) {
-        this.itemWords = itemWords;
-        WeaponItemWords.GainPackage gain = itemWords.getGain(itemWords.getLevel());
-        ItemMeta meta = this.getItemMeta();
-
-        if (meta != null && gain != null) {
-            meta.setDisplayName(this.itemWords.toString() + " " +
-                    Arrays.stream(meta.getDisplayName().split(" ", 2))
-                            .skip(1)
-                            .findFirst()
-                            .orElse(meta.getDisplayName()));
-            this.setDamage(this.damage *= gain.getGainDamage())
-                    .setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed())
-                    .setCustomAttackRange(this.customAttackRange += gain.getGainReach());
-
-            this.setItemMeta(meta);
-
-            super.removeNSK("words");
-            this.setKeyValue("words", itemWords.toString());
-        }
-        return this;
-    }
-
 
     /**
      * 添加属性 将词条 属性加成赋予物品
@@ -174,18 +150,39 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                 .setDamage(this.getDamage())
                 .setAttackSpeed(this.getAttackSpeed())
                 .setInlay(Arrays.stream(this.getInlaidGemItemStack()).iterator())
-                //.setName(Objects.requireNonNull(this.getItemMeta()).getDisplayName())
-                .setCustomAttackRange(this.getCustomAttackRange())
-                .setLore(false, this.getItemMeta().getLore().stream().toArray(String[]::new));
+                .setCustomAttackRange(this.getCustomAttackRange());
         return swordItemStack;
+    }
+
+    public SwordItemStack setItemWords(WeaponItemWords itemWords) {
+        this.itemWords = itemWords;
+        WeaponItemWords.GainPackage gain = itemWords.getGain(itemWords.getLevel());
+        ItemMeta meta = this.getItemMeta();
+
+        if (meta != null && gain != null) {
+            meta.setDisplayName(this.itemWords.toString() + " " +
+                    Arrays.stream(meta.getDisplayName().split(" ", 2))
+                            .skip(1)
+                            .findFirst()
+                            .orElse(meta.getDisplayName()));
+            this.setDamage(this.damage *= gain.getGainDamage())
+                    .setAttackSpeed(this.attackSpeed *= gain.getGainAttackSpeed())
+                    .setCustomAttackRange(this.customAttackRange += gain.getGainReach());
+
+            this.setItemMeta(meta);
+
+            super.removeNSK("words");
+            this.setKeyValue("words", itemWords.toString());
+        }
+        return this;
     }
 
     @Override
     public SwordItemStack setInlay(InlaidGemItemStack inlaidGemItemStack, int indexSlot) {
         this.inlaidGems[indexSlot] = inlaidGemItemStack;
-        if (!super.removeNSK("inlaid" + indexSlot)) {
-            super.setKeyValue("inlaid" + indexSlot, inlaidGemItemStack.toString());
-        }
+        super.removeNSK("inlaid" + indexSlot);
+        super.setKeyValue("inlaid" + indexSlot, inlaidGemItemStack.toString());
+
         return this;
     }
 
@@ -207,36 +204,36 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
 
     public SwordItemStack setAttackSpeed(double attackSpeed) {
         this.attackSpeed = attackSpeed;
-        if (!super.removeNSK("attackSpeed"))
-            this.setKeyValue("attackSpeed", String.valueOf(this.getAttackSpeed()));
+        super.removeNSK("attackSpeed");
+        this.setKeyValue("attackSpeed", String.valueOf(this.getAttackSpeed()));
         return this;
     }
 
     public SwordItemStack setLevel(ItemLevel itemLevel) {
         this.level = itemLevel;
-        if (!super.removeNSK("level"))
-            this.setKeyValue("level", this.getLevel().toString());
+        super.removeNSK("level");
+        this.setKeyValue("level", this.getLevel().toString());
         return this;
     }
 
     public SwordItemStack setDamage(double damage) {
         this.damage = damage;
-        if (!super.removeNSK("damage"))
-            this.setKeyValue("damage", String.valueOf(this.getDamage()));
+        super.removeNSK("damage");
+        this.setKeyValue("damage", String.valueOf(this.getDamage()));
         return this;
     }
 
     public SwordItemStack setCustomAttackRange(double customAttackRange) {
         this.customAttackRange = customAttackRange;
-        if (!super.removeNSK("range"))
-            this.setKeyValue("range", String.valueOf(this.getCustomAttackRange()));
+        super.removeNSK("range");
+        this.setKeyValue("range", String.valueOf(this.getCustomAttackRange()));
         return this;
     }
 
     public SwordItemStack setItemAttribute(ItemAttribute itemAttribute) {
         this.itemAttribute = itemAttribute;
-        if (!super.removeNSK("attribute"))
-            this.setKeyValue("attribute", this.getItemAttribute().toString());
+        super.removeNSK("attribute");
+        this.setKeyValue("attribute", this.getItemAttribute().toString());
         return this;
     }
 

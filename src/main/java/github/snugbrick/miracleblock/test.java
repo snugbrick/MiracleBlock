@@ -56,6 +56,7 @@ public class test implements Listener {
             new Debug(0, "2你所持有的物品是：" + mainItemStack.toString() + "它属于MainItemStack");
 
             if (NSK.hasNameSpacedKey(mainItemStack, new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"))) {
+            //if(NBT.hasCustomNBT(mainItemStack, "miracle_sword")){
                 SwordItemStack swordItemStack = new SwordItemStack(mainItemStack);
                 new Debug(0, "3你所持有的物品是：" + swordItemStack.toString() + "它属于SwordItemStack");
 
