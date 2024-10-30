@@ -1,10 +1,14 @@
 package github.snugbrick.miracleblock.items.InlayItemStack;
 
+import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
-import github.snugbrick.miracleblock.tools.NBT;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
@@ -14,12 +18,22 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
 
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
         super(item, key, value);
-        this.level = level;
-        this.itemAttribute = itemAttribute;
+        this.setLevel(level)
+                .setItemAttribute(itemAttribute);
     }
 
     public InlaidGemItemStack(MiraBlockItemStack item) {
         super(item);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(MiracleBlock.getInstance(), "miracle_inlay");
+
+            if (container.has(key, PersistentDataType.STRING)) {
+                this.level = (ItemLevel.getByString(getKeyValue("level")));
+                this.itemAttribute = (ItemAttribute.getByString(getKeyValue("itemAttribute")));
+            }
+        }
     }
 
     /**
@@ -39,17 +53,17 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
         return this;
     }
 
-    public InlaidGemItemStack setLevel(ItemLevel level) {
-        this.level = level;
-        if (NBT.removeNBT(this, "level"))
-            NBT.setNBT(this, "level", level.toString());
+    public InlaidGemItemStack setLevel(ItemLevel itemLevel) {
+        this.level = itemLevel;
+        super.removeNSK("level");
+        this.setKeyValue("level", this.getLevel().toString());
         return this;
     }
 
     public InlaidGemItemStack setItemAttribute(ItemAttribute itemAttribute) {
         this.itemAttribute = itemAttribute;
-        if (NBT.removeNBT(this, "itemAttribute"))
-            NBT.setNBT(this, "itemAttribute", itemAttribute.toString());
+        super.removeNSK("itemAttribute");
+        this.setKeyValue("itemAttribute", this.getItemAttribute().toString());
         return this;
     }
 

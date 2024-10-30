@@ -8,7 +8,6 @@ import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
-import github.snugbrick.miracleblock.tools.NBT;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -60,7 +59,8 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                 this.itemAttribute = ItemAttribute.getByString(getKeyValue("attribute"));
                 this.itemWords = WeaponItemWords.getByString(getKeyValue("words"));
 
-                for (int i = 0; i < slot; i++) {
+                //最多五个槽位 不想再写一个nbt了 就定一个max吧
+                for (int i = 0; i < 5; i++) {
                     String inlaidKey = getKeyValue("inlaid" + i);
                     if (inlaidKey != null) {
                         MiraBlockItemStack item = MiraBlockItemStack.getItem(inlaidKey);
@@ -180,6 +180,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     @Override
     public SwordItemStack setInlay(InlaidGemItemStack inlaidGemItemStack, int indexSlot) {
         this.inlaidGems[indexSlot] = inlaidGemItemStack;
+        if (this.getKeyValue("inlaid" + indexSlot) != null) return null;
         super.removeNSK("inlaid" + indexSlot);
         super.setKeyValue("inlaid" + indexSlot, inlaidGemItemStack.toString());
 

@@ -3,6 +3,7 @@ package github.snugbrick.miracleblock.command
 import github.snugbrick.miracleblock.MiracleBlock
 import github.snugbrick.miracleblock.api.event.Player2IslandEvent
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar.Companion.spawnNPC
+import github.snugbrick.miracleblock.gui.InlayTable
 import github.snugbrick.miracleblock.gui.MiracleCraftingTable
 import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
@@ -72,7 +73,8 @@ class CommonCommand : TabExecutor {
                 "gui" -> {
                     if (args.size < 2) sender.sendMessage("null args, usage -> /mb gui <gui-name>")
                     when (args[1]) {
-                        "crafting-table" -> MiracleCraftingTable(sender,  "mirablock crafting table").open(sender)
+                        "crafting-table" -> MiracleCraftingTable(sender, "mirablock crafting table").open(sender)
+                        "inlay-table" -> InlayTable(sender, "mirablock inlay table").open(sender)
                     }
                 }
             }
