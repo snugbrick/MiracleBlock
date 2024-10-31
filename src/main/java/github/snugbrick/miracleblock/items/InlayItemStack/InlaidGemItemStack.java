@@ -4,6 +4,7 @@ import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,6 +35,10 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
                 this.itemAttribute = (ItemAttribute.getByString(getKeyValue("itemAttribute")));
             }
         }
+    }
+
+    public static Boolean isInlaidGemItemStack(MiraBlockItemStack item) {
+        return NSK.hasNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), "miracle_inlay"));
     }
 
     /**

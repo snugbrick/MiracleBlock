@@ -8,6 +8,7 @@ import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -71,6 +72,9 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         }
     }
 
+    public static Boolean isSwordItemStack(MiraBlockItemStack item) {
+        return NSK.hasNameSpacedKey(item, new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"));
+    }
 
     /**
      * 请在每个注册物品最后使用该方法 使物品得以完善

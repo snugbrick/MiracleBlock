@@ -9,7 +9,7 @@ import github.snugbrick.miracleblock.command.SqlCommands;
 import github.snugbrick.miracleblock.command.ToTemplateWorld;
 import github.snugbrick.miracleblock.entity.MiracleEntityRegister;
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStarTrait;
-import github.snugbrick.miracleblock.gui.InvenLisRegister;
+import github.snugbrick.miracleblock.gui.listener.InvenLisRegister;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;

@@ -5,7 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
-class InlayTable(private val player: Player, private val title: String) {
+class InlayTable(private val player: Player, private val title: String) : TableInventory {
     private val SIZE = 9
 
     init {
@@ -16,7 +16,7 @@ class InlayTable(private val player: Player, private val title: String) {
         private lateinit var craftingTable: Inventory
     }
 
-    fun open(player: Player) {
+    override fun open(player: Player) {
         for (i in 0..SIZE) {
             when (i) {
                 1, 2, 4 -> craftingTable.setItem(i, MiraBlockItemStack.getItem("green_slot"))

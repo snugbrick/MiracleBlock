@@ -1,6 +1,5 @@
 package github.snugbrick.miracleblock.command
 
-import github.snugbrick.miracleblock.MiracleBlock
 import github.snugbrick.miracleblock.api.event.Player2IslandEvent
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar.Companion.spawnNPC
 import github.snugbrick.miracleblock.gui.InlayTable
@@ -10,9 +9,7 @@ import github.snugbrick.miracleblock.items.MiraBlockItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
 import github.snugbrick.miracleblock.tools.Debug
-import github.snugbrick.miracleblock.tools.NSK
 import org.bukkit.Bukkit
-import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
@@ -59,7 +56,7 @@ class CommonCommand : TabExecutor {
 
                 "setItemWords" -> {
                     val swordItemStack = SwordItemStack(itemStack)
-                    if (NSK.hasNameSpacedKey(swordItemStack, NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"))) {
+                    if (SwordItemStack.isSwordItemStack(swordItemStack)) {
                         val randomItemWords = WeaponItemWords.getRandomItemWords(swordItemStack)
                         //
                         Debug(0, "randomItemWords: $randomItemWords")
@@ -75,6 +72,7 @@ class CommonCommand : TabExecutor {
                     when (args[1]) {
                         "crafting-table" -> MiracleCraftingTable(sender, "mirablock crafting table").open(sender)
                         "inlay-table" -> InlayTable(sender, "mirablock inlay table").open(sender)
+                        //"skill-choice"->
                     }
                 }
             }

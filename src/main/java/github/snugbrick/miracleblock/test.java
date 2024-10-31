@@ -3,9 +3,6 @@ package github.snugbrick.miracleblock;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 import github.snugbrick.miracleblock.tools.Debug;
-import github.snugbrick.miracleblock.tools.NBT;
-import github.snugbrick.miracleblock.tools.NSK;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,8 +52,8 @@ public class test implements Listener {
             MiraBlockItemStack mainItemStack = new MiraBlockItemStack(itemInMainHand);
             new Debug(0, "2你所持有的物品是：" + mainItemStack.toString() + "它属于MainItemStack");
 
-            if (NSK.hasNameSpacedKey(mainItemStack, new NamespacedKey(MiracleBlock.getInstance(), "miracle_sword"))) {
-            //if(NBT.hasCustomNBT(mainItemStack, "miracle_sword")){
+            if (SwordItemStack.isSwordItemStack(mainItemStack)) {
+                //if(NBT.hasCustomNBT(mainItemStack, "miracle_sword")){
                 SwordItemStack swordItemStack = new SwordItemStack(mainItemStack);
                 new Debug(0, "3你所持有的物品是：" + swordItemStack.toString() + "它属于SwordItemStack");
 

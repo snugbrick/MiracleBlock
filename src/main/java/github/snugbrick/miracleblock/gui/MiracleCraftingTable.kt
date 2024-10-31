@@ -5,7 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
-class MiracleCraftingTable(private val player: Player, private val title: String) {
+class MiracleCraftingTable(private val player: Player, private val title: String) : TableInventory {
     private val SIZE = 45
 
     init {
@@ -16,7 +16,7 @@ class MiracleCraftingTable(private val player: Player, private val title: String
         private lateinit var craftingTable: Inventory
     }
 
-    fun open(player: Player) {
+    override fun open(player: Player) {
         for (i in 0..SIZE) {
             when (i) {
                 11, 12, 13, 19, 28, 37, 22, 31, 40 -> craftingTable.setItem(i, MiraBlockItemStack.getItem("green_slot"))
