@@ -1,3 +1,7 @@
+### 指令简介
+- /mb<br>
+    -> <home> 返回sender的玩家岛屿
+
 ## 正在进行的任务
 - ~~IslandDistributionLis 玩家岛屿分发~~<br>
 - ~~PlayersMissionStatus#setPlayerMissionStatus 玩家任务状态设置~~<br>
