@@ -8,6 +8,7 @@ import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -84,37 +85,35 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     public MiraBlockItemStack buildSword() {
         //添加增益
         this.addGain();
-        ItemMeta meta = this.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        if (meta != null) {
-            if (itemAttribute != null) {
-                lore.add("<=======物品属性=======>");
-                lore.add(itemAttribute.toString());
+        for (Map<?, ?> theMap : LoadLangFiles.getMessageMap("ItemLore")) {
+            if (itemAttribute != null && theMap.get("itemAttribute") != null) {
+                this.setLore(false, theMap.get("itemAttribute").toString());
+                this.setLore(false, this.itemAttribute.toString());
+                continue;
             }
-            if (itemWords != null) {
-                lore.add("<=======物品词条=======>");
-                lore.add(itemWords.toString());
+            if (itemWords != null && theMap.get("itemWords") != null) {
+                this.setLore(false, theMap.get("itemWords").toString());
+                this.setLore(false, this.itemWords.toString());
+                continue;
             }
-            if (level != null) {
-                lore.add("<=======物品等级=======>");
-                lore.add(level.toString());
+            if (level != null && theMap.get("level") != null) {
+                this.setLore(false, theMap.get("level").toString());
+                this.setLore(false, this.level.toString());
+                continue;
             }
-            if (customAttackRange != 0) {
-                lore.add("<=======攻击距离=======>");
-                lore.add(String.valueOf(customAttackRange));
+            if (customAttackRange != 0 && theMap.get("customAttackRange") != null) {
+                this.setLore(false, theMap.get("customAttackRange").toString());
+                this.setLore(false, String.valueOf(customAttackRange));
             }
             if (slot != 0) {
-                lore.add("<========" + slot + "个槽位========>");
+                this.setLore(false, "<========" + slot + "个槽位========>");
                 String result = IntStream.range(0, slot)
                         .mapToObj(i ->
                                 i < inlaidGems.length ? "[" + (inlaidGems[i] == null ? " " : inlaidGems[i].toString()) + "]" : "[ ]")
                         .collect(Collectors.joining("  "));
-                lore.add(result);
+                this.setLore(false, result);
             }
-            meta.setLore(lore);
         }
-        this.setItemMeta(meta);
-
         return this;
     }
 

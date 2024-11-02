@@ -4,3 +4,9 @@
 "MissionName":
   - "where is here"
   - "find jimmy"
+"ItemLore":
+  "itemAttribute": "<=======物品属性=======>"
+  "level": "<=======物品等级=======>"
+  "ability": "<=======物品技能=======>"
+  "customAttackRange": "<=======攻击距离=======>"
+  "slot": "<========@slot@个槽位========>"

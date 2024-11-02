@@ -42,7 +42,7 @@ class CommonCommand : TabExecutor {
 
                 "inlay" -> {
                     if (args.size < 4)
-                        sender.sendMessage("null args, usage -> /mb inlay <in/out> <gem> <amount>")
+                        sender.sendMessage("null args, usage -> /mb inlay <in/out> <gem> <slot>")
                     when (args[1]) {
                         "in" -> {
                             SwordItemStack(itemStack).setInlay(InlaidGemItemStack.getItem(args[2]) as InlaidGemItemStack, args[3].toInt())
@@ -72,7 +72,6 @@ class CommonCommand : TabExecutor {
                     when (args[1]) {
                         "crafting-table" -> MiracleCraftingTable(sender, "mirablock crafting table").open(sender)
                         "inlay-table" -> InlayTable(sender, "mirablock inlay table").open(sender)
-                        //"skill-choice"->
                     }
                 }
             }

@@ -4,6 +4,8 @@ import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.items.skill._Ability;
+import github.snugbrick.miracleblock.tools.LoadLangFiles;
 import github.snugbrick.miracleblock.tools.NSK;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -11,13 +13,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class InlaidGemItemStack extends MiraBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
+    private _Ability ability;
 
-    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level) {
+    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, _Ability ability) {
         super(item, key, value);
         this.setLevel(level)
                 .setItemAttribute(itemAttribute);
@@ -47,13 +51,21 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
      * @return 返回MiracleBlockItemStack 是这个类的终结链式方法
      */
     public MiraBlockItemStack buildItemLore() {
-        if (itemAttribute != null) {
-            this.setLore(false, "<=======物品属性=======>");
-            this.setLore(false, this.itemAttribute.toString());
-        }
-        if (level != null) {
-            this.setLore(false, "<=======物品等级=======>");
-            this.setLore(false, this.level.toString());
+        for (Map<?, ?> theMap : LoadLangFiles.getMessageMap("ItemLore")) {
+            if (itemAttribute != null && theMap.get("itemAttribute") != null) {
+                this.setLore(false, theMap.get("itemAttribute").toString());
+                this.setLore(false, this.itemAttribute.toString());
+                continue;
+            }
+            if (level != null && theMap.get("level") != null) {
+                this.setLore(false, theMap.get("level").toString());
+                this.setLore(false, this.level.toString());
+                continue;
+            }
+            if (ability != null && theMap.get("ability") != null) {
+                this.setLore(false, theMap.get("ability").toString());
+                this.setLore(false, this.ability.toString().split("@")[0]);
+            }
         }
         return this;
     }
@@ -72,6 +84,13 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
         return this;
     }
 
+    public InlaidGemItemStack setAbility(_Ability ability) {
+        this.ability = ability;
+        super.removeNSK("ability");
+        this.setKeyValue("ability", this.getAbility().toString().split("@")[0]);
+        return this;
+    }
+
     @Override
     public String toString() {
         return this.getDisplayName();
@@ -87,6 +106,10 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
 
     public ItemLevel getLevel() {
         return level;
+    }
+
+    public _Ability getAbility() {
+        return ability;
     }
 
     public static class GainPackage {

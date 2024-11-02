@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author MiracleUR -> github.com/snugbrick
@@ -32,4 +33,7 @@ public class LoadLangFiles {
         return messagesConfig.getStringList(key);
     }
 
+    public static List<Map<?,?>> getMessageMap(String key) {
+        return messagesConfig.getMapList(key);
+    }
 }
