@@ -50,13 +50,11 @@ class CommonCommand : TabExecutor {
                     if (args.size < 4)
                         sender.sendMessage("null args, usage -> /mb inlay <in/out> <gem> <slot>")
                     when (args[1]) {
-                        "in" -> {
+                        "in" ->
                             SwordItemStack(itemStack).setInlay(InlaidGemItemStack.getItem(args[2]) as InlaidGemItemStack, args[3].toInt())
-                        }
 
-                        "out" -> {
+                        "out" ->
                             SwordItemStack(itemStack).removeInlay(args[2].toInt())
-                        }
                     }
                 }
 

@@ -24,7 +24,8 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
     public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, _Ability ability) {
         super(item, key, value);
         this.setLevel(level)
-                .setItemAttribute(itemAttribute);
+                .setItemAttribute(itemAttribute)
+                .setAbility(ability);
     }
 
     public InlaidGemItemStack(MiraBlockItemStack item) {
@@ -37,6 +38,7 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
             if (container.has(key, PersistentDataType.STRING)) {
                 this.level = (ItemLevel.getByString(getKeyValue("level")));
                 this.itemAttribute = (ItemAttribute.getByString(getKeyValue("itemAttribute")));
+                //TODO: ability to String and String to ability
             }
         }
     }
