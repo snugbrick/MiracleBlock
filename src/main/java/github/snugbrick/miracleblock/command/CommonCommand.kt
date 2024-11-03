@@ -10,6 +10,7 @@ import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
 import github.snugbrick.miracleblock.tools.Debug
 import org.bukkit.Bukkit
+import org.bukkit.World
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
@@ -26,6 +27,11 @@ class CommonCommand : TabExecutor {
 
             val itemStack = MiraBlockItemStack(sender.inventory.itemInMainHand)
             when (args[0]) {
+                "template-world" -> {
+                    val world: World? = Bukkit.getWorld("template_world")
+                    if (world != null) sender.teleport(world.spawnLocation)
+                }
+
                 "home" -> Bukkit.getServer().pluginManager.callEvent(Player2IslandEvent(sender))
                 "entity" -> {
                     if (args.size < 2) sender.sendMessage("null args, usage -> /mb entity <entity-name>")

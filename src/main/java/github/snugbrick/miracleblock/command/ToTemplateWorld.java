@@ -13,6 +13,7 @@ import java.util.List;
  * @author MiracleUR -> github.com/snugbrick
  * @version 1.0.0 2024.08.27 00:57
  */
+@Deprecated
 public class ToTemplateWorld implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
