@@ -18,6 +18,7 @@ class UseSkillListener : Listener {
                 val inlaidGemItemStack: Array<InlaidGemItemStack> = swordItemStack.inlaidGemItemStack
 
                 //TODO: get player using inlaid gem
+
             }
         }
     }
