@@ -12,8 +12,9 @@ import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStarTrait;
 import github.snugbrick.miracleblock.gui.listener.InvenLisRegister;
 import github.snugbrick.miracleblock.island.WorldGen;
 import github.snugbrick.miracleblock.island.listener.IslandDistributionLis;
-import github.snugbrick.miracleblock.items.MiraBlockItemStack;
 import github.snugbrick.miracleblock.items.MainRegister;
+import github.snugbrick.miracleblock.items.MiraBlockItemStack;
+import github.snugbrick.miracleblock.items.skill._SkillRegister;
 import github.snugbrick.miracleblock.items.skill.listener.EnergyGatheringLis;
 import github.snugbrick.miracleblock.items.skill.listener.Illusion;
 import github.snugbrick.miracleblock.items.skill.listener.IronCurtain;
@@ -104,6 +105,9 @@ public class MiracleBlock extends JavaPlugin {
             net.citizensnpcs.api.CitizensAPI.getTraitFactory()
                     .registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SecondBinaryStarTrait.class));
         }
+
+        new _SkillRegister().register();
+        new Debug(0, "Skills已注册");
 
         getLogger().info("every thing is done,welcome to use MiraBlock!");
         new Debug(0, "  __  __ _           ____  _            _    ");
