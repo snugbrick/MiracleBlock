@@ -1,7 +1,7 @@
 package github.snugbrick.miracleblock.gui.listener
 
 import github.snugbrick.miracleblock.MiracleBlock
-import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.recipes.Recipes

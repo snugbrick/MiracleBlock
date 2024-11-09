@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.CanInlaid;
-import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
+import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;

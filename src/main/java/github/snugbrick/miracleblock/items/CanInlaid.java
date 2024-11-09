@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.items;
 
-import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack;
+import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack;
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack;
 
 import java.util.Iterator;

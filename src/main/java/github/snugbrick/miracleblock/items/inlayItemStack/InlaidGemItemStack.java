@@ -1,4 +1,4 @@
-package github.snugbrick.miracleblock.items.InlayItemStack;
+package github.snugbrick.miracleblock.items.inlayItemStack;
 
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.ItemAttribute;
@@ -19,9 +19,9 @@ import java.util.Objects;
 public class InlaidGemItemStack extends MiraBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
-    private _Ability ability;
+    private Class<? extends _Ability> ability;
 
-    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, _Ability ability) {
+    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, Class<? extends _Ability> ability) {
         super(item, key, value);
         this.setLevel(level)
                 .setItemAttribute(itemAttribute)
@@ -86,10 +86,10 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
         return this;
     }
 
-    public InlaidGemItemStack setAbility(_Ability ability) {
+    public InlaidGemItemStack setAbility(Class<? extends _Ability> ability) {
         this.ability = ability;
         super.removeNSK("ability");
-        this.setKeyValue("ability", this.getAbility().toString().split("@")[0]);
+        this.setKeyValue("ability", ability.getName());
         return this;
     }
 
@@ -110,7 +110,7 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
         return level;
     }
 
-    public _Ability getAbility() {
+    public Class<? extends _Ability> getAbility() {
         return ability;
     }
 

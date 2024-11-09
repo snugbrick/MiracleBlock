@@ -4,7 +4,7 @@ import github.snugbrick.miracleblock.api.event.Player2IslandEvent
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar.Companion.spawnNPC
 import github.snugbrick.miracleblock.gui.InlayTable
 import github.snugbrick.miracleblock.gui.MiracleCraftingTable
-import github.snugbrick.miracleblock.items.InlayItemStack.InlaidGemItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
