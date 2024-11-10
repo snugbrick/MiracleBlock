@@ -38,7 +38,10 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
             if (container.has(key, PersistentDataType.STRING)) {
                 this.level = (ItemLevel.getByString(getKeyValue("level")));
                 this.itemAttribute = (ItemAttribute.getByString(getKeyValue("itemAttribute")));
-                //TODO: ability to String and String to ability
+                if (isInlaidGemItemStack(MiraBlockItemStack.getItem(getKeyValue("ability")))) {
+                    InlaidGemItemStack inlaidGemItemStack = (InlaidGemItemStack) MiraBlockItemStack.getItem(getKeyValue("ability"));
+                    this.ability = (inlaidGemItemStack.getAbility());
+                }
             }
         }
     }
@@ -87,6 +90,7 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
     }
 
     public InlaidGemItemStack setAbility(Class<? extends _Ability> ability) {
+        if (ability == null) return this;
         this.ability = ability;
         super.removeNSK("ability");
         this.setKeyValue("ability", ability.getName());

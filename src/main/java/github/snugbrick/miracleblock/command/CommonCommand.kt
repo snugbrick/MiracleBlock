@@ -4,8 +4,8 @@ import github.snugbrick.miracleblock.api.event.Player2IslandEvent
 import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar.Companion.spawnNPC
 import github.snugbrick.miracleblock.gui.InlayTable
 import github.snugbrick.miracleblock.gui.MiracleCraftingTable
-import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
 import github.snugbrick.miracleblock.tools.Debug
@@ -24,8 +24,8 @@ class CommonCommand : TabExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (command.name.equals("mb", ignoreCase = true) && sender is Player) {
             if (args[0].equals(null)) sender.sendMessage("null args, usage -> /mb <args>")
-
             val itemStack = MiraBlockItemStack(sender.inventory.itemInMainHand)
+
             when (args[0]) {
                 "template-world" -> {
                     val world: World? = Bukkit.getWorld("template_world")
@@ -40,10 +40,12 @@ class CommonCommand : TabExecutor {
                     }
                 }
 
-                "weapon" -> {
-                    if (args.size < 2) sender.sendMessage("null args, usage -> /mb weapon <weapon-name>")
+                "item" -> {
+                    if (args.size < 2) sender.sendMessage("null args, usage -> /mb item <item-name> or /mb item all-items")
                     val item = MiraBlockItemStack.getItem(args[1])
-                    if (item != null) sender.inventory.addItem(item) else sender.sendMessage("你未输入所需要武器或者输入的武器不存在")
+                    if (item != null) sender.inventory.addItem(item) else sender.sendMessage("你未输入所需要物品或者输入的物品不存在")
+                    if (args[1] == "all-items") MiraBlockItemStack.getAllMiracleBlockItemStack()
+                        .forEach { item.itemMeta?.let { it -> sender.sendMessage(it.displayName) } }
                 }
 
                 "inlay" -> {

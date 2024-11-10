@@ -111,7 +111,7 @@ class EnergyGathering(
 
     override fun playSound() {
         if (force == 1F && shooter is Player)
-            shooter.world.playSound(shooter.location, Sound.BLOCK_BEACON_DEACTIVATE, 1F, 0F);
+            shooter.world.playSound(shooter.location, Sound.BLOCK_BEACON_DEACTIVATE, 1F, 0F)
     }
 
     override fun setColdDown(cold_down: Int) {

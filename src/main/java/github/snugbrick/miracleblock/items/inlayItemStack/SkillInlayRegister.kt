@@ -7,11 +7,11 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 class SkillInlayRegister {
-    fun skillInlayRegister() {
+    fun skillInlaidRegister() {
         InlaidGemItemStack(
             ItemStack(Material.DIAMOND), "miracle-skill-inlay", "WayOut",
             ItemAttribute.DARK_FLAME, ItemLevel.A,
             _SkillStack.getAbility("WayOut")
-        ).register("WayOut")
+        ).register("way_out")
     }
 }

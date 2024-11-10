@@ -10,6 +10,6 @@ public class MainRegister {
         new SwordRegister().swordRegister();
         new TableItemRegister().tableItemRegister();
         new InlayItemRegister().inlayItemRegister();
-        new SkillInlayRegister().skillInlayRegister();
+        new SkillInlayRegister().skillInlaidRegister();
     }
 }
