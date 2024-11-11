@@ -16,19 +16,19 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Map;
 import java.util.Objects;
 
-public class InlaidGemItemStack extends MiraBlockItemStack {
+public class InlayGemItemStack extends MiraBlockItemStack {
     private ItemLevel level;
     private ItemAttribute itemAttribute;
     private Class<? extends _Ability> ability;
 
-    public InlaidGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, Class<? extends _Ability> ability) {
+    public InlayGemItemStack(ItemStack item, String key, String value, ItemAttribute itemAttribute, ItemLevel level, Class<? extends _Ability> ability) {
         super(item, key, value);
         this.setLevel(level)
                 .setItemAttribute(itemAttribute)
                 .setAbility(ability);
     }
 
-    public InlaidGemItemStack(MiraBlockItemStack item) {
+    public InlayGemItemStack(MiraBlockItemStack item) {
         super(item);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
@@ -39,7 +39,7 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
                 this.level = (ItemLevel.getByString(getKeyValue("level")));
                 this.itemAttribute = (ItemAttribute.getByString(getKeyValue("itemAttribute")));
                 if (isInlaidGemItemStack(MiraBlockItemStack.getItem(getKeyValue("ability")))) {
-                    InlaidGemItemStack inlaidGemItemStack = (InlaidGemItemStack) MiraBlockItemStack.getItem(getKeyValue("ability"));
+                    InlayGemItemStack inlaidGemItemStack = (InlayGemItemStack) MiraBlockItemStack.getItem(getKeyValue("ability"));
                     this.ability = (inlaidGemItemStack.getAbility());
                 }
             }
@@ -75,21 +75,21 @@ public class InlaidGemItemStack extends MiraBlockItemStack {
         return this;
     }
 
-    public InlaidGemItemStack setLevel(ItemLevel itemLevel) {
+    public InlayGemItemStack setLevel(ItemLevel itemLevel) {
         this.level = itemLevel;
         super.removeNSK("level");
         this.setKeyValue("level", this.getLevel().toString());
         return this;
     }
 
-    public InlaidGemItemStack setItemAttribute(ItemAttribute itemAttribute) {
+    public InlayGemItemStack setItemAttribute(ItemAttribute itemAttribute) {
         this.itemAttribute = itemAttribute;
         super.removeNSK("itemAttribute");
         this.setKeyValue("itemAttribute", this.getItemAttribute().toString());
         return this;
     }
 
-    public InlaidGemItemStack setAbility(Class<? extends _Ability> ability) {
+    public InlayGemItemStack setAbility(Class<? extends _Ability> ability) {
         if (ability == null) return this;
         this.ability = ability;
         super.removeNSK("ability");

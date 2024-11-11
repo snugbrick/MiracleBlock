@@ -1,8 +1,8 @@
 package github.snugbrick.miracleblock.gui.listener
 
 import github.snugbrick.miracleblock.MiracleBlock
-import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlayGemItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.recipes.Recipes
 import github.snugbrick.miracleblock.tools.NSK
@@ -54,7 +54,7 @@ class InvenLisRegister : Listener {
                             val swordItemStack = SwordItemStack(miraInput)
                             for (i in 0..swordItemStack.slotCount) {
                                 //如果为null 则代表有东西了 不跳出循环 如果不为null 说明嵌入成功 跳出循环
-                                val after = swordItemStack.setInlay(InlaidGemItemStack(miraInlay), i)
+                                val after = swordItemStack.setInlay(InlayGemItemStack(miraInlay), i)
                                 if (after != null) break
                             }
                         }

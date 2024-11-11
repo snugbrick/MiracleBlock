@@ -8,10 +8,14 @@ import org.bukkit.inventory.ItemStack
 
 class SkillInlayRegister {
     fun skillInlaidRegister() {
-        InlaidGemItemStack(
+        InlayGemItemStack(
             ItemStack(Material.DIAMOND), "miracle-skill-inlay", "WayOut",
-            ItemAttribute.DARK_FLAME, ItemLevel.A,
-            _SkillStack.getAbility("WayOut")
+            ItemAttribute.WOOD, ItemLevel.A, _SkillStack.getAbility("WayOut")
         ).register("way_out")
+
+        InlayGemItemStack(
+            ItemStack(Material.DIAMOND), "miracle-skill-inlay", "Shaking",
+            ItemAttribute.WOOD, ItemLevel.A, _SkillStack.getAbility("Shaking")
+        ).register("shaking")
     }
 }

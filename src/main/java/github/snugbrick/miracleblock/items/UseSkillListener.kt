@@ -1,6 +1,6 @@
 package github.snugbrick.miracleblock.items
 
-import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlayGemItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -15,7 +15,7 @@ class UseSkillListener : Listener {
             val mirabItemInMainHand = MiraBlockItemStack(player.inventory.itemInMainHand)
             if (SwordItemStack.isSwordItemStack(mirabItemInMainHand)) {
                 val swordItemStack = SwordItemStack(mirabItemInMainHand)
-                val inlaidGemItemStack: Array<InlaidGemItemStack> = swordItemStack.inlaidGemItemStack
+                val inlaidGemItemStack: Array<InlayGemItemStack> = swordItemStack.inlaidGemItemStack
 
                 //TODO: get player using inlaid gem
 

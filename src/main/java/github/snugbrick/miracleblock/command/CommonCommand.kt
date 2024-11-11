@@ -5,7 +5,7 @@ import github.snugbrick.miracleblock.entity.monster.boss.SecondBinaryStar.Compan
 import github.snugbrick.miracleblock.gui.InlayTable
 import github.snugbrick.miracleblock.gui.MiracleCraftingTable
 import github.snugbrick.miracleblock.items.MiraBlockItemStack
-import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack
+import github.snugbrick.miracleblock.items.inlayItemStack.InlayGemItemStack
 import github.snugbrick.miracleblock.items.weapon.SwordItemStack
 import github.snugbrick.miracleblock.items.weapon.WeaponItemWords
 import github.snugbrick.miracleblock.tools.Debug
@@ -53,7 +53,7 @@ class CommonCommand : TabExecutor {
                         sender.sendMessage("null args, usage -> /mb inlay <in/out> <gem> <slot>")
                     when (args[1]) {
                         "in" ->
-                            SwordItemStack(itemStack).setInlay(InlaidGemItemStack.getItem(args[2]) as InlaidGemItemStack, args[3].toInt())
+                            SwordItemStack(itemStack).setInlay(InlayGemItemStack.getItem(args[2]) as InlayGemItemStack, args[3].toInt())
 
                         "out" ->
                             SwordItemStack(itemStack).removeInlay(args[2].toInt())

@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import github.snugbrick.miracleblock.MiracleBlock;
 import github.snugbrick.miracleblock.items.CanInlaid;
-import github.snugbrick.miracleblock.items.inlayItemStack.InlaidGemItemStack;
+import github.snugbrick.miracleblock.items.inlayItemStack.InlayGemItemStack;
 import github.snugbrick.miracleblock.items.ItemAttribute;
 import github.snugbrick.miracleblock.items.ItemLevel;
 import github.snugbrick.miracleblock.items.MiraBlockItemStack;
@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 
 public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     private double damage = 0;//
-    private InlaidGemItemStack[] inlaidGems;
+    private InlayGemItemStack[] inlaidGems;
     private int slot;
     private ItemLevel level;//
     private ItemAttribute itemAttribute;//
@@ -42,7 +42,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         this.setCustomAttackRange(3.0);
         this.setAttackSpeed(1.0);
         slot = inlaidSlot;
-        inlaidGems = new InlaidGemItemStack[slot + 1];
+        inlaidGems = new InlayGemItemStack[slot + 1];
     }
 
     public SwordItemStack(MiraBlockItemStack miracleBlockItemStack) {
@@ -66,7 +66,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
                     String inlaidKey = getKeyValue("inlaid" + i);
                     if (inlaidKey != null) {
                         MiraBlockItemStack item = MiraBlockItemStack.getItem(inlaidKey);
-                        inlaidGems[i] = new InlaidGemItemStack(item);
+                        inlaidGems[i] = new InlayGemItemStack(item);
                     } else inlaidGems[i] = null;
                 }
             }
@@ -181,7 +181,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     }
 
     @Override
-    public SwordItemStack setInlay(InlaidGemItemStack inlaidGemItemStack, int indexSlot) {
+    public SwordItemStack setInlay(InlayGemItemStack inlaidGemItemStack, int indexSlot) {
         this.inlaidGems[indexSlot] = inlaidGemItemStack;
         if (this.getKeyValue("inlaid" + indexSlot) != null) return null;
         super.removeNSK("inlaid" + indexSlot);
@@ -191,7 +191,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
     }
 
     @Override
-    public SwordItemStack setInlay(Iterator<InlaidGemItemStack> itemStacks) {
+    public SwordItemStack setInlay(Iterator<InlayGemItemStack> itemStacks) {
         int i = 0;
         while (itemStacks.hasNext()) {
             this.setInlay(itemStacks.next(), i);
@@ -250,7 +250,7 @@ public class SwordItemStack extends MiraBlockItemStack implements CanInlaid {
         return slot;
     }
 
-    public InlaidGemItemStack[] getInlaidGemItemStack() {
+    public InlayGemItemStack[] getInlaidGemItemStack() {
         return inlaidGems;
     }
 
